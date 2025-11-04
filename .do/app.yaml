@@ -18,3 +18,10 @@ static_sites:
         value: ${FUNCTIONS_URL}
     routes:
       - path: /
+
+# Domain configuration
+domains:
+  - domain: clairehamilton.com
+    type: PRIMARY
+  - domain: www.clairehamilton.com
+    type: ALIAS
