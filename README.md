@@ -1,6 +1,6 @@
-# SW Website
+# Claire Hamilton
 
-A modern, production-ready web application built with React, TypeScript, and DigitalOcean cloud infrastructure.
+A modern, elegant companion website built with React, TypeScript, and DigitalOcean cloud infrastructure.
 
 ## 🚀 Tech Stack
 
@@ -97,7 +97,7 @@ Copy the example environment file:
 cp .env.example .env
 ```
 
-Edit `.env` and add your configuration:
+Edit `.env` and add your configuration for Claire Hamilton's website:
 
 ```bash
 VITE_API_BASE_URL=http://localhost:3001/api
