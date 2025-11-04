@@ -5,6 +5,7 @@ A modern, elegant companion website built with React, TypeScript, and DigitalOce
 ## 🚀 Tech Stack
 
 ### Frontend
+
 - **Framework**: React 18.3 with TypeScript 5.8
 - **Build Tool**: Vite 7.1
 - **Styling**: Tailwind CSS 3.4
@@ -14,12 +15,14 @@ A modern, elegant companion website built with React, TypeScript, and DigitalOce
 - **Testing**: Playwright 1.55, Vitest 3.2
 
 ### Backend
+
 - **Runtime**: Node.js 20+
 - **Framework**: Express.js
 - **Serverless**: DigitalOcean Functions
 - **Database**: PostgreSQL (Managed)
 
 ### Infrastructure
+
 - **Hosting**: DigitalOcean App Platform
 - **CDN**: DigitalOcean Spaces CDN
 - **Functions**: DigitalOcean Serverless Functions
@@ -252,20 +255,20 @@ terraform apply -var="do_token=YOUR_TOKEN"
 
 ### Frontend
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `VITE_API_BASE_URL` | Backend API base URL | Yes |
-| `VITE_GA_MEASUREMENT_ID` | Google Analytics 4 ID | No |
-| `VITE_FUNCTIONS_URL` | DigitalOcean Functions URL | No |
+| Variable                 | Description                | Required |
+| ------------------------ | -------------------------- | -------- |
+| `VITE_API_BASE_URL`      | Backend API base URL       | Yes      |
+| `VITE_GA_MEASUREMENT_ID` | Google Analytics 4 ID      | No       |
+| `VITE_FUNCTIONS_URL`     | DigitalOcean Functions URL | No       |
 
 ### Backend
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `PORT` | API server port | Yes |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `ALLOWED_ORIGINS` | CORS allowed origins | Yes |
-| `NODE_ENV` | Environment (development/production) | Yes |
+| Variable          | Description                          | Required |
+| ----------------- | ------------------------------------ | -------- |
+| `PORT`            | API server port                      | Yes      |
+| `DATABASE_URL`    | PostgreSQL connection string         | Yes      |
+| `ALLOWED_ORIGINS` | CORS allowed origins                 | Yes      |
+| `NODE_ENV`        | Environment (development/production) | Yes      |
 
 ## 📦 CI/CD
 
@@ -305,6 +308,7 @@ This project uses GitHub Actions for continuous integration and deployment:
 ## 💰 Cost Estimation
 
 ### Basic Setup
+
 - App Platform (Basic): $5-12/month
 - Managed PostgreSQL (1GB): $15/month
 - Functions (1M requests): $1.85/month
@@ -312,6 +316,7 @@ This project uses GitHub Actions for continuous integration and deployment:
 - **Total**: ~$27-33/month
 
 ### Production Setup
+
 - App Platform (Professional): $12-24/month
 - Managed PostgreSQL (4GB): $60/month
 - Functions (5M requests): $9.25/month
@@ -320,19 +325,19 @@ This project uses GitHub Actions for continuous integration and deployment:
 
 ## 📝 Scripts Reference
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Lint code |
-| `npm run lint:fix` | Fix linting issues |
-| `npm run format` | Format code with Prettier |
-| `npm run format:check` | Check code formatting |
-| `npm run type-check` | Run TypeScript type checking |
-| `npm test` | Run E2E tests |
-| `npm run test:unit` | Run unit tests in watch mode |
-| `npm run test:unit:run` | Run unit tests once |
+| Script                  | Description                  |
+| ----------------------- | ---------------------------- |
+| `npm run dev`           | Start development server     |
+| `npm run build`         | Build for production         |
+| `npm run preview`       | Preview production build     |
+| `npm run lint`          | Lint code                    |
+| `npm run lint:fix`      | Fix linting issues           |
+| `npm run format`        | Format code with Prettier    |
+| `npm run format:check`  | Check code formatting        |
+| `npm run type-check`    | Run TypeScript type checking |
+| `npm test`              | Run E2E tests                |
+| `npm run test:unit`     | Run unit tests in watch mode |
+| `npm run test:unit:run` | Run unit tests once          |
 
 ## 🤝 Contributing
 

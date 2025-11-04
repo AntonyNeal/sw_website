@@ -1,6 +1,7 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Home from './pages/Home';
+import Gallery from './pages/Gallery';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
                 <a href="#about" className="text-gray-600 hover:text-gray-900">
                   About
                 </a>
+                <Link to="/gallery" className="text-gray-600 hover:text-gray-900">
+                  Gallery
+                </Link>
                 <a href="#services" className="text-gray-600 hover:text-gray-900">
                   Services
                 </a>
@@ -33,6 +37,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
         </Routes>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -11,34 +12,35 @@ export default function Home() {
         />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-        {/* Hero Section */}
-        <section className="relative py-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h1 className="text-6xl font-bold text-gray-900 mb-4">Claire Hamilton</h1>
-                <p className="text-2xl text-gray-600 mb-8">
-                  A sophisticated companion, a free-spirited sweetheart
-                </p>
-                <div className="flex gap-4 justify-center">
-                  <button className="btn-primary">Book Now</button>
-                  <button className="btn-secondary">Learn More</button>
-                </div>
-              </div>
+      <div className="min-h-screen bg-white">
+        {/* Full-Screen Hero Section with Photo */}
+        <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+          {/* Background Image */}
+          <img
+            src="https://pbs.twimg.com/media/G3hgK2hX0AAB8RL.jpg:large"
+            alt="Claire Hamilton"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
 
-              {/* Photo Gallery Placeholder */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">Photo 1</span>
-                </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">Photo 2</span>
-                </div>
-                <div className="aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-500">Photo 3</span>
-                </div>
-              </div>
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/20" />
+
+          {/* Content Overlay */}
+          <div className="relative z-10 text-center text-white px-4">
+            <h1 className="text-7xl md:text-8xl font-bold mb-4 drop-shadow-lg">Claire Hamilton</h1>
+            <p className="text-xl md:text-3xl italic drop-shadow-lg mb-12">
+              A sophisticated companion, a free-spirited sweetheart
+            </p>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors drop-shadow-lg">
+                Book Now
+              </button>
+              <Link
+                to="/gallery"
+                className="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-lg font-semibold transition-colors border border-white backdrop-blur-sm"
+              >
+                View Gallery
+              </Link>
             </div>
           </div>
         </section>
