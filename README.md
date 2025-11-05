@@ -1,4 +1,4 @@
-# Claire Hamilton
+# EllaX
 
 A modern, elegant companion website built with React, TypeScript, and DigitalOcean cloud infrastructure.
 

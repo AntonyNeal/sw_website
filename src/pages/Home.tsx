@@ -31,10 +31,10 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Claire Hamilton - Melbourne Companion</title>
+        <title>EllaX - Premium Companion Services</title>
         <meta
           name="description"
-          content="Claire Hamilton - A sophisticated companion in Melbourne"
+          content="EllaX - A sophisticated companion for memorable experiences"
         />
       </Helmet>
 
@@ -60,9 +60,9 @@ export default function Home() {
 
           {/* Content Overlay */}
           <div className="relative z-10 text-center text-white px-4">
-            <h1 className="text-7xl md:text-8xl font-bold mb-4 drop-shadow-lg">Claire Hamilton</h1>
+            <h1 className="text-7xl md:text-8xl font-bold mb-4 drop-shadow-lg">EllaX</h1>
             <p className="text-xl md:text-3xl italic drop-shadow-lg mb-12">
-              A sophisticated companion, a free-spirited sweetheart
+              A sophisticated companion, an unforgettable experience
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <button className="bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors drop-shadow-lg">
@@ -95,13 +95,13 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <h2 className="text-5xl font-light text-gray-900 text-center mb-2 tracking-tight">
-                About Claire
+                About EllaX
               </h2>
               <div className="h-1 w-16 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mb-12" />
               <p className="text-lg text-gray-700 leading-relaxed text-center font-light">
-                Claire Hamilton is a sophisticated and elegant companion, crafted for discerning
+                EllaX is a sophisticated and elegant companion, crafted for discerning
                 individuals who appreciate the finer things in life. With an innate understanding of
-                genuine connection, she brings warmth, intelligence, and an irresistible free spirit
+                genuine connection, she brings warmth, intelligence, and an irresistible presence
                 to every encounter.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed text-center font-light mt-8 italic">
@@ -202,7 +202,7 @@ export default function Home() {
               <p className="text-center text-gray-700 text-lg font-light leading-relaxed mb-12 tracking-wide">
                 Every meaningful connection begins with a genuine conversation. Reach out to discuss
                 your expectations, desires, and the kind of experience you seek. Discretion,
-                elegance, and authentic presence are my promise to you.
+                elegance, and authentic presence are EllaX&apos;s promise to you.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <button

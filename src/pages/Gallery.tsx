@@ -19,8 +19,8 @@ export default function Gallery() {
   return (
     <>
       <Helmet>
-        <title>Gallery - Claire Hamilton</title>
-        <meta name="description" content="Claire Hamilton's photo gallery" />
+        <title>Gallery - EllaX</title>
+        <meta name="description" content="EllaX's photo gallery" />
       </Helmet>
 
       <div className="min-h-screen bg-white">
@@ -29,7 +29,7 @@ export default function Gallery() {
           <div className="container mx-auto px-4 py-16">
             <div className="text-center">
               <h1 className="text-5xl font-light text-gray-900 mb-2 tracking-tight">
-                Claire Hamilton
+                EllaX
               </h1>
               <div className="h-1 w-16 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mb-6" />
               <p className="text-lg text-gray-700 font-light tracking-wide">
@@ -50,7 +50,7 @@ export default function Gallery() {
                 >
                   <img
                     src={photo}
-                    alt={`Claire Hamilton ${index + 1}`}
+                    alt={`EllaX ${index + 1}`}
                     className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
