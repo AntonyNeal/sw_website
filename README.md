@@ -5,6 +5,7 @@ A modern, elegant companion website built with React, TypeScript, and DigitalOce
 ## ✨ Key Features
 
 ### Backend Infrastructure (Phase 1 - 40% Complete)
+
 - ✅ **PostgreSQL Database Schema** - Complete with 8 tables, indexes, triggers, constraints
 - ✅ **UTM Attribution Tracking** - Frontend session management with browser fingerprinting
 - ✅ **Booking API** - POST /api/bookings with validation, duplicate detection, email notifications
@@ -15,6 +16,7 @@ A modern, elegant companion website built with React, TypeScript, and DigitalOce
 - ⏳ **Privacy Analytics** - PostHog/Plausible integration (Phase 2)
 
 ### Frontend Features
+
 - Responsive booking form with validation
 - Real-time UTM parameter extraction
 - Session persistence across browser tabs
@@ -134,6 +136,7 @@ VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 **For a complete step-by-step deployment guide, see [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)**
 
 Quick summary:
+
 1. Create PostgreSQL 15 database on DigitalOcean
 2. Deploy schema: `psql "your_connection_string" -f db/schema.sql`
 3. Configure environment variables in DigitalOcean App Platform
@@ -147,6 +150,7 @@ Expected time: **30-45 minutes**
 **For comprehensive testing procedures, see [TESTING-GUIDE.md](./TESTING-GUIDE.md)**
 
 Quick verification:
+
 1. POST /api/bookings - Create a test booking
 2. Check inbox - Verify confirmation emails sent
 3. GET /api/analytics/bookings - Query conversion data

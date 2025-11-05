@@ -35,7 +35,7 @@ Complete deployment checklist for getting the booking system live in production.
   ```
 - [ ] **Step 8**: Verify deployment by checking tables exist:
   ```sql
-  SELECT table_name FROM information_schema.tables 
+  SELECT table_name FROM information_schema.tables
   WHERE table_schema = 'public' ORDER BY table_name;
   ```
   Expected tables: `ab_test_results`, `bookings`, `conversions`, `email_logs`, `payments`, `user_sessions`, `schema_version`
@@ -53,6 +53,7 @@ Complete deployment checklist for getting the booking system live in production.
 - [ ] **Step 7**: Complete verification (check email from SendGrid)
 
 **Credentials needed**:
+
 - `SENDGRID_API_KEY`: Copy from Step 4
 - `SENDGRID_FROM_EMAIL`: `bookings@clairehamilton.com.au`
 - `CLAIRE_NOTIFICATION_EMAIL`: Claire's personal email
@@ -74,15 +75,15 @@ Complete deployment checklist for getting the booking system live in production.
 - [ ] **Step 3**: Go to **Settings** → **Environment & Variables**
 - [ ] **Step 4**: Add these environment variables:
 
-| Variable | Value |
-|----------|-------|
-| `DATABASE_URL` | Paste connection string from above |
-| `SENDGRID_API_KEY` | API key from SendGrid |
-| `SENDGRID_FROM_EMAIL` | bookings@clairehamilton.com.au |
-| `CLAIRE_NOTIFICATION_EMAIL` | claire@clairehamilton.com.au |
-| `ALLOWED_ORIGIN` | https://clairehamilton.com.au |
-| `VITE_API_BASE_URL` | https://clairehamilton.com.au |
-| `NODE_ENV` | production |
+| Variable                    | Value                              |
+| --------------------------- | ---------------------------------- |
+| `DATABASE_URL`              | Paste connection string from above |
+| `SENDGRID_API_KEY`          | API key from SendGrid              |
+| `SENDGRID_FROM_EMAIL`       | bookings@clairehamilton.com.au     |
+| `CLAIRE_NOTIFICATION_EMAIL` | claire@clairehamilton.com.au       |
+| `ALLOWED_ORIGIN`            | https://clairehamilton.com.au      |
+| `VITE_API_BASE_URL`         | https://clairehamilton.com.au      |
+| `NODE_ENV`                  | production                         |
 
 - [ ] **Step 5**: Click **Save** (App Platform will auto-redeploy)
 
@@ -194,6 +195,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ```
 
 Expected output structure:
+
 ```json
 {
   "period": { "start": "...", "end": "..." },
@@ -236,23 +238,27 @@ Expected output structure:
 ## Common Issues & Solutions
 
 ### "Database connection failed"
+
 - ✅ Verify `DATABASE_URL` in App Platform environment variables
 - ✅ Check PostgreSQL cluster is "running" in DigitalOcean
 - ✅ Ensure connection string ends with `?sslmode=require`
 - ✅ Try connecting locally with psql to verify
 
 ### "Email not being sent"
+
 - ✅ Verify `SENDGRID_API_KEY` is correct
 - ✅ Check `SENDGRID_FROM_EMAIL` is a verified sender in SendGrid
 - ✅ Go to SendGrid Activity → Mail Activity to see delivery status
 - ✅ Check DigitalOcean function logs for SendGrid errors
 
 ### "CORS error on API calls"
+
 - ✅ Verify `ALLOWED_ORIGIN` matches your domain exactly
 - ✅ Check browser console for specific CORS error
 - ✅ Ensure request has correct `Origin` header
 
 ### "Booking validation errors"
+
 - ✅ Email must be valid format: `user@domain.com`
 - ✅ Phone must be Australian format: `0X XXXX XXXX` or `04XX XXX XXX`
 - ✅ Date must be ISO format: `YYYY-MM-DD` and in the future
@@ -292,15 +298,15 @@ Expected output structure:
 
 ## Resource Links
 
-| Task | Link |
-|------|------|
-| Full Deployment Guide | [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md) |
-| Comprehensive Testing | [TESTING-GUIDE.md](./TESTING-GUIDE.md) |
-| Backend Architecture | [BACKEND-IMPLEMENTATION.md](./BACKEND-IMPLEMENTATION.md) |
-| DigitalOcean Dashboard | https://cloud.digitalocean.com/ |
-| SendGrid Dashboard | https://app.sendgrid.com/ |
-| PostgreSQL Docs | https://www.postgresql.org/docs/ |
-| DigitalOcean Docs | https://docs.digitalocean.com/ |
+| Task                   | Link                                                     |
+| ---------------------- | -------------------------------------------------------- |
+| Full Deployment Guide  | [DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)             |
+| Comprehensive Testing  | [TESTING-GUIDE.md](./TESTING-GUIDE.md)                   |
+| Backend Architecture   | [BACKEND-IMPLEMENTATION.md](./BACKEND-IMPLEMENTATION.md) |
+| DigitalOcean Dashboard | https://cloud.digitalocean.com/                          |
+| SendGrid Dashboard     | https://app.sendgrid.com/                                |
+| PostgreSQL Docs        | https://www.postgresql.org/docs/                         |
+| DigitalOcean Docs      | https://docs.digitalocean.com/                           |
 
 ---
 

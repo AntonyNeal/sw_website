@@ -13,6 +13,7 @@
 ### Backend Infrastructure (Production-Ready)
 
 #### 1. PostgreSQL Database Schema ✅
+
 - **File**: `db/schema.sql` (450+ lines)
 - **Status**: Complete and production-ready
 - **Tables Created**:
@@ -32,6 +33,7 @@
   - CHECK constraints for data validation
 
 #### 2. Frontend UTM Tracking Service ✅
+
 - **File**: `src/utils/utm.service.ts` (280+ lines)
 - **Status**: Complete and integrated
 - **Features**:
@@ -43,9 +45,11 @@
   - Cross-tab session persistence
 
 #### 3. API Endpoints (DigitalOcean Functions)
+
 All endpoints are production-ready and deployed to GitHub:
 
 **a) POST /api/bookings - Create Booking** ✅
+
 - **File**: `functions/packages/api/create-booking/index.js` (400+ lines)
 - **Features**:
   - Joi validation (email format, phone regex, date constraints)
@@ -59,6 +63,7 @@ All endpoints are production-ready and deployed to GitHub:
   - Connection pooling with SSL
 
 **b) POST /api/sessions/register - Register User Session** ✅
+
 - **File**: `functions/packages/api/register-session/index.js` (97 lines)
 - **Features**:
   - Upsert pattern for idempotent session creation
@@ -67,6 +72,7 @@ All endpoints are production-ready and deployed to GitHub:
   - Auto-increment page view counter
 
 **c) GET /api/analytics/bookings - Booking Analytics** ✅
+
 - **File**: `functions/packages/api/get-analytics/index.js` (98 lines)
 - **Features**:
   - SQL aggregation by platform attribution (utm_source, utm_medium, utm_campaign, etc.)
@@ -76,6 +82,7 @@ All endpoints are production-ready and deployed to GitHub:
   - Safe parameter validation (whitelist to prevent SQL injection)
 
 #### 4. Frontend Integration ✅
+
 - **File**: `src/App.tsx`
 - **Features**:
   - UTM service initialization on app load
@@ -84,6 +91,7 @@ All endpoints are production-ready and deployed to GitHub:
   - Non-blocking error handling
 
 #### 5. Configuration & Deployment ✅
+
 - **Files**:
   - `functions/project.yml` - DigitalOcean Functions configuration (8 functions)
   - `functions/packages/api/package.json` - Node dependencies (pg, joi, @sendgrid/mail)
@@ -103,15 +111,15 @@ All endpoints are production-ready and deployed to GitHub:
 
 ### For Deployment (Reference [QUICK-START-CHECKLIST.md](./QUICK-START-CHECKLIST.md) first)
 
-| Document | Purpose | Time | Reference |
-|----------|---------|------|-----------|
-| **QUICK-START-CHECKLIST.md** | Step-by-step deployment checklist with all commands | 45-60 min | **START HERE** |
-| **DEPLOYMENT-GUIDE.md** | Comprehensive deployment guide with troubleshooting | 30-45 min | Database setup + SendGrid config |
-| **TESTING-GUIDE.md** | Complete testing procedures for all endpoints | 60-90 min | Validation after deployment |
-| **BACKEND-IMPLEMENTATION.md** | Architecture overview and remaining work | Reference | Understanding the system |
-| **README.md** | Project overview with deployment/testing links | Reference | Project documentation |
-| **DO-CLI-SETUP.md** | PowerShell CLI wrapper for DigitalOcean | Reference | Manual CLI operations |
-| **DO-CLI-QUICK-REF.md** | Quick reference for CLI commands | Reference | Common operations |
+| Document                      | Purpose                                             | Time      | Reference                        |
+| ----------------------------- | --------------------------------------------------- | --------- | -------------------------------- |
+| **QUICK-START-CHECKLIST.md**  | Step-by-step deployment checklist with all commands | 45-60 min | **START HERE**                   |
+| **DEPLOYMENT-GUIDE.md**       | Comprehensive deployment guide with troubleshooting | 30-45 min | Database setup + SendGrid config |
+| **TESTING-GUIDE.md**          | Complete testing procedures for all endpoints       | 60-90 min | Validation after deployment      |
+| **BACKEND-IMPLEMENTATION.md** | Architecture overview and remaining work            | Reference | Understanding the system         |
+| **README.md**                 | Project overview with deployment/testing links      | Reference | Project documentation            |
+| **DO-CLI-SETUP.md**           | PowerShell CLI wrapper for DigitalOcean             | Reference | Manual CLI operations            |
+| **DO-CLI-QUICK-REF.md**       | Quick reference for CLI commands                    | Reference | Common operations                |
 
 ---
 
@@ -120,6 +128,7 @@ All endpoints are production-ready and deployed to GitHub:
 ### Phase 1: Backend Infrastructure (Current - 40% Complete)
 
 **✅ Completed**:
+
 - PostgreSQL schema with all 8 tables
 - UTM tracking service (frontend)
 - 3 main API endpoints (bookings, sessions, analytics)
@@ -129,6 +138,7 @@ All endpoints are production-ready and deployed to GitHub:
 - Comprehensive documentation
 
 **⏳ Remaining (Estimated 3-4 hours)**:
+
 - Deploy database schema to DigitalOcean PostgreSQL (~5 min)
 - Wire BookingForm.tsx to API (~30 min)
 - SendGrid credential setup (~5 min)
@@ -137,6 +147,7 @@ All endpoints are production-ready and deployed to GitHub:
 - Performance optimization (~30 min)
 
 ### Phase 2: Advanced Features (Not Started)
+
 - Payment integration (Eway/PayID)
 - A/B testing framework
 - Advanced privacy analytics (PostHog/Plausible)
@@ -222,6 +233,7 @@ All code is committed to GitHub and ready for deployment.
 ## 🔑 Key Credentials & Configuration
 
 ### SendGrid Setup Required
+
 ```
 API Key: SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 From Email: bookings@clairehamilton.com.au
@@ -229,6 +241,7 @@ Verified: ✅ (complete verification in SendGrid)
 ```
 
 ### DigitalOcean Database
+
 ```
 Type: PostgreSQL 15
 Host: db-xxxxx.db.ondigitalocean.com
@@ -239,6 +252,7 @@ SSL: Required (sslmode=require)
 ```
 
 ### App Platform Environment Variables
+
 ```
 DATABASE_URL: postgresql://doadmin:pass@host:25060/db?sslmode=require
 SENDGRID_API_KEY: SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -254,18 +268,21 @@ NODE_ENV: production
 ## 📈 Performance Expectations
 
 ### API Response Times
+
 - Cold start (first call): 1-2 seconds
 - Warm calls (within minutes): 50-150ms
 - Database queries: 10-50ms
 - Email send (async, non-blocking): <500ms
 
 ### Scalability
+
 - Functions auto-scale with traffic
 - Database connection pooling (10 connections)
 - Concurrent requests: Unlimited (serverless auto-scales)
 - Storage: Unlimited (PostgreSQL managed)
 
 ### Cost Estimation
+
 - App Platform: $5-24/month
 - PostgreSQL: $15/month (1GB - sufficient for startup)
 - Functions: ~$1.85/month (1M requests)
@@ -294,6 +311,7 @@ After deployment, verify:
 ## 🛠️ Technology Stack Deployed
 
 ### Frontend (React)
+
 - React 18.3.1 with TypeScript 5.8
 - Vite 7.1 build tool
 - Tailwind CSS 3.4 styling
@@ -302,6 +320,7 @@ After deployment, verify:
 - UTM tracking service (custom)
 
 ### Backend (DigitalOcean)
+
 - Node.js 18+ runtime
 - PostgreSQL 15 database
 - DigitalOcean Functions (serverless)
@@ -309,12 +328,14 @@ After deployment, verify:
 - Express.js framework
 
 ### Deployment
+
 - GitHub repository with auto-deploy
 - DigitalOcean App Platform
 - DigitalOcean Managed PostgreSQL
 - DigitalOcean Serverless Functions
 
 ### Infrastructure
+
 - SSL/TLS certificates (auto-managed)
 - Connection pooling (pg library)
 - Database backups (automatic daily)
@@ -325,12 +346,14 @@ After deployment, verify:
 ## 📞 Support & Resources
 
 ### In Case of Issues
+
 1. Check **QUICK-START-CHECKLIST.md** for specific step
 2. Review **DEPLOYMENT-GUIDE.md** for troubleshooting
 3. Reference **TESTING-GUIDE.md** for validation procedures
 4. Check **BACKEND-IMPLEMENTATION.md** for architecture details
 
 ### External Resources
+
 - [DigitalOcean Docs](https://docs.digitalocean.com/)
 - [PostgreSQL Docs](https://www.postgresql.org/docs/)
 - [SendGrid Docs](https://docs.sendgrid.com/)

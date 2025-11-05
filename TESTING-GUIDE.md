@@ -5,6 +5,7 @@ Complete testing procedures to validate the booking system end-to-end.
 ## Test Environment Setup
 
 Before testing, ensure:
+
 - ✅ Database schema deployed to PostgreSQL
 - ✅ Environment variables configured in DigitalOcean App Platform
 - ✅ SendGrid credentials valid
@@ -22,7 +23,7 @@ Before testing, ensure:
 psql "postgresql://doadmin:password@db-host:25060/defaultdb?sslmode=require"
 
 -- Verify all tables exist
-SELECT table_name FROM information_schema.tables 
+SELECT table_name FROM information_schema.tables
 WHERE table_schema = 'public' ORDER BY table_name;
 
 -- Expected output:
@@ -51,8 +52,8 @@ SELECT NOW();
 
 ```sql
 -- Verify indexes are created
-SELECT indexname FROM pg_indexes 
-WHERE schemaname = 'public' 
+SELECT indexname FROM pg_indexes
+WHERE schemaname = 'public'
 ORDER BY indexname;
 
 -- Look for these indexes:
@@ -72,6 +73,7 @@ ORDER BY indexname;
 ### Test 2.1: UTM Parameter Extraction
 
 1. Open your website with UTM parameters:
+
    ```
    https://clairehamilton.com.au?utm_source=google&utm_medium=cpc&utm_campaign=q1_2025&utm_content=ad_5&utm_term=booking
    ```
@@ -79,6 +81,7 @@ ORDER BY indexname;
 2. Open browser Developer Tools → Console
 
 3. Verify session is initialized:
+
    ```javascript
    // Should output the session object
    console.log(localStorage.getItem('claire_session'));
@@ -111,6 +114,7 @@ Check Network tab in Developer Tools:
    - ✅ Response includes `sessionId`, `userId`, `createdAt`
 
 Expected response:
+
 ```json
 {
   "sessionId": "550e8400-e29b-41d4-a716-446655440000",
@@ -173,6 +177,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ```
 
 **Expected response (HTTP 200)**:
+
 ```json
 {
   "success": true,
@@ -186,6 +191,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ### Test 3.2: Booking Validation Tests
 
 **Test 3.2a: Invalid Email**
+
 ```powershell
 $body = @{
     name = "Test User"
@@ -199,6 +205,7 @@ $body = @{
 ```
 
 **Expected response (HTTP 400)**:
+
 ```json
 {
   "error": "Validation failed",
@@ -207,6 +214,7 @@ $body = @{
 ```
 
 **Test 3.2b: Invalid Phone**
+
 ```powershell
 $body = @{
     name = "Test User"
@@ -220,6 +228,7 @@ $body = @{
 ```
 
 **Expected response (HTTP 400)**:
+
 ```json
 {
   "error": "Validation failed",
@@ -228,6 +237,7 @@ $body = @{
 ```
 
 **Test 3.2c: Past Date**
+
 ```powershell
 $body = @{
     name = "Test User"
@@ -241,6 +251,7 @@ $body = @{
 ```
 
 **Expected response (HTTP 400)**:
+
 ```json
 {
   "error": "Validation failed",
@@ -261,6 +272,7 @@ $response = Invoke-WebRequest -Uri $apiUrl -Method POST -Headers $headers -Body 
 ```
 
 **Expected response (HTTP 409)**:
+
 ```json
 {
   "error": "Duplicate booking",
@@ -290,6 +302,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ```
 
 **Expected response (HTTP 200)**:
+
 ```json
 {
   "sessionId": "550e8400-e29b-41d4-a716-446655440000",
@@ -309,6 +322,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ```
 
 **Expected response (HTTP 200)**:
+
 ```json
 {
   "period": {
@@ -349,6 +363,7 @@ $response = Invoke-WebRequest -Uri $analyticsUrl -Method GET -Headers $headers
 ```
 
 **Expected response (HTTP 400)**:
+
 ```json
 {
   "error": "Invalid groupBy parameter",
@@ -373,6 +388,7 @@ $response = Invoke-WebRequest -Uri $analyticsUrl -Method GET -Headers $headers
    - ✅ Call-to-action button
 
 **Sample email content**:
+
 ```
 Subject: Your Booking Confirmation - CH-20250315-001
 
@@ -404,6 +420,7 @@ Claire Hamilton
    - ✅ Confirmation number
 
 **Sample notification content**:
+
 ```
 Subject: New Booking Received - CH-20250315-001
 
@@ -439,8 +456,8 @@ Session ID: 550e8400-e29b-41d4-a716-446655440000
 
 ```sql
 -- Query the user_sessions table
-SELECT * FROM user_sessions 
-ORDER BY created_at DESC 
+SELECT * FROM user_sessions
+ORDER BY created_at DESC
 LIMIT 1;
 
 -- Expected columns populated:
@@ -461,8 +478,8 @@ LIMIT 1;
 
 ```sql
 -- Query the bookings table
-SELECT * FROM bookings 
-ORDER BY created_at DESC 
+SELECT * FROM bookings
+ORDER BY created_at DESC
 LIMIT 1;
 
 -- Expected columns populated:
@@ -484,8 +501,8 @@ LIMIT 1;
 
 ```sql
 -- Query the email_logs table
-SELECT * FROM email_logs 
-ORDER BY created_at DESC 
+SELECT * FROM email_logs
+ORDER BY created_at DESC
 LIMIT 2;
 
 -- Expected 2 records:
@@ -505,7 +522,7 @@ LIMIT 2;
 
 ```sql
 -- Query the conversions table
-SELECT * FROM conversions 
+SELECT * FROM conversions
 WHERE booking_id = (SELECT booking_id FROM bookings ORDER BY created_at DESC LIMIT 1);
 
 -- Expected record:
@@ -542,14 +559,14 @@ Write-Host "Response time: $($timer.ElapsedMilliseconds)ms"
 
 ```sql
 -- Check slow query logs
-SELECT query, calls, mean_exec_time 
-FROM pg_stat_statements 
-WHERE mean_exec_time > 100 
+SELECT query, calls, mean_exec_time
+FROM pg_stat_statements
+WHERE mean_exec_time > 100
 ORDER BY mean_exec_time DESC;
 
 -- Analyze common queries
-EXPLAIN ANALYZE 
-SELECT * FROM bookings 
+EXPLAIN ANALYZE
+SELECT * FROM bookings
 WHERE appointment_date = CURRENT_DATE;
 ```
 
@@ -625,46 +642,50 @@ $response.Content | ConvertFrom-Json
 
 ## Integration Testing Checklist ✅
 
-| Test | Status | Notes |
-|------|--------|-------|
-| Database schema deployed | ⏳ | Check schema_version table |
-| Frontend UTM service initializes | ⏳ | Check console logs |
-| Booking form renders correctly | ⏳ | Visual verification |
-| Session registration works | ⏳ | Check network tab |
-| Create booking succeeds | ⏳ | Check HTTP 200 response |
-| Booking validation works | ⏳ | Test invalid inputs |
-| Duplicate detection works | ⏳ | Submit twice within 1 hour |
-| Customer email received | ⏳ | Check inbox |
-| Claire notification received | ⏳ | Check Claire's email |
-| Analytics endpoint works | ⏳ | Query groupBy utm_source |
-| Database records created | ⏳ | Query user_sessions, bookings, emails |
-| Performance acceptable | ⏳ | Response time < 500ms |
-| CORS validation works | ⏳ | Test invalid origin |
-| SQL injection prevented | ⏳ | Attempt injection |
-| Input sanitization works | ⏳ | Test special characters |
+| Test                             | Status | Notes                                 |
+| -------------------------------- | ------ | ------------------------------------- |
+| Database schema deployed         | ⏳     | Check schema_version table            |
+| Frontend UTM service initializes | ⏳     | Check console logs                    |
+| Booking form renders correctly   | ⏳     | Visual verification                   |
+| Session registration works       | ⏳     | Check network tab                     |
+| Create booking succeeds          | ⏳     | Check HTTP 200 response               |
+| Booking validation works         | ⏳     | Test invalid inputs                   |
+| Duplicate detection works        | ⏳     | Submit twice within 1 hour            |
+| Customer email received          | ⏳     | Check inbox                           |
+| Claire notification received     | ⏳     | Check Claire's email                  |
+| Analytics endpoint works         | ⏳     | Query groupBy utm_source              |
+| Database records created         | ⏳     | Query user_sessions, bookings, emails |
+| Performance acceptable           | ⏳     | Response time < 500ms                 |
+| CORS validation works            | ⏳     | Test invalid origin                   |
+| SQL injection prevented          | ⏳     | Attempt injection                     |
+| Input sanitization works         | ⏳     | Test special characters               |
 
 ---
 
 ## Troubleshooting Failed Tests
 
 ### "CORS Error" on API calls
+
 - Verify `ALLOWED_ORIGIN` environment variable matches your domain exactly
 - Check browser console for specific CORS error message
 - Ensure request has `Origin` header set correctly
 
 ### "Email not being sent"
+
 - Verify `SENDGRID_API_KEY` is correct in environment variables
 - Confirm `SENDGRID_FROM_EMAIL` is a verified sender in SendGrid
 - Check SendGrid Activity dashboard for delivery failures
 - Look for SendGrid errors in DigitalOcean function logs
 
 ### "Database connection error"
+
 - Verify `DATABASE_URL` connection string is correct
 - Ensure database is accepting connections (check firewall)
 - Confirm PostgreSQL cluster is in "running" state in DigitalOcean dashboard
 - Check that connection string includes `sslmode=require`
 
 ### "Validation errors on valid input"
+
 - Review Joi schema in `functions/packages/api/create-booking/index.js`
 - Check phone regex pattern: `^0[2-9]\d{8}$` (Australian format)
 - Ensure email format is standard: `user@domain.com`
@@ -681,7 +702,7 @@ Testing Complete!
 
 Passed: __ / 15 tests
 Failed: __ / 15 tests
-Warnings: __ 
+Warnings: __
 
 Critical Issues: None
 Minor Issues: __
@@ -692,6 +713,7 @@ System Status: ✅ Ready for Production
 ---
 
 **Next Steps After Testing**:
+
 1. Deploy to production if all tests pass
 2. Monitor DigitalOcean logs for errors
 3. Set up alerts for high error rates
