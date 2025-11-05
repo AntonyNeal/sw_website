@@ -24,14 +24,15 @@ export default function Gallery() {
         <meta name="description" content="Ash xoxo's curated photo gallery" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
+      <div className="min-h-screen bg-white">
         {/* Header */}
-        <header className="bg-white border-b border-slate-200">
+        <header className="bg-gradient-to-b from-white to-slate-50 border-b border-slate-200">
           <div className="container mx-auto px-4 py-16">
             <div className="text-center">
-              <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-4 tracking-tight">
+              <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-2 tracking-tight">
                 Gallery
               </h1>
+              <div className="h-1 w-16 bg-rose-400 mx-auto mb-6 rounded-full" />
               <p className="text-lg text-slate-600 font-medium">
                 A glimpse into my world
               </p>
@@ -40,7 +41,7 @@ export default function Gallery() {
         </header>
 
         {/* Gallery Grid */}
-        <main className="container mx-auto px-4 py-24">
+        <main className="container mx-auto px-4 py-24 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {photos.map((photo, index) => (
