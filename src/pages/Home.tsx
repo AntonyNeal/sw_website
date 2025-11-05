@@ -92,13 +92,14 @@ export default function Home() {
               </h2>
               <div className="h-1 w-16 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mb-12" />
               <p className="text-lg text-gray-700 leading-relaxed text-center font-light">
-                Claire Hamilton is a sophisticated and elegant companion, crafted for discerning individuals
-                who appreciate the finer things in life. With an innate understanding of genuine connection,
-                she brings warmth, intelligence, and an irresistible free spirit to every encounter.
+                Claire Hamilton is a sophisticated and elegant companion, crafted for discerning
+                individuals who appreciate the finer things in life. With an innate understanding of
+                genuine connection, she brings warmth, intelligence, and an irresistible free spirit
+                to every encounter.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed text-center font-light mt-8 italic">
-                Every moment is an invitation to experience luxury through presence, conversation, and
-                the art of being truly seen.
+                Every moment is an invitation to experience luxury through presence, conversation,
+                and the art of being truly seen.
               </p>
             </div>
           </div>
@@ -115,11 +116,13 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="group relative bg-white border border-rose-100 p-10 rounded-sm hover:shadow-2xl transition-all duration-500 hover:border-rose-300">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-gradient-to-b from-rose-400 to-transparent" />
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">Dinner Dates</h3>
+                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
+                    Dinner Dates
+                  </h3>
                   <p className="text-gray-700 leading-relaxed font-light">
-                    Exquisite dining at Melbourne&apos;s most coveted establishments. Share meaningful
-                    conversation over exceptional cuisine, creating memories of refined elegance and
-                    genuine connection.
+                    Exquisite dining at Melbourne&apos;s most coveted establishments. Share
+                    meaningful conversation over exceptional cuisine, creating memories of refined
+                    elegance and genuine connection.
                   </p>
                   <div className="mt-6 flex items-center text-rose-400 text-sm font-light tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span>Inquire about availability</span>
@@ -129,11 +132,13 @@ export default function Home() {
 
                 <div className="group relative bg-white border border-rose-100 p-10 rounded-sm hover:shadow-2xl transition-all duration-500 hover:border-rose-300">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-gradient-to-b from-rose-400 to-transparent" />
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">Social Events</h3>
+                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
+                    Social Events
+                  </h3>
                   <p className="text-gray-700 leading-relaxed font-light">
-                    Radiant presence at galas, exclusive soirées, and intimate gatherings. Be the center
-                    of attention with a companion who brings elegance, wit, and undivided attention to
-                    every social occasion.
+                    Radiant presence at galas, exclusive soirées, and intimate gatherings. Be the
+                    center of attention with a companion who brings elegance, wit, and undivided
+                    attention to every social occasion.
                   </p>
                   <div className="mt-6 flex items-center text-rose-400 text-sm font-light tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span>Inquire about availability</span>
@@ -143,11 +148,13 @@ export default function Home() {
 
                 <div className="group relative bg-white border border-rose-100 p-10 rounded-sm hover:shadow-2xl transition-all duration-500 hover:border-rose-300">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-gradient-to-b from-rose-400 to-transparent" />
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">Travel Companion</h3>
+                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
+                    Travel Companion
+                  </h3>
                   <p className="text-gray-700 leading-relaxed font-light">
-                    Explore the world with a sophisticated traveler. From serene escapes to adventurous
-                    journeys, every destination becomes more meaningful shared with someone who truly
-                    understands the value of presence.
+                    Explore the world with a sophisticated traveler. From serene escapes to
+                    adventurous journeys, every destination becomes more meaningful shared with
+                    someone who truly understands the value of presence.
                   </p>
                   <div className="mt-6 flex items-center text-rose-400 text-sm font-light tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span>Inquire about availability</span>
@@ -157,11 +164,13 @@ export default function Home() {
 
                 <div className="group relative bg-white border border-rose-100 p-10 rounded-sm hover:shadow-2xl transition-all duration-500 hover:border-rose-300">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-gradient-to-b from-rose-400 to-transparent" />
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">Private Moments</h3>
+                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
+                    Private Moments
+                  </h3>
                   <p className="text-gray-700 leading-relaxed font-light">
-                    Intimate, discreet experiences tailored entirely to your desires. In a sanctuary of
-                    trust and luxury, discover connection that transcends the ordinary and celebrates
-                    sensuality with sophistication.
+                    Intimate, discreet experiences tailored entirely to your desires. In a sanctuary
+                    of trust and luxury, discover connection that transcends the ordinary and
+                    celebrates sensuality with sophistication.
                   </p>
                   <div className="mt-6 flex items-center text-rose-400 text-sm font-light tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span>Inquire about availability</span>
@@ -178,27 +187,34 @@ export default function Home() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-5xl font-light text-gray-900 mb-2 tracking-tight">Let&apos;s Connect</h2>
+                <h2 className="text-5xl font-light text-gray-900 mb-2 tracking-tight">
+                  Let&apos;s Connect
+                </h2>
                 <div className="h-1 w-16 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto" />
               </div>
               <p className="text-center text-gray-700 text-lg font-light leading-relaxed mb-12 tracking-wide">
                 Every meaningful connection begins with a genuine conversation. Reach out to discuss
-                your expectations, desires, and the kind of experience you seek. Discretion, elegance,
-                and authentic presence are my promise to you.
+                your expectations, desires, and the kind of experience you seek. Discretion,
+                elegance, and authentic presence are my promise to you.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <button className="group px-10 py-4 bg-gradient-to-r from-rose-400 to-pink-500 text-white rounded-sm font-light tracking-wide hover:shadow-2xl transition-all duration-300 hover:scale-105">
                   Send Inquiry
-                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
                 </button>
                 <button className="group px-10 py-4 border-2 border-rose-300 text-rose-400 rounded-sm font-light tracking-wide hover:bg-rose-50 hover:border-rose-400 transition-all duration-300">
                   Schedule Call
-                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
                 </button>
               </div>
               <div className="mt-16 pt-12 border-t border-rose-200">
                 <p className="text-center text-gray-600 text-sm font-light tracking-wide">
-                  Response within 24 hours • Absolute discretion guaranteed • Available for engagements across Australia
+                  Response within 24 hours • Absolute discretion guaranteed • Available for
+                  engagements across Australia
                 </p>
               </div>
             </div>

@@ -11,23 +11,35 @@ function App() {
         <meta name="description" content="Claire Hamilton - Melbourne Companion" />
       </Helmet>
 
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         {/* Navigation Header */}
-        <header className="bg-white shadow-sm">
-          <div className="container mx-auto px-4 py-4">
+        <header className="bg-gradient-to-b from-rose-50 to-white border-b border-rose-100">
+          <div className="container mx-auto px-4 py-6">
             <nav className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Claire Hamilton</h1>
-              <div className="space-x-6">
-                <a href="#about" className="text-gray-600 hover:text-gray-900">
+              <h1 className="text-3xl font-light text-gray-900 tracking-tight">Claire Hamilton</h1>
+              <div className="space-x-8 flex items-center">
+                <a
+                  href="#about"
+                  className="text-gray-700 font-light tracking-wide hover:text-rose-500 transition-colors duration-300"
+                >
                   About
                 </a>
-                <Link to="/gallery" className="text-gray-600 hover:text-gray-900">
+                <Link
+                  to="/gallery"
+                  className="text-gray-700 font-light tracking-wide hover:text-rose-500 transition-colors duration-300"
+                >
                   Gallery
                 </Link>
-                <a href="#services" className="text-gray-600 hover:text-gray-900">
+                <a
+                  href="#services"
+                  className="text-gray-700 font-light tracking-wide hover:text-rose-500 transition-colors duration-300"
+                >
                   Services
                 </a>
-                <a href="#contact" className="text-gray-600 hover:text-gray-900">
+                <a
+                  href="#contact"
+                  className="text-gray-700 font-light tracking-wide hover:text-rose-500 transition-colors duration-300"
+                >
                   Contact
                 </a>
               </div>
