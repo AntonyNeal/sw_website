@@ -1,4 +1,4 @@
--- Claire Hamilton Website Database Schema
+-- Ash xoxo Website Database Schema
 -- Created: 2025-11-05
 -- Purpose: Support booking system, analytics, and UTM attribution tracking
 

@@ -422,7 +422,7 @@ function generateCustomerEmailHTML(name, confirmation, date, time) {
           </div>
           <div class="content">
             <p>Hi ${name},</p>
-            <p>Thank you for booking with Claire Hamilton. Your booking has been confirmed!</p>
+            <p>Thank you for booking with Ash xoxo. Your booking has been confirmed!</p>
             
             <div class="confirmation">
               Confirmation #${confirmation}
@@ -461,7 +461,7 @@ Booking Confirmed!
 
 Hi ${name},
 
-Thank you for booking with Claire Hamilton. Your booking has been confirmed!
+Thank you for booking with Ash xoxo. Your booking has been confirmed!
 
 CONFIRMATION #${confirmation}
 

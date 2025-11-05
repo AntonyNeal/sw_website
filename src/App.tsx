@@ -32,8 +32,8 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>Claire Hamilton</title>
-        <meta name="description" content="Claire Hamilton - Melbourne Companion" />
+        <title>Ash xoxo</title>
+        <meta name="description" content="Ash xoxo - Premium Companion" />
       </Helmet>
 
       <div className="min-h-screen bg-white">
@@ -41,7 +41,7 @@ function App() {
         <header className="bg-gradient-to-b from-rose-50 to-white border-b border-rose-100">
           <div className="container mx-auto px-4 py-6">
             <nav className="flex justify-between items-center">
-              <h1 className="text-3xl font-light text-gray-900 tracking-tight">Claire Hamilton</h1>
+              <h1 className="text-3xl font-light text-gray-900 tracking-tight">Ash xoxo</h1>
               <div className="space-x-8 flex items-center">
                 <a
                   href="#about"

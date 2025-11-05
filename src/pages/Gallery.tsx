@@ -20,21 +20,20 @@ export default function Gallery() {
   return (
     <>
       <Helmet>
-        <title>Gallery - EllaX 📸</title>
-        <meta name="description" content="EllaX's hot photos & beachy vibes" />
+        <title>Gallery - Ash xoxo</title>
+        <meta name="description" content="Ash xoxo's curated photo gallery" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-yellow-50">
+      <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
         {/* Header */}
-        <header className="bg-gradient-to-br from-yellow-100 to-pink-100 border-b-4 border-yellow-400">
+        <header className="bg-white border-b border-slate-200">
           <div className="container mx-auto px-4 py-16">
             <div className="text-center">
-              <h1 className="text-6xl md:text-7xl font-black text-slate-900 mb-4 tracking-tight">
-                Check Me Out 📸
+              <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-4 tracking-tight">
+                Gallery
               </h1>
-              <div className="h-1 w-48 bg-gradient-to-r from-yellow-400 via-pink-300 to-blue-300 mx-auto rounded-full" />
-              <p className="text-xl text-slate-700 font-bold mt-6">
-                All the angles, all the vibes, all the hotness ✨
+              <p className="text-lg text-slate-600 font-medium">
+                A glimpse into my world
               </p>
             </div>
           </div>
@@ -47,17 +46,15 @@ export default function Gallery() {
               {photos.map((photo, index) => (
                 <div
                   key={index}
-                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border-3 border-yellow-200 hover:border-pink-400 transform hover:scale-105 hover:-rotate-1 cursor-pointer"
+                  className="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:border-slate-300 cursor-pointer"
                 >
                   <img
                     src={photo}
-                    alt={`EllaX ${index + 1}`}
-                    className="w-full h-64 object-cover group-hover:scale-125 transition-transform duration-500"
+                    alt={`Ash xoxo ${index + 1}`}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                    <p className="text-white font-black text-lg">😍</p>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               ))}
             </div>
@@ -65,18 +62,17 @@ export default function Gallery() {
         </main>
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-yellow-300 to-pink-300 py-24">
+        <section className="bg-slate-900 text-white py-24">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-5xl font-black text-slate-900 mb-6">Like What You See? 🔥</h2>
-            <p className="text-xl text-slate-800 font-bold mb-8">
-              There&apos;s more where that came from! Let&apos;s hang out & create some
-              unforgettable moments.
+            <h2 className="text-5xl font-bold text-white mb-6">Like What You See?</h2>
+            <p className="text-lg text-slate-300 font-medium mb-8 max-w-2xl mx-auto">
+              These are just a preview. Let&apos;s connect and create something unforgettable together.
             </p>
             <Link
               to="/"
-              className="inline-block px-12 py-5 bg-white text-slate-900 rounded-full font-black text-lg hover:shadow-2xl transition-all transform hover:scale-110 border-3 border-slate-900"
+              className="inline-block px-12 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-bold text-lg transition-all transform hover:scale-105 hover:shadow-xl"
             >
-              ← Back & Let's Book! 💛
+              Reserve an Experience
             </Link>
           </div>
         </section>

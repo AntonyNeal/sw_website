@@ -1,7 +1,7 @@
 {
   "name": "api-functions",
   "version": "1.0.0",
-  "description": "DigitalOcean Functions for Claire Hamilton booking system",
+  "description": "DigitalOcean Functions for Ash xoxo booking system",
   "main": "index.js",
   "dependencies": {
     "pg": "^8.11.0",

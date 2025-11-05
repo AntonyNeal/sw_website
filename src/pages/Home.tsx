@@ -31,10 +31,10 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>EllaX - Hot Beach Vibes & Good Times</title>
+        <title>Ash xoxo - Premium Companion Experience</title>
         <meta
           name="description"
-          content="EllaX - Your beachy blonde companion for unforgettable adventures & fun times"
+          content="Ash xoxo - Sophisticated, fun, and unforgettably sexy. Your premium companion."
         />
       </Helmet>
 
@@ -60,25 +60,27 @@ export default function Home() {
 
           {/* Content Overlay */}
           <div className="relative z-10 text-center text-white px-4">
-            <h1 className="text-7xl md:text-8xl font-black mb-2 drop-shadow-xl tracking-tight">EllaX</h1>
-            <p className="text-2xl md:text-4xl font-bold drop-shadow-lg mb-4 tracking-wide">
-              ☀️ Your Hot Blonde Escape ☀️
+            <h1 className="text-7xl md:text-8xl font-black mb-2 drop-shadow-xl tracking-tight">
+              Ash xoxo
+            </h1>
+            <p className="text-xl md:text-3xl font-light drop-shadow-lg mb-2 tracking-wide italic">
+              Sophisticated. Sexy. Unforgettable.
             </p>
-            <p className="text-lg md:text-2xl drop-shadow-lg mb-12 font-light">
-              Beach vibes, island girl energy, & unforgettable adventures
+            <p className="text-lg md:text-xl drop-shadow-lg mb-12 font-light">
+              Premium companionship for those who appreciate quality
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="bg-yellow-400 hover:bg-yellow-500 text-slate-900 px-10 py-4 rounded-full font-black text-lg transition-all transform hover:scale-110 drop-shadow-lg hover:drop-shadow-2xl"
+                className="bg-rose-500 hover:bg-rose-600 text-white px-10 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 drop-shadow-lg hover:drop-shadow-2xl"
               >
-                Book Me 🔥
+                Reserve Now
               </button>
               <Link
                 to="/gallery"
-                className="bg-white/80 hover:bg-white text-slate-900 px-10 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-110 drop-shadow-lg"
+                className="bg-white/90 hover:bg-white text-slate-900 px-10 py-4 rounded-lg font-bold text-lg transition-all transform hover:scale-105 drop-shadow-lg"
               >
-                See More 📸
+                View Gallery
               </Link>
             </div>
           </div>
@@ -91,117 +93,103 @@ export default function Home() {
                 onClick={() => setCurrentImageIndex(index)}
                 className={`transition-all duration-300 ${
                   index === currentImageIndex
-                    ? 'bg-yellow-400 w-8 h-3'
-                    : 'bg-white/60 hover:bg-white/80 w-3 h-3'
+                    ? 'bg-rose-400 w-8 h-2'
+                    : 'bg-white/50 hover:bg-white/70 w-2 h-2'
                 } rounded-full`}
               />
             ))}
           </div>
         </section>
 
-        {/* About Section - Fun & Young */}
-        <section id="about" className="py-32 bg-gradient-to-b from-white to-blue-50">
+        {/* About Section - Sophisticated & Sexy */}
+        <section id="about" className="py-32 bg-gradient-to-b from-white to-slate-50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-5xl md:text-6xl font-black text-center mb-4 text-slate-900 tracking-tight">
-                Hi, I&apos;m EllaX 💛
+              <h2 className="text-5xl md:text-6xl font-bold text-center mb-4 text-slate-900 tracking-tight">
+                About Ash
               </h2>
-              <div className="h-1 w-32 bg-gradient-to-r from-yellow-400 via-blue-300 to-pink-300 mx-auto mb-16 rounded-full" />
-              <p className="text-xl text-slate-700 leading-relaxed text-center font-semibold mb-8">
-                Blonde, fun, and always up for a good time! I&apos;m all about sun-kissed skin, beach
-                energy, and creating memories that actually matter. Think island girl meets girl-next-door
-                with a sprinkle of spontaneous adventure.
+              <div className="h-1 w-24 bg-rose-400 mx-auto mb-12 rounded-full" />
+              <p className="text-xl text-slate-700 leading-relaxed text-center font-medium mb-8">
+                I&apos;m intelligent, sophisticated, and absolutely magnetic. With sun-kissed blonde
+                hair and an effortless confidence that commands attention, I bring sophistication,
+                wit, and undeniable chemistry to every moment we share.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed text-center italic font-medium">
-                Life&apos;s too short for boring. Let&apos;s make it fun. 🌊✨
+                Quality over everything. Let&apos;s make it count.
               </p>
 
-              {/* Fun Stats */}
+              {/* Signature Qualities */}
               <div className="grid grid-cols-3 gap-6 mt-16">
-                <div className="bg-gradient-to-br from-yellow-100 to-yellow-50 p-8 rounded-2xl border-2 border-yellow-300 text-center">
-                  <p className="text-4xl font-black text-yellow-600">100%</p>
-                  <p className="text-sm font-bold text-slate-700 mt-2">Authentic & Real</p>
+                <div className="bg-slate-100 p-8 rounded-lg border border-slate-300 text-center hover:shadow-lg transition-shadow">
+                  <p className="text-3xl font-bold text-slate-900">100%</p>
+                  <p className="text-sm font-semibold text-slate-600 mt-2">Genuine Connection</p>
                 </div>
-                <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-8 rounded-2xl border-2 border-blue-300 text-center">
-                  <p className="text-4xl font-black text-blue-600">∞</p>
-                  <p className="text-sm font-bold text-slate-700 mt-2">Adventure Ready</p>
+                <div className="bg-slate-100 p-8 rounded-lg border border-slate-300 text-center hover:shadow-lg transition-shadow">
+                  <p className="text-3xl font-bold text-slate-900">∞</p>
+                  <p className="text-sm font-semibold text-slate-600 mt-2">Spontaneous & Fun</p>
                 </div>
-                <div className="bg-gradient-to-br from-pink-100 to-pink-50 p-8 rounded-2xl border-2 border-pink-300 text-center">
-                  <p className="text-4xl font-black text-pink-600">💯</p>
-                  <p className="text-sm font-bold text-slate-700 mt-2">Good Energy Only</p>
+                <div className="bg-slate-100 p-8 rounded-lg border border-slate-300 text-center hover:shadow-lg transition-shadow">
+                  <p className="text-3xl font-bold text-slate-900">♡</p>
+                  <p className="text-sm font-semibold text-slate-600 mt-2">
+                    Discreet & Professional
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Experiences Section - Casual & Fun */}
+        {/* Experiences Section - Sophisticated Moments */}
         <section id="services" className="py-32 bg-white">
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-20">
-                <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4 tracking-tight">
-                  Let&apos;s Do This Together
+                <h2 className="text-5xl md:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
+                  Unforgettable Experiences
                 </h2>
-                <p className="text-xl text-slate-600 font-semibold">
-                  Pick your vibe & let&apos;s make some memories 🌟
+                <p className="text-lg text-slate-600 font-medium">
+                  Designed for discerning tastes and genuine connection
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Beach Day */}
-                <div className="group relative bg-gradient-to-br from-blue-50 to-cyan-50 p-10 rounded-3xl border-3 border-blue-300 hover:border-blue-400 hover:shadow-2xl transition-all duration-500 hover:scale-105 transform">
-                  <div className="text-6xl mb-4">🏖️</div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-4">Beach Days</h3>
-                  <p className="text-slate-700 leading-relaxed font-semibold">
-                    Surfing, swimming, sunbathing & sunset cocktails. Zero plans, maximum fun. We&apos;ll
-                    chase waves and make TikToks nobody asked for (and it&apos;ll be hilarious).
+                {/* Dinner & Conversation */}
+                <div className="group relative bg-white p-10 rounded-lg border border-slate-200 hover:border-rose-400 hover:shadow-xl transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Intimate Dinners</h3>
+                  <p className="text-slate-700 leading-relaxed font-medium">
+                    Wine, stimulating conversation, and undeniable chemistry. Whether it&apos;s a
+                    sophisticated dinner at your favorite spot or candlelight at home, I bring
+                    elegance and genuine presence to every moment.
                   </p>
-                  <div className="mt-6 flex items-center text-blue-600 text-sm font-black opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>✨ Let&apos;s go!</span>
-                    <span className="ml-2">→</span>
-                  </div>
                 </div>
 
-                {/* Party Nights */}
-                <div className="group relative bg-gradient-to-br from-pink-50 to-fuchsia-50 p-10 rounded-3xl border-3 border-pink-300 hover:border-pink-400 hover:shadow-2xl transition-all duration-500 hover:scale-105 transform">
-                  <div className="text-6xl mb-4">🍾</div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-4">Night Out</h3>
-                  <p className="text-slate-700 leading-relaxed font-semibold">
-                    Clubs, bars, rooftop parties, festivals. I&apos;m the girl everyone wants at their event.
-                    Drinks, dancing, endless laughs & good vibes all night long.
+                {/* Social Events */}
+                <div className="group relative bg-white p-10 rounded-lg border border-slate-200 hover:border-rose-400 hover:shadow-xl transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Social Companion</h3>
+                  <p className="text-slate-700 leading-relaxed font-medium">
+                    Functions, galas, gallery openings, or exclusive events. I&apos;m the perfect
+                    plus-one who not only looks stunning but engages intelligently and makes you
+                    look incredibly good.
                   </p>
-                  <div className="mt-6 flex items-center text-pink-600 text-sm font-black opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>🎉 Let&apos;s party!</span>
-                    <span className="ml-2">→</span>
-                  </div>
                 </div>
 
-                {/* Adventure Dates */}
-                <div className="group relative bg-gradient-to-br from-yellow-50 to-amber-50 p-10 rounded-3xl border-3 border-yellow-300 hover:border-yellow-400 hover:shadow-2xl transition-all duration-500 hover:scale-105 transform">
-                  <div className="text-6xl mb-4">🎢</div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-4">Adventure Mode</h3>
-                  <p className="text-slate-700 leading-relaxed font-semibold">
-                    Road trips, hiking, spontaneous travel plans. I&apos;m always down for something new &
-                    unexpected. Bring the energy and I&apos;ll bring the enthusiasm.
+                {/* Getaways */}
+                <div className="group relative bg-white p-10 rounded-lg border border-slate-200 hover:border-rose-400 hover:shadow-xl transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Weekend Getaways</h3>
+                  <p className="text-slate-700 leading-relaxed font-medium">
+                    Beach trips, city escapes, or spontaneous adventures. I bring spontaneity and
+                    genuine excitement to every experience. Let&apos;s create memories worth
+                    savoring.
                   </p>
-                  <div className="mt-6 flex items-center text-yellow-600 text-sm font-black opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>🚀 Let&apos;s explore!</span>
-                    <span className="ml-2">→</span>
-                  </div>
                 </div>
 
-                {/* One-on-One Time */}
-                <div className="group relative bg-gradient-to-br from-purple-50 to-rose-50 p-10 rounded-3xl border-3 border-purple-300 hover:border-purple-400 hover:shadow-2xl transition-all duration-500 hover:scale-105 transform">
-                  <div className="text-6xl mb-4">💕</div>
-                  <h3 className="text-3xl font-black text-slate-900 mb-4">Just Us</h3>
-                  <p className="text-slate-700 leading-relaxed font-semibold">
-                    Cozy nights in, conversation that actually matters, or just vibing. No pressure,
-                    just genuine connection & amazing chemistry.
+                {/* Private Time */}
+                <div className="group relative bg-white p-10 rounded-lg border border-slate-200 hover:border-rose-400 hover:shadow-xl transition-all duration-300">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Private Connection</h3>
+                  <p className="text-slate-700 leading-relaxed font-medium">
+                    Sometimes the best moments are just us. Intimate, genuine, and full of
+                    chemistry. A space where we can both be completely ourselves and connect on a
+                    deeper level.
                   </p>
-                  <div className="mt-6 flex items-center text-purple-600 text-sm font-black opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>❤️ Let&apos;s connect!</span>
-                    <span className="ml-2">→</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -209,44 +197,44 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section id="contact" className="py-32 bg-gradient-to-b from-white via-yellow-50 to-blue-50">
+        <section id="contact" className="py-32 bg-gradient-to-b from-white to-slate-50">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto">
               <div className="text-center mb-12">
-                <h2 className="text-5xl md:text-6xl font-black text-slate-900 mb-4 tracking-tight">
-                  Ready to Have Fun? 🔥
+                <h2 className="text-5xl md:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
+                  Let&apos;s Connect
                 </h2>
-                <p className="text-xl text-slate-600 font-semibold">
-                  Hit me up! I&apos;m a real person with real vibes & actual availability.
+                <p className="text-lg text-slate-600 font-medium">
+                  Serious inquiries from discerning individuals only
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-yellow-100 to-pink-100 p-12 rounded-3xl border-3 border-yellow-300 mb-8">
-                <p className="text-center text-slate-800 text-lg font-bold mb-8">
-                  No weird games, no drama, just good times with a girl who genuinely wants to spend time with
-                  you. Let&apos;s make something happen. 💛
+              <div className="bg-slate-900 text-white p-12 rounded-lg mb-8">
+                <p className="text-center text-lg font-medium mb-8">
+                  I value quality time with people who respect boundaries, appreciate
+                  sophistication, and are genuinely interested in creating meaningful connections.
+                  Let&apos;s have a conversation first.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
                   <button
                     onClick={() => setIsBookingOpen(true)}
-                    className="group px-12 py-5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 rounded-full font-black text-lg transition-all transform hover:scale-110 hover:shadow-2xl active:scale-95"
+                    className="px-12 py-4 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-bold text-lg transition-all transform hover:scale-105 hover:shadow-xl"
                   >
-                    Book a Date 💬
+                    Reserve an Experience
                   </button>
                   <button
                     onClick={() => setIsBookingOpen(true)}
-                    className="group px-12 py-5 bg-white border-3 border-slate-900 text-slate-900 rounded-full font-black text-lg transition-all transform hover:scale-110 hover:shadow-2xl active:scale-95"
+                    className="px-12 py-4 bg-white/20 hover:bg-white/30 text-white rounded-lg font-bold text-lg border border-white/40 transition-all transform hover:scale-105"
                   >
-                    Send a Message 📱
+                    Send a Message
                   </button>
                 </div>
               </div>
-              <div className="bg-white p-10 rounded-3xl border-2 border-slate-200 text-center">
-                <p className="text-slate-700 font-bold mb-4">
-                  💁‍♀️ Quick Details 💁‍♀️
-                </p>
-                <p className="text-slate-600 font-semibold">
-                  24/7 responses • Serious inquiries only • Discreet & safe • Australian based • Let&apos;s chat
-                  first & see if we vibe ✨
+              <div className="bg-white p-10 rounded-lg border border-slate-200 text-center">
+                <p className="text-slate-700 font-semibold mb-3">What You Should Know</p>
+                <p className="text-slate-600 font-medium text-sm leading-relaxed">
+                  Verified bookings • Premium discretion • Australian based • Respectful
+                  communication • 24-48 hour booking notice • Let&apos;s chat and make sure
+                  we&apos;re a good match
                 </p>
               </div>
             </div>

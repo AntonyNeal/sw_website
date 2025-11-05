@@ -123,7 +123,7 @@ Copy the example environment file:
 cp .env.example .env
 ```
 
-Edit `.env` and add your configuration for Claire Hamilton's website:
+Edit `.env` and add your configuration for Ash xoxo's website:
 
 ```bash
 VITE_API_BASE_URL=http://localhost:3001/api
