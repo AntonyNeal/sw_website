@@ -4,11 +4,16 @@ import { useState, useEffect } from 'react';
 import BookingModal from '../components/BookingModal';
 
 const heroImages = [
-  'https://pbs.twimg.com/media/G3hgK2hX0AAB8RL.jpg:large',
-  'https://pbs.twimg.com/media/G3Gh-hdbUAAQTDo.jpg:large',
-  'https://pbs.twimg.com/media/G3qlG5VWwAAkv0w.jpg:large',
-  'https://pbs.twimg.com/media/G4OoP7-WoAA4YbX.jpg:large',
-  'https://pbs.twimg.com/media/G22stVEaYAAuqaG.jpg:large',
+  '/Gvj2Q4maoAAmamx.jpg',
+  '/GsLpMhZasAAJkRN.jpg',
+  '/G4zluC1aMAA0edL.jpg',
+  '/G4T1Ipca8AAT0KB.jpg',
+  '/G4FU93TXoAAIPP3.jpg',
+  '/G4ENuTqWwAAN1V3.jpg',
+  '/G44Zk_saQAAVIEa.jpg',
+  '/G3cYfh_XkAA_NgH.jpg',
+  '/G2zqVgpaUAAHoJ0.jpg',
+  '/G1Md9isbwAEeLS0.jpg',
 ];
 
 export default function Home() {
