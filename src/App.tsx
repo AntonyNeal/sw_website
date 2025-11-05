@@ -1,9 +1,34 @@
+import { useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Home from './pages/Home';
 import Gallery from './pages/Gallery';
+import { initializeSession, registerSession, trackConversion } from './utils/utm.service';
 
 function App() {
+  useEffect(() => {
+    // Initialize UTM tracking and session on app load
+    const initTracking = async () => {
+      try {
+        // Initialize local session data (sync)
+        const session = initializeSession();
+        console.debug('Session initialized:', session.userId);
+
+        // Register session with backend (async, non-blocking)
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+        await registerSession(apiBaseUrl);
+
+        // Track page view
+        await trackConversion('page_view', { page: 'home' }, apiBaseUrl);
+      } catch (error) {
+        console.debug('Error initializing tracking:', error);
+        // Don't fail the app if tracking fails
+      }
+    };
+
+    initTracking();
+  }, []);
+
   return (
     <>
       <Helmet>
