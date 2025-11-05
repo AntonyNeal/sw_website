@@ -47,8 +47,8 @@ export default function Home() {
               <img
                 key={index}
                 src={image}
-                alt="Claire Hamilton"
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-2000 ${
+                alt="EllaX"
+                className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-2000 ${
                   index === currentImageIndex ? 'opacity-100' : 'opacity-0'
                 }`}
               />
@@ -99,10 +99,10 @@ export default function Home() {
               </h2>
               <div className="h-1 w-16 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mb-12" />
               <p className="text-lg text-gray-700 leading-relaxed text-center font-light">
-                EllaX is a sophisticated and elegant companion, crafted for discerning
-                individuals who appreciate the finer things in life. With an innate understanding of
-                genuine connection, she brings warmth, intelligence, and an irresistible presence
-                to every encounter.
+                EllaX is a sophisticated and elegant companion, crafted for discerning individuals
+                who appreciate the finer things in life. With an innate understanding of genuine
+                connection, she brings warmth, intelligence, and an irresistible presence to every
+                encounter.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed text-center font-light mt-8 italic">
                 Every moment is an invitation to experience luxury through presence, conversation,
