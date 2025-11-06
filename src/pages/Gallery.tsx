@@ -33,9 +33,7 @@ export default function Gallery() {
                 Gallery
               </h1>
               <div className="h-1 w-16 bg-rose-400 mx-auto mb-6 rounded-full" />
-              <p className="text-lg text-slate-600 font-medium">
-                A glimpse into my world
-              </p>
+              <p className="text-lg text-slate-600 font-medium">A glimpse into my world</p>
             </div>
           </div>
         </header>
@@ -67,7 +65,8 @@ export default function Gallery() {
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-5xl font-bold text-white mb-6">Like What You See?</h2>
             <p className="text-lg text-slate-300 font-medium mb-8 max-w-2xl mx-auto">
-              These are just a preview. Let&apos;s connect and create something unforgettable together.
+              These are just a preview. Let&apos;s connect and create something unforgettable
+              together.
             </p>
             <Link
               to="/"
