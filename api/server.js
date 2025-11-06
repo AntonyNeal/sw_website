@@ -8,7 +8,31 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    origin: function (origin, callback) {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      // Define allowed patterns
+      const allowedPatterns = [
+        /^https?:\/\/([a-z0-9-]+\.)?prebooking\.pro$/, // *.prebooking.pro
+        /^https?:\/\/([a-z0-9-]+\.)?companionconnect\.app$/, // *.companionconnect.app
+        /^https?:\/\/clairehamilton\.vip$/, // clairehamilton.vip
+        /^http:\/\/localhost(:\d+)?$/, // localhost:*
+        /^http:\/\/127\.0\.0\.1(:\d+)?$/, // 127.0.0.1:*
+      ];
+
+      // Check if origin matches any pattern
+      const isAllowed = allowedPatterns.some((pattern) => pattern.test(origin));
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS blocked origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
@@ -30,7 +54,23 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API routes
+// Import routes
+const tenantRoutes = require('./routes/tenants');
+// const availabilityRoutes = require('./routes/availability');
+// const locationRoutes = require('./routes/locations');
+// const bookingRoutes = require('./routes/bookings');
+// const paymentRoutes = require('./routes/payments');
+// const analyticsRoutes = require('./routes/analytics');
+
+// API routes - Deploy incrementally
+app.use('/api/tenants', tenantRoutes);
+// app.use('/api/availability', availabilityRoutes);
+// app.use('/api/locations', locationRoutes);
+// app.use('/api/bookings', bookingRoutes);
+// app.use('/api/payments', paymentRoutes);
+// app.use('/api/analytics', analyticsRoutes);
+
+// Legacy endpoints (keep for backward compatibility)
 app.get('/api/get-data', async (req, res) => {
   try {
     const data = {
