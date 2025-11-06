@@ -52,6 +52,21 @@ export default function Home() {
             .home-page {
               overflow: hidden;
               height: 100vh;
+              width: 100vw;
+            }
+
+            /* Ensure images cover the full area properly */
+            .home-page img {
+              object-position: center top;
+            }
+
+            /* Hide scroll bars globally for home page */
+            .home-page::-webkit-scrollbar {
+              display: none;
+            }
+            .home-page {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
             }
           `}
         </style>
@@ -95,7 +110,7 @@ export default function Home() {
           {/* Content Overlay - Elegant and readable */}
           <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8">
             <h1
-              className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-light mb-6 sm:mb-8 drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] leading-none tracking-tight animate-pulse"
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-light mb-4 sm:mb-6 drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] leading-none tracking-tight animate-pulse"
               style={{
                 textShadow: '2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
                 fontFamily: '"Playfair Display", serif',
@@ -105,7 +120,7 @@ export default function Home() {
               Claire Hamilton
             </h1>
             <p
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] mb-10 sm:mb-12 md:mb-16 max-w-4xl mx-auto leading-relaxed font-light"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] mb-8 sm:mb-10 md:mb-12 max-w-4xl mx-auto leading-relaxed font-light"
               style={{
                 textShadow: '1px 1px 6px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5)',
                 fontFamily: '"Crimson Text", serif',
@@ -113,10 +128,10 @@ export default function Home() {
             >
               Real curves. Real connection. Ultimate GFE.
             </p>
-            <div className="flex gap-4 sm:gap-6 justify-center flex-wrap">
+            <div className="flex gap-3 sm:gap-4 md:gap-6 justify-center flex-wrap px-4">
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="group relative px-10 sm:px-12 py-4 sm:py-5 bg-gradient-to-r from-red-800/60 to-red-900/70 text-white rounded-lg text-lg sm:text-xl font-bold tracking-wide hover:shadow-2xl hover:from-red-800/80 hover:to-red-900/90 transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 backdrop-blur-sm border border-red-700/50"
+                className="group relative px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-red-800/60 to-red-900/70 text-white rounded-lg text-base sm:text-lg md:text-xl font-bold tracking-wide hover:shadow-2xl hover:from-red-800/80 hover:to-red-900/90 transition-all duration-500 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-offset-2 backdrop-blur-sm border border-red-700/50"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
                   boxShadow:
@@ -131,7 +146,7 @@ export default function Home() {
               </button>
               <Link
                 to="/gallery"
-                className="group px-10 sm:px-12 py-4 sm:py-5 border-2 border-rose-300 text-rose-100 rounded-lg text-lg sm:text-xl font-semibold tracking-wide hover:bg-rose-50/20 hover:border-rose-200 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-rose-400 focus:ring-offset-2 backdrop-blur-sm"
+                className="group px-6 sm:px-8 md:px-10 lg:px-12 py-3 sm:py-4 md:py-5 border-2 border-rose-300 text-rose-100 rounded-lg text-base sm:text-lg md:text-xl font-semibold tracking-wide hover:bg-rose-50/20 hover:border-rose-200 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-rose-400 focus:ring-offset-2 backdrop-blur-sm"
                 aria-label="View photo gallery"
               >
                 View Gallery
@@ -143,14 +158,14 @@ export default function Home() {
           </div>
 
           {/* Carousel Indicators - Now Clickable */}
-          <div className="absolute bottom-6 z-20 flex gap-3 justify-center w-full">
+          <div className="absolute bottom-4 sm:bottom-6 z-20 flex gap-3 justify-center w-full px-4">
             {heroImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToImage(index)}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer hover:scale-125 focus:outline-none focus:ring-2 focus:ring-white/50 border-2 ${
                   index === currentImageIndex
-                    ? 'bg-white/20 border-white w-6'
+                    ? 'bg-white/20 border-white w-4 sm:w-6'
                     : 'bg-transparent border-white/60 w-2 hover:bg-white/10 hover:border-white'
                 }`}
                 aria-label={`Go to image ${index + 1}`}
