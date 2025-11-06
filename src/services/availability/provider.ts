@@ -39,26 +39,34 @@ class ApiAvailabilityProvider implements IAvailabilityProvider {
       queryParams.append('from', params.fromDate.toISOString());
     }
 
-    const response = await fetch(`${this.apiUrl}?${queryParams}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-      },
-    });
+    try {
+      const response = await fetch(`${this.apiUrl}?${queryParams}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+      if (!response.ok) {
+        // If API fails, fall back to dummy data
+        console.warn(`[AvailabilityProvider] API returned ${response.status}, using dummy data`);
+        return fetchDummyNextAvailability(params);
+      }
+
+      const data = (await response.json()) as Record<string, unknown>;
+
+      // Transform your API response to standard format
+      return {
+        nextSlot: (data.nextSlot || data.next || data.slot) as
+          | { start: string; end: string; [key: string]: unknown }
+          | undefined,
+        available: (data.available ?? !!data.nextSlot) as boolean,
+      };
+    } catch (error) {
+      // If API call fails entirely, fall back to dummy data
+      console.warn('[AvailabilityProvider] API call failed, using dummy data:', error);
+      return fetchDummyNextAvailability(params);
     }
-
-    const data = (await response.json()) as Record<string, unknown>;
-
-    // Transform your API response to standard format
-    return {
-      nextSlot: (data.nextSlot || data.next || data.slot) as
-        | { start: string; end: string; [key: string]: unknown }
-        | undefined,
-      available: (data.available ?? !!data.nextSlot) as boolean,
-    };
   }
 }
 
