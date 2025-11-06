@@ -7,33 +7,39 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-// Create connection pool
-// Use DATABASE_URL if available, otherwise fall back to individual vars
-const pool = new Pool(
-  process.env.DATABASE_URL
-    ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false, // DigitalOcean managed databases
-        },
-        max: 20,
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
-      }
-    : {
-        host: process.env.DB_HOST,
-        port: parseInt(process.env.DB_PORT),
-        database: process.env.DB_NAME,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        ssl: {
-          rejectUnauthorized: false,
-        },
-        max: 20,
-        idleTimeoutMillis: 30000,
-        connectionTimeoutMillis: 2000,
-      }
-);
+// Create connection pool with SSL configuration
+const poolConfig = process.env.DATABASE_URL
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false, // Accept self-signed certificates from DigitalOcean
+      },
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    }
+  : {
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      database: process.env.DB_NAME,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      max: 20,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 2000,
+    };
+
+// Override SSL mode from connection string if needed
+if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('sslmode=require')) {
+  poolConfig.ssl = {
+    rejectUnauthorized: false, // Required for DigitalOcean managed databases
+  };
+}
+
+const pool = new Pool(poolConfig);
 
 // Test connection on startup
 pool.on('connect', () => {
