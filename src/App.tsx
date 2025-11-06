@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Home from './pages/Home';
@@ -15,6 +15,9 @@ import { initializeSession, registerSession, trackConversion } from './utils/utm
 function App() {
   const location = useLocation();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const clickCountRef = useRef(0);
+  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Handle booking modal open
   const handleBookingOpen = () => {
@@ -62,92 +65,272 @@ function App() {
         {/* Navigation Header */}
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm border-b border-rose-100">
           <div className="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 xl:py-6">
-            <nav className="flex justify-between items-center max-w-7xl mx-auto">
-              <div
-                onClick={() => {
-                  // If on admin page, go home on any click
-                  if (location.pathname === '/admin') {
-                    window.location.href = '/';
-                    return;
-                  }
+            <nav className="max-w-7xl mx-auto">
+              {/* Mobile Layout */}
+              <div className="lg:hidden flex justify-between items-center">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // If on admin page, go home on any click
+                    if (location.pathname === '/admin') {
+                      window.location.href = '/';
+                      return;
+                    }
 
-                  // Single click to access admin
-                  window.location.href = '/admin';
-                }}
-                className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-light text-gray-900 tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer"
-                title={
-                  location.pathname === '/admin' ? 'Click to return home' : 'Click for admin access'
-                }
-              >
-                Claire Hamilton
-              </div>
-              <div className="flex space-x-4 sm:space-x-6 lg:space-x-8 xl:space-x-10 items-center text-sm sm:text-base lg:text-lg xl:text-xl">
-                <Link
-                  to="/about"
-                  className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                    location.pathname === '/about'
-                      ? 'text-rose-600'
-                      : 'text-gray-900 hover:text-rose-600'
-                  }`}
-                  aria-label="About page"
-                >
-                  About
-                </Link>
-                <Link
-                  to="/gallery"
-                  className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                    location.pathname === '/gallery'
-                      ? 'text-rose-600'
-                      : 'text-gray-900 hover:text-rose-600'
-                  }`}
-                  aria-label="Gallery page"
-                >
-                  Gallery
-                </Link>
-                <Link
-                  to="/prices"
-                  className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                    location.pathname === '/prices'
-                      ? 'text-rose-600'
-                      : 'text-gray-900 hover:text-rose-600'
-                  }`}
-                  aria-label="Prices page"
-                >
-                  Prices
-                </Link>
-                <Link
-                  to="/services"
-                  className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                    location.pathname === '/services'
-                      ? 'text-rose-600'
-                      : 'text-gray-900 hover:text-rose-600'
-                  }`}
-                  aria-label="Services page"
-                >
-                  Services
-                </Link>
-                <Link
-                  to="/fly-me-to-you"
-                  className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                    location.pathname === '/fly-me-to-you'
-                      ? 'text-rose-600'
-                      : 'text-gray-900 hover:text-rose-600'
-                  }`}
-                  aria-label="Fly Me To You page"
-                >
-                  Fly Me To You
-                </Link>
-                <button
-                  onClick={() => {
-                    handleBookingOpen();
+                    // Otherwise, use triple-click to access admin
+                    clickCountRef.current += 1;
+                    const newCount = clickCountRef.current;
+
+                    if (newCount === 3) {
+                      clickCountRef.current = 0;
+                      if (resetTimerRef.current) {
+                        clearTimeout(resetTimerRef.current);
+                        resetTimerRef.current = null;
+                      }
+                      window.location.href = '/admin';
+                    } else {
+                      // Clear existing timer
+                      if (resetTimerRef.current) {
+                        clearTimeout(resetTimerRef.current);
+                      }
+
+                      // Set new timer to reset counter after 500ms
+                      resetTimerRef.current = setTimeout(() => {
+                        clickCountRef.current = 0;
+                        resetTimerRef.current = null;
+                      }, 500);
+                    }
                   }}
-                  className="px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-lg font-semibold hover:from-rose-700 hover:to-rose-800 transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 whitespace-nowrap text-xs sm:text-sm lg:text-base cursor-pointer"
-                  aria-label="Book an appointment now"
+                  className="text-xl sm:text-2xl font-light text-gray-900 tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
+                  title={
+                    location.pathname === '/admin'
+                      ? 'Click to return home'
+                      : 'Triple-click for surprise!'
+                  }
                 >
-                  Book Now
-                </button>
+                  Claire Hamilton
+                </div>
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => {
+                      handleBookingOpen();
+                    }}
+                    className="px-3 py-2 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-lg font-semibold hover:from-rose-700 hover:to-rose-800 transition-all duration-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 text-sm cursor-pointer"
+                    aria-label="Book an appointment now"
+                  >
+                    Book Now
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsMobileMenuOpen(!isMobileMenuOpen);
+                    }}
+                    className="p-2 text-gray-900 hover:text-rose-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 rounded-lg"
+                    aria-label="Toggle mobile menu"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {isMobileMenuOpen ? (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      ) : (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6h16M4 12h16M4 18h16"
+                        />
+                      )}
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Desktop Layout */}
+              <div className="hidden lg:flex justify-between items-center">
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // If on admin page, go home on any click
+                    if (location.pathname === '/admin') {
+                      window.location.href = '/';
+                      return;
+                    }
+
+                    // Otherwise, use triple-click to access admin
+                    clickCountRef.current += 1;
+                    const newCount = clickCountRef.current;
+
+                    if (newCount === 3) {
+                      clickCountRef.current = 0;
+                      if (resetTimerRef.current) {
+                        clearTimeout(resetTimerRef.current);
+                        resetTimerRef.current = null;
+                      }
+                      window.location.href = '/admin';
+                    } else {
+                      // Clear existing timer
+                      if (resetTimerRef.current) {
+                        clearTimeout(resetTimerRef.current);
+                      }
+
+                      // Set new timer to reset counter after 500ms
+                      resetTimerRef.current = setTimeout(() => {
+                        clickCountRef.current = 0;
+                        resetTimerRef.current = null;
+                      }, 500);
+                    }
+                  }}
+                  className="text-3xl xl:text-4xl font-light text-gray-900 tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
+                  title={
+                    location.pathname === '/admin'
+                      ? 'Click to return home'
+                      : 'Triple-click for surprise!'
+                  }
+                >
+                  Claire Hamilton
+                </div>
+
+                {/* Desktop Navigation */}
+                <div className="flex space-x-6 xl:space-x-8 items-center">
+                  <Link
+                    to="/about"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/about'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="About page"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to="/gallery"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/gallery'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Gallery page"
+                  >
+                    Gallery
+                  </Link>
+                  <Link
+                    to="/prices"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/prices'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Prices page"
+                  >
+                    Prices
+                  </Link>
+                  <Link
+                    to="/services"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/services'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Services page"
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    to="/fly-me-to-you"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/fly-me-to-you'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Fly Me To You page"
+                  >
+                    Fly Me To You
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleBookingOpen();
+                    }}
+                    className="px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-lg font-semibold hover:from-rose-700 hover:to-rose-800 transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 whitespace-nowrap text-xs sm:text-sm lg:text-base cursor-pointer"
+                    aria-label="Book an appointment now"
+                  >
+                    Book Now
+                  </button>
+                </div>
               </div>
             </nav>
+
+            {/* Mobile Menu */}
+            {isMobileMenuOpen && (
+              <div className="lg:hidden absolute top-full left-0 right-0 bg-white/90 backdrop-blur-md shadow-lg z-50">
+                <div className="px-4 py-6 space-y-4">
+                  <Link
+                    to="/about"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/about'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="About page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    About
+                  </Link>
+                  <Link
+                    to="/gallery"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/gallery'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Gallery page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Gallery
+                  </Link>
+                  <Link
+                    to="/prices"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/prices'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Prices page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Prices
+                  </Link>
+                  <Link
+                    to="/services"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/services'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Services page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    to="/fly-me-to-you"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/fly-me-to-you'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Fly Me To You page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Fly Me To You
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </header>
 
