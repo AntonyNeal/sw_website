@@ -296,8 +296,10 @@ async function getAnalytics(req, res) {
 Add these variables to your `.do/app.yaml` and `.env` files:
 
 ```yaml
-# SendGrid
-SENDGRID_API_KEY: (get from sendgrid.com/pricing)
+# SendGrid ✅ CONFIGURED
+SENDGRID_API_KEY=your_sendgrid_api_key_here
+SENDGRID_FROM_EMAIL=bookings@avaliable.pro
+CLAIRE_NOTIFICATION_EMAIL=claire@avaliable.pro
 SENDGRID_FROM_EMAIL: bookings@clairehamilton.com.au
 CLAIRE_NOTIFICATION_EMAIL: claire@clairehamilton.com.au
 

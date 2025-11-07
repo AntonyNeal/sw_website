@@ -3,7 +3,7 @@ const sgMail = require('@sendgrid/mail');
 // Initialize SendGrid with API key from environment
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const SENDER_EMAIL = 'noreply@avaliable.pro';
+const SENDER_EMAIL = process.env.SENDGRID_FROM_EMAIL || 'bookings@avaliable.pro';
 const SENDER_NAME = 'Avaliable.pro Bookings';
 
 /**

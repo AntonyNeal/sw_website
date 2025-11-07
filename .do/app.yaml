@@ -38,6 +38,15 @@ services:
       - key: PORT
         scope: RUN_TIME
         value: '8080'
+      - key: SENDGRID_API_KEY
+        scope: RUN_TIME
+        type: SECRET
+      - key: SENDGRID_FROM_EMAIL
+        scope: RUN_TIME
+        value: bookings@avaliable.pro
+      - key: CLAIRE_NOTIFICATION_EMAIL
+        scope: RUN_TIME
+        value: claire@avaliable.pro
     routes:
       - path: /api
 

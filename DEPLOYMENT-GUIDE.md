@@ -7,7 +7,7 @@ Complete step-by-step guide to deploy the booking system backend to DigitalOcean
 - DigitalOcean account with billing enabled
 - PostgreSQL 15 managed database created
 - DigitalOcean App Platform app created
-- SendGrid account with verified sender domain
+- SendGrid account with verified sender domain ✅ COMPLETED
 - GitHub repository connected to DigitalOcean App Platform
 
 **Estimated Time: 30-45 minutes**
@@ -40,13 +40,14 @@ Once PostgreSQL is ready:
 3. Copy the **Connection string** (looks like: `postgresql://doadmin:xxxxx@db-xxxxx.db.ondigitalocean.com:25060/defaultdb?sslmode=require`)
 
 4. **Option A: Using psql CLI** (recommended)
+
    ```powershell
    # Install PostgreSQL client if needed
    choco install postgresql
-   
+
    # Navigate to project directory
    cd c:\Users\julia\sw_website
-   
+
    # Run schema deployment (paste your connection string)
    psql "postgresql://doadmin:password@db-host:25060/defaultdb?sslmode=require" -f db/schema.sql
    ```
@@ -58,8 +59,8 @@ Once PostgreSQL is ready:
 
 6. **Verify deployment**:
    ```sql
-   SELECT table_name FROM information_schema.tables 
-   WHERE table_schema = 'public' 
+   SELECT table_name FROM information_schema.tables
+   WHERE table_schema = 'public'
    ORDER BY table_name;
    ```
    Should show: `ab_test_results`, `bookings`, `conversions`, `email_logs`, `payments`, `user_sessions`, `schema_version`
@@ -84,15 +85,15 @@ Once PostgreSQL is ready:
 3. Go to **Settings** → **Environment & Variables**
 4. Add the following environment variables:
 
-| Variable | Value | Source |
-|----------|-------|--------|
-| `DATABASE_URL` | `postgresql://doadmin:...@db-host:25060/defaultdb?sslmode=require` | From Step 1.2 above |
-| `SENDGRID_API_KEY` | `SG.xxxxxxxxxxxxx` | From SendGrid API Keys page |
-| `SENDGRID_FROM_EMAIL` | `bookings@clairehamilton.com.au` | Your verified sender in SendGrid |
-| `CLAIRE_NOTIFICATION_EMAIL` | `claire@clairehamilton.com.au` | Claire's personal email |
-| `ALLOWED_ORIGIN` | `https://clairehamilton.com.au` | Your production domain |
-| `VITE_API_BASE_URL` | `https://clairehamilton.com.au` | Your production domain |
-| `NODE_ENV` | `production` | Fixed value |
+| Variable                    | Value                                                                   | Source                         |
+| --------------------------- | ----------------------------------------------------------------------- | ------------------------------ |
+| `DATABASE_URL`              | `postgresql://doadmin:...@db-host:25060/defaultdb?sslmode=require`      | From Step 1.2 above            |
+| `SENDGRID_API_KEY`          | Your SendGrid API key (starts with SG.)                                 | From SendGrid API Keys page ✅ |
+| `SENDGRID_FROM_EMAIL`       | `bookings@avaliable.pro`                                                | Authenticated domain sender ✅ |
+| `CLAIRE_NOTIFICATION_EMAIL` | `claire@avaliable.pro`                                                  | Notification recipient ✅      |
+| `ALLOWED_ORIGIN`            | `https://clairehamilton.com.au`                                         | Your production domain         |
+| `VITE_API_BASE_URL`         | `https://clairehamilton.com.au`                                         | Your production domain         |
+| `NODE_ENV`                  | `production`                                                            | Fixed value                    |
 
 5. Click **Save** - DigitalOcean will redeploy your functions with new variables
 
@@ -107,11 +108,11 @@ The `src/App.tsx` already initializes UTM tracking on app load:
 ```typescript
 useEffect(() => {
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  
+
   // Initialize session and register with backend
   initializeSession();
-  registerSession(apiBaseUrl).catch(err => console.warn('Session registration failed:', err));
-  
+  registerSession(apiBaseUrl).catch((err) => console.warn('Session registration failed:', err));
+
   // Track initial page view
   trackConversion('page_view');
 }, []);
@@ -178,6 +179,7 @@ git push origin main
 ```
 
 DigitalOcean will automatically deploy your functions to App Platform. Check deployment status:
+
 - Go to App Platform dashboard
 - Click your app
 - Watch the **Deployments** tab for status
@@ -207,6 +209,7 @@ Write-Host $response.Content
 ```
 
 **Expected response**:
+
 ```json
 {
   "success": true,
@@ -255,6 +258,7 @@ Write-Host $response.Content
    - ✅ Claire's notification email (to `claire@clairehamilton.com.au`)
 
 Both should include:
+
 - Confirmation number (e.g., `CH-20250215-001`)
 - Booking details (name, date, time)
 - UTM attribution data (source, medium, campaign)
@@ -275,21 +279,25 @@ Both should include:
 ### Common Issues
 
 **Issue: "DATABASE_URL not found"**
+
 - Verify environment variables are set in App Platform
 - Check that `DATABASE_URL` exactly matches your PostgreSQL connection string
 - Ensure `?sslmode=require` is included in connection string
 
 **Issue: "Email not being sent"**
+
 - Verify `SENDGRID_API_KEY` is correct
 - Check that `SENDGRID_FROM_EMAIL` is a verified sender in SendGrid
 - Check SendGrid Activity dashboard for delivery status
 
 **Issue: "CORS error from frontend"**
+
 - Verify `ALLOWED_ORIGIN` matches your production domain exactly
 - Clear browser cache and reload
 - Check that API endpoints include proper CORS headers
 
 **Issue: "Database connection timeout"**
+
 - Verify database is in the same region as App Platform
 - Check firewall rules in database dashboard
 - Ensure connection string includes `sslmode=require`
