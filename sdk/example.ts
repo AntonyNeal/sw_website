@@ -3,15 +3,15 @@
  * Demonstrates how to use the Companion SDK in a real application
  */
 
-import { 
-  TenantDataSource, 
+import {
+  TenantDataSource,
   AvailabilityDataSource,
   LocationDataSource,
   BookingDataSource,
   AnalyticsDataSource,
   type Tenant,
   type AvailabilitySlot,
-  type Booking
+  type Booking,
 } from './src/index';
 
 async function exampleUsage() {
@@ -38,7 +38,7 @@ async function exampleUsage() {
     console.log('3️⃣ Fetching locations...');
     const locations = await LocationDataSource.getByTenant(parseInt(tenant.id));
     console.log(`   ✅ Found ${locations.length} locations:`);
-    locations.forEach(loc => {
+    locations.forEach((loc) => {
       console.log(`      - ${loc.city}, ${loc.country} (${loc.locationType})`);
       if (loc.availableDatesCount) {
         console.log(`        Available dates: ${loc.availableDatesCount}`);
@@ -54,7 +54,9 @@ async function exampleUsage() {
       testDate
     );
     console.log(`   📅 Date: ${testDate}`);
-    console.log(`   ${available ? '✅' : '❌'} Status: ${available ? 'Available' : 'Not Available'}`);
+    console.log(
+      `   ${available ? '✅' : '❌'} Status: ${available ? 'Available' : 'Not Available'}`
+    );
     if (slot) {
       console.log(`   ⏰ Time: ${slot.timeSlotStart || 'All Day'}`);
     }
@@ -67,16 +69,14 @@ async function exampleUsage() {
       '2025-12-01',
       '2025-12-31'
     );
-    const availableSlots = calendar.filter(s => s.status === 'available');
+    const availableSlots = calendar.filter((s) => s.status === 'available');
     console.log(`   ✅ Total slots: ${calendar.length}`);
     console.log(`   📅 Available: ${availableSlots.length}`);
-    console.log(`   🚫 Booked: ${calendar.filter(s => s.status === 'booked').length}\n`);
+    console.log(`   🚫 Booked: ${calendar.filter((s) => s.status === 'booked').length}\n`);
 
     // 6. Get tenant bookings
     console.log('6️⃣ Fetching bookings...');
-    const { data: bookings, pagination } = await BookingDataSource.getByTenant(
-      parseInt(tenant.id)
-    );
+    const { data: bookings, pagination } = await BookingDataSource.getByTenant(parseInt(tenant.id));
     console.log(`   ✅ Total bookings: ${pagination.total}`);
     console.log(`   📄 Current page: ${pagination.page} of ${pagination.totalPages}`);
     if (bookings.length > 0) {
@@ -103,7 +103,6 @@ async function exampleUsage() {
     console.log('');
 
     console.log('✨ All operations completed successfully!');
-
   } catch (error) {
     console.error('❌ Error:', error instanceof Error ? error.message : error);
   }

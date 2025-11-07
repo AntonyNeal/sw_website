@@ -9,6 +9,10 @@ build/
 .env.local
 .env.*.local
 
+# MCP Server
+mcp-server/.env
+mcp-server/node_modules/
+
 # IDE
 .vscode/*
 !.vscode/extensions.json
