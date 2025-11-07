@@ -1,7 +1,16 @@
 {
-  "name": "sw-website",
+  "name": "service-booking-platform",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.0",
+  "description": "Multi-tenant service booking platform with SDK integration - Template for service-based businesses",
+  "keywords": [
+    "booking",
+    "sdk",
+    "multi-tenant",
+    "services",
+    "scheduling",
+    "template"
+  ],
   "engines": {
     "node": ">=20.0.0"
   },
