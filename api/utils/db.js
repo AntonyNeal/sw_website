@@ -11,7 +11,10 @@ require('dotenv').config();
 let connectionString = process.env.DATABASE_URL;
 if (connectionString && connectionString.includes('sslmode=')) {
   // Remove sslmode parameter from connection string
-  connectionString = connectionString.replace(/[?&]sslmode=[^&]*/, '').replace(/\?&/, '?').replace(/\?$/, '');
+  connectionString = connectionString
+    .replace(/[?&]sslmode=[^&]*/, '')
+    .replace(/\?&/, '?')
+    .replace(/\?$/, '');
 }
 
 // Create connection pool with SSL configuration
