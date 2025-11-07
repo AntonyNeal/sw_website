@@ -4,8 +4,12 @@
  * Used in DigitalOcean App Platform deployment
  */
 
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -18,10 +22,12 @@ app.use((req, res, next) => {
 });
 
 // Serve static files from dist directory
-app.use(express.static(DIST_DIR, {
-  maxAge: 0,
-  etag: false,
-}));
+app.use(
+  express.static(DIST_DIR, {
+    maxAge: 0,
+    etag: false,
+  })
+);
 
 // SPA fallback - serve index.html for all routes
 app.get('*', (req, res) => {
