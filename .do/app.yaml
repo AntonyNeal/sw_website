@@ -57,7 +57,7 @@ services:
       branch: main
       deploy_on_push: true
     build_command: npm install && npm run build
-    run_command: npx http-server ./dist -p 8080 -c-1 --proxy https://octopus-app-s8m2n.ondigitalocean.app/index.html
+    run_command: node server-spa.js
     http_port: 8080
     instance_count: 1
     instance_size_slug: basic-xxs
