@@ -3,10 +3,8 @@ import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Home from './pages/Home';
 import About from './pages/About';
-import Gallery from './pages/Gallery';
 import Services from './pages/Services';
 import Prices from './pages/Prices';
-import FlyMeToYou from './pages/FlyMeToYou';
 import AdminDashboard from './pages/AdminDashboard';
 import BookingModal from './components/BookingModal';
 import MobileCTABar from './components/MobileCTABar';
@@ -226,22 +224,6 @@ function App() {
                     About
                   </Link>
                   <Link
-                    to="/gallery"
-                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                      location.pathname === '/gallery'
-                        ? 'text-rose-600'
-                        : location.pathname === '/'
-                          ? 'text-white hover:text-rose-400'
-                          : 'text-gray-900 hover:text-rose-600'
-                    }`}
-                    style={
-                      location.pathname === '/' ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}
-                    }
-                    aria-label="Gallery page"
-                  >
-                    Gallery
-                  </Link>
-                  <Link
                     to="/prices"
                     className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
                       location.pathname === '/prices'
@@ -272,22 +254,6 @@ function App() {
                     aria-label="Services page"
                   >
                     Services
-                  </Link>
-                  <Link
-                    to="/fly-me-to-you"
-                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                      location.pathname === '/fly-me-to-you'
-                        ? 'text-rose-600'
-                        : location.pathname === '/'
-                          ? 'text-white hover:text-rose-400'
-                          : 'text-gray-900 hover:text-rose-600'
-                    }`}
-                    style={
-                      location.pathname === '/' ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}
-                    }
-                    aria-label="Fly Me To You page"
-                  >
-                    Fly Me To You
                   </Link>
                   <button
                     onClick={() => {
@@ -319,18 +285,6 @@ function App() {
                     About
                   </Link>
                   <Link
-                    to="/gallery"
-                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                      location.pathname === '/gallery'
-                        ? 'text-rose-600'
-                        : 'text-gray-900 hover:text-rose-600'
-                    }`}
-                    aria-label="Gallery page"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Gallery
-                  </Link>
-                  <Link
                     to="/prices"
                     className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
                       location.pathname === '/prices'
@@ -354,18 +308,6 @@ function App() {
                   >
                     Services
                   </Link>
-                  <Link
-                    to="/fly-me-to-you"
-                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
-                      location.pathname === '/fly-me-to-you'
-                        ? 'text-rose-600'
-                        : 'text-gray-900 hover:text-rose-600'
-                    }`}
-                    aria-label="Fly Me To You page"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Fly Me To You
-                  </Link>
                 </div>
               </div>
             )}
@@ -375,10 +317,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/gallery" element={<Gallery />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/fly-me-to-you" element={<FlyMeToYou />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
 
@@ -446,7 +386,16 @@ function App() {
         )}
       </div>
 
-      <BookingModal isOpen={isBookingOpen} onClose={handleBookingClose} />
+      <BookingModal
+        isOpen={isBookingOpen}
+        onClose={handleBookingClose}
+        provider={{
+          id: 'default',
+          name: 'Service Provider',
+        }}
+        hourlyRate={100}
+        platformFeePercentage={0.1}
+      />
       {location.pathname !== '/admin' && (
         <MobileCTABar ctaText="Book Now" ctaAction={handleBookingOpen} />
       )}

@@ -3,7 +3,7 @@
 # Replace all placeholder values with your actual configuration
 
 name: your-service-booking-app
-region: nyc1  # Choose: nyc1, sfo3, ams3, sgp1, lon1, fra1, tor1, blr1, syd1
+region: nyc1 # Choose: nyc1, sfo3, ams3, sgp1, lon1, fra1, tor1, blr1, syd1
 
 domains:
   - domain: yourdomain.com
@@ -31,77 +31,77 @@ services:
       - key: DATABASE_URL
         scope: RUN_AND_BUILD_TIME
         value: postgresql://username:password@your-db-host:5432/your_database
-        
+
       - key: DB_HOST
         scope: RUN_AND_BUILD_TIME
         value: your-db-host
-        
+
       - key: DB_PORT
         scope: RUN_AND_BUILD_TIME
         value: '5432'
-        
+
       - key: DB_NAME
         scope: RUN_AND_BUILD_TIME
         value: your_database
-        
+
       - key: DB_USER
         scope: RUN_AND_BUILD_TIME
         value: username
-        
+
       - key: DB_PASSWORD
         scope: RUN_AND_BUILD_TIME
         value: password
-        
+
       - key: DB_SSL
         scope: RUN_AND_BUILD_TIME
         value: require
-        
+
       # Email Service Configuration
       - key: SENDGRID_API_KEY
         scope: RUN_AND_BUILD_TIME
         value: SG.your_sendgrid_api_key_here
-        
+
       - key: SENDGRID_FROM_EMAIL
         scope: RUN_AND_BUILD_TIME
         value: bookings@yourdomain.com
-        
+
       - key: BUSINESS_NOTIFICATION_EMAIL
         scope: RUN_AND_BUILD_TIME
         value: notifications@yourdomain.com
-        
+
       # API Configuration
       - key: ALLOWED_ORIGIN
         scope: RUN_AND_BUILD_TIME
         value: https://yourdomain.com
-        
+
       - key: VITE_API_BASE_URL
         scope: RUN_AND_BUILD_TIME
         value: https://yourdomain.com/api
-        
+
       # Security
       - key: JWT_SECRET
         scope: RUN_AND_BUILD_TIME
         value: your_jwt_secret_here
-        
+
       # Environment
       - key: NODE_ENV
         scope: RUN_AND_BUILD_TIME
         value: production
-        
+
       - key: PORT
         scope: RUN_AND_BUILD_TIME
         value: '8080'
-        
+
       # Analytics (optional)
       - key: VITE_GA_MEASUREMENT_ID
         scope: RUN_AND_BUILD_TIME
         value: G-XXXXXXXXXX
-        
+
       # Payment Gateway (optional)
       - key: STRIPE_PUBLIC_KEY
         scope: RUN_AND_BUILD_TIME
         value: pk_live_your_stripe_public_key
-        
+
       - key: STRIPE_SECRET_KEY
         scope: RUN_AND_BUILD_TIME
         value: sk_live_your_stripe_secret_key
@@ -149,7 +149,6 @@ services:
         catchall_document: index.html
         index_document: index.html
         output_dir: dist
-
 # Optional: Managed Database (uncomment to use DigitalOcean managed database)
 # databases:
 #   - cluster_name: your-app-database

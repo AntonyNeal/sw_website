@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ArrowUp, Instagram, Twitter, MessageSquare, AlertCircle } from 'lucide-react';
-import { SDKTests } from '../components/SDKTests';
+import SDKTests from '../components/SDKTests';
 
 // Mock social media posts data
 const mockSocialPosts = [
