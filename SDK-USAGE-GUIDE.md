@@ -1,289 +1,259 @@
 # SDK Usage Guide - Complete Frontend Integration
 
-## 📦 Installation
+##  Installation
 
 ### Option 1: NPM Package (Recommended)
 
 ```bash
-npm install @clairehamilton/companion-sdk
+npm install @your-organization/service-booking-sdk
 ```
 
-### Option 2: Direct Import (ES Modules)
+### Option 2: Direct Import (Local Development)
+
+```javascript
+// Import from local SDK directory
+import { ServiceBookingSDK } from "./sdk/src/index.js";
+```
+
+### Option 3: ES Modules (CDN)
 
 ```html
 <script type="module">
-  import {
-    TenantDataSource,
-    BookingDataSource,
-    PaymentDataSource,
-  } from 'https://cdn.clairehamilton.vip/companion-sdk@1.0.0.js';
-</script>
-```
-
-### Option 3: CDN Script Tag (Browser)
-
-```html
-<script src="https://cdn.clairehamilton.vip/companion-sdk@1.0.0.js"></script>
-<script>
-  const { TenantDataSource, BookingDataSource } = window.CompanionSDK;
+  import { ServiceBookingSDK } from "https://unpkg.com/@your-organization/service-booking-sdk/dist/index.mjs";
 </script>
 ```
 
 ---
 
-## 🎯 Quick Start Examples
+##  Basic Setup
 
-### 1. Basic Tenant Detection
+### Initialize the SDK
 
-```typescript
-import { TenantDataSource } from '@clairehamilton/companion-sdk';
+```javascript
+import { ServiceBookingSDK } from "@your-organization/service-booking-sdk";
 
-// Auto-detect from current domain
-const tenant = await TenantDataSource.getCurrent();
-console.log(`Welcome to ${tenant.businessName}`);
+const sdk = new ServiceBookingSDK({
+  apiUrl: "https://your-api-domain.com/api",
+  tenantId: "your-tenant-id", // e.g., "demo", "tenant1"
+  debug: true // Enable debug logging in development
+});
 ```
 
-### 2. Check Availability
+### Configuration Options
 
-```typescript
-import { AvailabilityDataSource } from '@clairehamilton/companion-sdk';
+```javascript
+const config = {
+  // Required
+  apiUrl: "https://your-api-domain.com/api",
+  tenantId: "demo",
+  
+  // Optional
+  timeout: 10000,           // Request timeout in milliseconds
+  retries: 3,               // Number of retry attempts
+  debug: false,             // Enable debug logging
+  apiKey: "your-api-key",   // For authenticated requests
+  
+  // Headers
+  headers: {
+    "Custom-Header": "value"
+  }
+};
 
-// Check if a specific date is available
-const { available, slot } = await AvailabilityDataSource.checkDate(tenant.id, '2025-12-25');
-
-if (available) {
-  console.log(`Available: ${slot.availableSlots} slots remaining`);
-}
-
-// Get all available dates in a range
-const dates = await AvailabilityDataSource.getAvailableDates(tenant.id, '2025-01-01', '2025-12-31');
-```
-
-### 3. Create a Booking
-
-```typescript
-import { BookingDataSource } from '@clairehamilton/companion-sdk';
-
-const booking = await BookingDataSource.create({
-  tenantId: tenant.id,
-  locationId: 1,
-  clientName: 'Sarah Smith',
-  clientEmail: 'sarah@example.com',
-  clientPhone: '+61412345678',
-  serviceType: 'bridal_makeup',
-  startDate: '2025-06-15',
-  endDate: '2025-06-15',
-  durationHours: 4,
-  specialRequests: 'Outdoor wedding, natural look',
-  utmSource: 'instagram',
-  utmCampaign: 'summer_weddings',
-});
-
-console.log(`Booking created: ${booking.id}`);
-```
-
-### 4. Process Payment
-
-```typescript
-import { PaymentDataSource } from '@clairehamilton/companion-sdk';
-
-const payment = await PaymentDataSource.create({
-  bookingId: booking.id,
-  amount: 450.0,
-  currency: 'AUD',
-  paymentMethod: 'card',
-  processor: 'stripe',
-  processorPaymentId: 'pi_xyz123',
-});
-
-// Check payment status
-const isCompleted = await PaymentDataSource.isCompleted(payment.id);
-```
-
-### 5. Track Analytics
-
-```typescript
-import { AnalyticsDataSource } from '@clairehamilton/companion-sdk';
-
-// Initialize session (automatic tracking)
-const sessionId = await AnalyticsDataSource.initialize(tenant.id, {
-  utmSource: 'google',
-  utmMedium: 'cpc',
-  utmCampaign: 'summer_2025',
-});
-
-// Track custom events
-await AnalyticsDataSource.track('button_click', {
-  button: 'book_now',
-  location: 'hero_section',
-});
-
-await AnalyticsDataSource.track('form_started', {
-  form: 'booking_form',
-});
+const sdk = new ServiceBookingSDK(config);
 ```
 
 ---
 
-## 📊 Business Analytics Examples
+##  Tenant Management
 
-### Get Performance Overview
+### Get Tenant Configuration
 
-```typescript
-import { TenantAnalyticsDataSource } from '@clairehamilton/companion-sdk';
-
-const performance = await TenantAnalyticsDataSource.getPerformance(
-  tenant.id,
-  '2025-01-01',
-  '2025-12-31'
-);
-
-console.log(`Total Bookings: ${performance.totalBookings}`);
-console.log(`Revenue: $${performance.totalRevenue}`);
-console.log(`Conversion Rate: ${performance.conversionRate}%`);
-```
-
-### Analyze Traffic Sources
-
-```typescript
-const sources = await TenantAnalyticsDataSource.getTrafficSources(tenant.id, 30);
-
-sources.forEach((source) => {
-  console.log(
-    `${source.source}: ${source.bookings} bookings, ${source.conversionRate}% conversion`
-  );
-});
-```
-
-### A/B Test Results
-
-```typescript
-const tests = await TenantAnalyticsDataSource.getABTestResults(tenant.id);
-
-tests.forEach((test) => {
-  console.log(`Test: ${test.testName}`);
-  test.variants.forEach((variant) => {
-    console.log(`  ${variant.variantName}: ${(variant.conversionRate * 100).toFixed(2)}%`);
+```javascript
+try {
+  const tenantConfig = await sdk.tenant.getConfig();
+  
+  console.log("Tenant Info:", {
+    name: tenantConfig.businessName,
+    domain: tenantConfig.customDomain,
+    branding: tenantConfig.branding,
+    services: tenantConfig.services
   });
+} catch (error) {
+  console.error("Failed to load tenant:", error);
+}
+```
+
+### Get Available Services
+
+```javascript
+const services = await sdk.tenant.getServices();
+
+services.forEach(service => {
+  console.log(`${service.name}: $${service.price} (${service.duration}min)`);
 });
+```
+
+### Check Service Availability
+
+```javascript
+const availability = await sdk.tenant.getAvailability({
+  serviceId: "service-1",
+  date: "2024-01-15",
+  timezone: "America/New_York"
+});
+
+console.log("Available slots:", availability.slots);
 ```
 
 ---
 
-## 📱 Social Media Analytics
+##  Booking Management
 
-### Track Post Performance
+### Create a Booking
 
-```typescript
-import { SocialAnalyticsDataSource } from '@clairehamilton/companion-sdk';
+```javascript
+const bookingData = {
+  serviceId: "service-1",
+  datetime: "2024-01-15T10:00:00Z",
+  duration: 60, // minutes
+  customerInfo: {
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "+1234567890"
+  },
+  notes: "First time booking",
+  location: {
+    type: "business", // or "customer", "remote"
+    address: "123 Main St, City, State 12345"
+  }
+};
 
-const posts = await SocialAnalyticsDataSource.getPostPerformance(tenant.id, 10);
+try {
+  const booking = await sdk.bookings.create(bookingData);
+  console.log("Booking created:", booking.id);
+  
+  // Show confirmation to user
+  showBookingConfirmation(booking);
+} catch (error) {
+  console.error("Booking failed:", error.message);
+  showBookingError(error);
+}
+```
 
-posts.forEach((post) => {
-  console.log(
-    `${post.platform} - ${post.engagement.likes} likes, ${post.conversions.bookings} bookings`
-  );
+### Get Booking Details
+
+```javascript
+const bookingId = "booking-123";
+const booking = await sdk.bookings.get(bookingId);
+
+console.log("Booking details:", {
+  id: booking.id,
+  service: booking.serviceName,
+  datetime: booking.datetime,
+  status: booking.status,
+  customer: booking.customerInfo
 });
 ```
 
-### Compare Platforms
+### Update a Booking
 
-```typescript
-const platforms = await SocialAnalyticsDataSource.getPlatformPerformance(tenant.id, 90);
+```javascript
+const updates = {
+  datetime: "2024-01-16T14:00:00Z",
+  notes: "Updated notes"
+};
 
-platforms.forEach((platform) => {
-  console.log(`${platform.platform}: ${platform.totalBookings} bookings, ROI: ${platform.roi}`);
-});
+const updatedBooking = await sdk.bookings.update(bookingId, updates);
 ```
 
-### Analyze Follower Growth
+### Cancel a Booking
 
-```typescript
-const growth = await SocialAnalyticsDataSource.getFollowerGrowth(tenant.id, 'Instagram', 90);
+```javascript
+const cancelReason = "Customer requested cancellation";
+const cancelledBooking = await sdk.bookings.cancel(bookingId, cancelReason);
 
-console.log(`Total Growth: ${growth.summary.totalGrowth} followers`);
-console.log(`Avg Daily Growth: ${growth.summary.avgGrowthRate}%`);
-console.log(`Peak Day: ${growth.summary.peakGrowthDate} (+${growth.summary.peakGrowth})`);
+console.log("Booking cancelled:", cancelledBooking.status);
 ```
 
 ---
 
-## 🔧 Complete Integration Example
+##  Analytics Integration
 
-### React Component
+### Get Booking Statistics
 
-```tsx
-import React, { useState, useEffect } from 'react';
-import {
-  TenantDataSource,
-  AvailabilityDataSource,
-  BookingDataSource,
-  AnalyticsDataSource,
-} from '@clairehamilton/companion-sdk';
+```javascript
+const stats = await sdk.analytics.getStats({
+  startDate: "2024-01-01",
+  endDate: "2024-01-31",
+  groupBy: "day" // or "week", "month"
+});
 
-function BookingWidget() {
-  const [tenant, setTenant] = useState(null);
-  const [dates, setDates] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [loading, setLoading] = useState(false);
+console.log("Booking stats:", {
+  totalBookings: stats.totalBookings,
+  revenue: stats.totalRevenue,
+  averageBookingValue: stats.averageValue
+});
+```
+
+### Revenue Tracking
+
+```javascript
+const revenue = await sdk.analytics.getRevenue({
+  period: "month",
+  year: 2024,
+  month: 1
+});
+
+console.log("Monthly revenue:", revenue);
+```
+
+---
+
+##  UI Integration Examples
+
+### React Hook
+
+```jsx
+import { useState, useEffect } from "react";
+import { ServiceBookingSDK } from "@your-organization/service-booking-sdk";
+
+function useBookingSDK(tenantId) {
+  const [sdk, setSdk] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function init() {
-      // Detect tenant and initialize analytics
-      const t = await TenantDataSource.getCurrent();
-      setTenant(t);
-      await AnalyticsDataSource.initialize(t.id);
+    const initSDK = async () => {
+      try {
+        const sdkInstance = new ServiceBookingSDK({
+          apiUrl: process.env.REACT_APP_API_URL,
+          tenantId
+        });
+        
+        // Verify connection
+        await sdkInstance.tenant.getConfig();
+        setSdk(sdkInstance);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      // Load available dates
-      const availableDates = await AvailabilityDataSource.getAvailableDates(
-        t.id,
-        '2025-01-01',
-        '2025-12-31'
-      );
-      setDates(availableDates);
-    }
-    init();
-  }, []);
+    initSDK();
+  }, [tenantId]);
 
-  const handleBooking = async (formData) => {
-    setLoading(true);
-    try {
-      const booking = await BookingDataSource.create({
-        tenantId: tenant.id,
-        ...formData,
-      });
+  return { sdk, loading, error };
+}
 
-      await AnalyticsDataSource.track('booking_completed', {
-        bookingId: booking.id,
-        amount: formData.amount,
-      });
-
-      alert('Booking created successfully!');
-    } catch (error) {
-      console.error('Booking failed:', error);
-      await AnalyticsDataSource.track('booking_failed', {
-        error: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div>
-      <h2>{tenant?.businessName}</h2>
-      <select onChange={(e) => setSelectedDate(e.target.value)}>
-        {dates.map((date) => (
-          <option key={date.date} value={date.date}>
-            {date.date} ({date.slotsRemaining} slots)
-          </option>
-        ))}
-      </select>
-      <button onClick={handleBooking} disabled={loading}>
-        {loading ? 'Processing...' : 'Book Now'}
-      </button>
-    </div>
-  );
+// Usage in component
+function BookingForm({ tenantId }) {
+  const { sdk, loading, error } = useBookingSDK(tenantId);
+  
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  
+  return <BookingFormComponent sdk={sdk} />;
 }
 ```
 
@@ -292,125 +262,228 @@ function BookingWidget() {
 ```html
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Booking System</title>
-  </head>
-  <body>
-    <div id="app"></div>
+<head>
+  <title>Service Booking</title>
+</head>
+<body>
+  <div id="booking-form">
+    <h2>Book Your Service</h2>
+    <form id="booking-form-element">
+      <input type="text" id="customer-name" placeholder="Your Name" required>
+      <input type="email" id="customer-email" placeholder="Your Email" required>
+      <input type="tel" id="customer-phone" placeholder="Your Phone" required>
+      <select id="service-select" required>
+        <option value="">Select a Service</option>
+      </select>
+      <input type="datetime-local" id="booking-datetime" required>
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
 
-    <script type="module">
-      import {
-        TenantDataSource,
-        AvailabilityDataSource,
-        BookingDataSource,
-        AnalyticsDataSource,
-      } from 'https://cdn.clairehamilton.vip/companion-sdk@1.0.0.js';
+  <script type="module">
+    import { ServiceBookingSDK } from "@your-organization/service-booking-sdk";
 
-      async function init() {
-        // Initialize
-        const tenant = await TenantDataSource.getCurrent();
-        await AnalyticsDataSource.initialize(tenant.id);
+    const sdk = new ServiceBookingSDK({
+      apiUrl: "https://your-api-domain.com/api",
+      tenantId: "demo"
+    });
 
-        // Render UI
-        document.getElementById('app').innerHTML = `
-        <h1>${tenant.businessName}</h1>
-        <button id="bookBtn">Check Availability</button>
-      `;
+    // Load services
+    async function loadServices() {
+      const services = await sdk.tenant.getServices();
+      const select = document.getElementById("service-select");
+      
+      services.forEach(service => {
+        const option = document.createElement("option");
+        option.value = service.id;
+        option.textContent = `${service.name} - $${service.price}`;
+        select.appendChild(option);
+      });
+    }
 
-        // Event handler
-        document.getElementById('bookBtn').addEventListener('click', async () => {
-          const dates = await AvailabilityDataSource.getAvailableDates(
-            tenant.id,
-            '2025-01-01',
-            '2025-12-31'
-          );
-          console.log('Available dates:', dates);
-        });
+    // Handle booking submission
+    document.getElementById("booking-form-element").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const bookingData = {
+        serviceId: formData.get("service"),
+        datetime: formData.get("datetime"),
+        customerInfo: {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone")
+        }
+      };
+
+      try {
+        const booking = await sdk.bookings.create(bookingData);
+        alert(`Booking confirmed! ID: ${booking.id}`);
+      } catch (error) {
+        alert(`Booking failed: ${error.message}`);
       }
+    });
 
-      init();
-    </script>
-  </body>
+    // Initialize
+    loadServices();
+  </script>
+</body>
 </html>
 ```
 
 ---
 
-## 🎨 All Available Datasources
+##  Error Handling
 
-| Datasource                    | Purpose               | Key Methods                                                               |
-| ----------------------------- | --------------------- | ------------------------------------------------------------------------- |
-| **TenantDataSource**          | Tenant discovery      | `getCurrent()`, `getBySubdomain()`, `getByDomain()`                       |
-| **AvailabilityDataSource**    | Calendar & scheduling | `checkDate()`, `getAvailableDates()`, `getTouringSchedule()`              |
-| **LocationDataSource**        | Location management   | `getByTenant()`, `getGroupedByCountry()`, `getAvailable()`                |
-| **BookingDataSource**         | Booking operations    | `create()`, `getById()`, `confirm()`, `cancel()`                          |
-| **PaymentDataSource**         | Payment processing    | `create()`, `refund()`, `getByBooking()`, `getTotalRevenue()`             |
-| **AnalyticsDataSource**       | Session tracking      | `initialize()`, `track()`, `getSummary()`                                 |
-| **TenantAnalyticsDataSource** | Business metrics      | `getPerformance()`, `getTrafficSources()`, `getConversionFunnel()`        |
-| **SocialAnalyticsDataSource** | Social media insights | `getPostPerformance()`, `getPlatformPerformance()`, `getFollowerGrowth()` |
+### SDK Error Types
 
----
+```javascript
+import { ServiceBookingSDK, SDKError } from "@your-organization/service-booking-sdk";
 
-## 🚀 Publishing Your Own SDK Instance
-
-If you want to host your own version:
-
-```bash
-cd sdk
-npm run build
-npm publish --access public
+try {
+  const booking = await sdk.bookings.create(bookingData);
+} catch (error) {
+  if (error instanceof SDKError) {
+    switch (error.type) {
+      case "VALIDATION_ERROR":
+        console.log("Invalid data:", error.details);
+        break;
+      case "NETWORK_ERROR":
+        console.log("Connection failed:", error.message);
+        break;
+      case "API_ERROR":
+        console.log("Server error:", error.status, error.message);
+        break;
+      case "TIMEOUT_ERROR":
+        console.log("Request timed out");
+        break;
+      default:
+        console.log("Unknown error:", error);
+    }
+  }
+}
 ```
 
-Or deploy to your own CDN:
+### Retry Logic
 
-```bash
-npm run build
-cp dist/* /path/to/cdn/companion-sdk/
-```
-
----
-
-## 📚 TypeScript Type Definitions
-
-All datasources are fully typed. Import types for better IDE support:
-
-```typescript
-import type {
-  Tenant,
-  Booking,
-  Payment,
-  Location,
-  AvailabilitySlot,
-  AnalyticsSummary,
-  TenantPerformance,
-  PostPerformance,
-  ABTestResult,
-  FollowerGrowthSummary,
-} from '@clairehamilton/companion-sdk';
+```javascript
+async function createBookingWithRetry(bookingData, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await sdk.bookings.create(bookingData);
+    } catch (error) {
+      if (attempt === maxRetries || error.type !== "NETWORK_ERROR") {
+        throw error;
+      }
+      
+      // Wait before retry
+      await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+    }
+  }
+}
 ```
 
 ---
 
-## ⚡ Performance Tips
+##  Testing
 
-1. **Cache tenant data**: Call `TenantDataSource.getCurrent()` once per session
-2. **Batch analytics**: Use `track()` for multiple events instead of individual calls
-3. **Lazy load analytics**: Initialize analytics after main content loads
-4. **Use date ranges wisely**: Limit analytics queries to necessary date ranges
+### Mock SDK for Testing
+
+```javascript
+// Create a mock SDK for unit tests
+const mockSDK = {
+  tenant: {
+    getConfig: jest.fn().mockResolvedValue({
+      businessName: "Test Business",
+      services: []
+    }),
+    getServices: jest.fn().mockResolvedValue([]),
+    getAvailability: jest.fn().mockResolvedValue({ slots: [] })
+  },
+  bookings: {
+    create: jest.fn().mockResolvedValue({ id: "test-booking-123" }),
+    get: jest.fn(),
+    update: jest.fn(),
+    cancel: jest.fn()
+  },
+  analytics: {
+    getStats: jest.fn(),
+    getRevenue: jest.fn()
+  }
+};
+
+// Use in tests
+test("should create booking", async () => {
+  const result = await mockSDK.bookings.create({
+    serviceId: "test-service",
+    datetime: "2024-01-15T10:00:00Z",
+    customerInfo: { name: "Test User" }
+  });
+  
+  expect(result.id).toBe("test-booking-123");
+});
+```
 
 ---
 
-## 🔒 Security Notes
+##  Debugging
 
-- Never expose API keys in client-side code
-- Use HTTPS for all API calls (enforced by default)
-- Payment processing should always be server-side verified
-- Rate limiting is applied per IP address
+### Enable Debug Mode
+
+```javascript
+const sdk = new ServiceBookingSDK({
+  apiUrl: "https://your-api-domain.com/api",
+  tenantId: "demo",
+  debug: true // Enables detailed logging
+});
+```
+
+### Manual Logging
+
+```javascript
+// Log all API requests and responses
+sdk.on("request", (request) => {
+  console.log("API Request:", request);
+});
+
+sdk.on("response", (response) => {
+  console.log("API Response:", response);
+});
+
+sdk.on("error", (error) => {
+  console.error("SDK Error:", error);
+});
+```
 
 ---
 
-## 📞 Support
+##  Best Practices
 
-- **Documentation**: https://github.com/AntonyNeal/sw_website/tree/main/sdk
-- **Issues**: https://github.com/AntonyNeal/sw_website/issues
-- **API Base**: https://avaliable.pro/api
+1. **Always handle errors gracefully**
+2. **Use environment variables for configuration**
+3. **Implement loading states in your UI**
+4. **Cache tenant configuration when possible**
+5. **Validate user input before sending to SDK**
+6. **Use TypeScript for better development experience**
+7. **Test your integration thoroughly**
+8. **Monitor SDK performance and errors**
+
+---
+
+##  Common Issues
+
+### Issue: "Tenant not found"
+**Solution**: Verify the tenantId matches your configuration
+
+### Issue: "Network timeout"
+**Solution**: Check your internet connection and API endpoint
+
+### Issue: "Booking validation failed"
+**Solution**: Ensure all required fields are provided and valid
+
+### Issue: "Service unavailable"
+**Solution**: Check service availability before booking
+
+---
+
+For more examples and advanced usage, see the [SDK documentation](./sdk/README.md).

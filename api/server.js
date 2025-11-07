@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -14,137 +14,193 @@ app.use(
         return callback(null, true);
       }
 
-      // Define allowed patterns
+      // Define allowed patterns for your domains
       const allowedPatterns = [
-        /^https?:\/\/([a-z0-9-]+\.)?avaliable\.pro$/, // *.avaliable.pro
-        /^https?:\/\/([a-z0-9-]+\.)?prebooking\.pro$/, // *.prebooking.pro (legacy)
-        /^https?:\/\/([a-z0-9-]+\.)?companionconnect\.app$/, // *.companionconnect.app (legacy)
-        /^https?:\/\/clairehamilton\.vip$/, // clairehamilton.vip (legacy custom domain)
-        /^https?:\/\/([a-z0-9-]+\.)?clairehamilton\.com\.au$/, // clairehamilton.com.au and subdomains
+        /^https?:\/\/([a-z0-9-]+\.)?yourdomain\.com$/, // *.yourdomain.com
+        /^https?:\/\/([a-z0-9-]+\.)?your-custom-domain\.com$/, // Custom domain
         /^http:\/\/localhost(:\d+)?$/, // localhost:*
         /^http:\/\/127\.0\.0\.1(:\d+)?$/, // 127.0.0.1:*
+        /^https:\/\/[\w-]+-[\w-]+-\w+\.ondigitalocean\.app$/, // DigitalOcean apps
       ];
 
-      // Check if origin matches any pattern
-      const isAllowed = allowedPatterns.some((pattern) => pattern.test(origin));
+      // Check if origin matches any allowed pattern
+      const isAllowed = allowedPatterns.some((pattern) =>
+        pattern.test(origin)
+      );
 
       if (isAllowed) {
         callback(null, true);
       } else {
-        console.warn(`CORS blocked origin: ${origin}`);
-        callback(new Error('Not allowed by CORS'));
+        console.warn(`CORS: Blocked origin ${origin}`);
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Request logging middleware
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  const timestamp = new Date().toISOString();
+  console.log(`${timestamp} ${req.method} ${req.path}`);
   next();
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get("/", (req, res) => {
   res.json({
-    status: 'healthy',
+    message: "Service Booking Platform API",
+    version: "1.0.0",
+    status: "healthy",
     timestamp: new Date().toISOString(),
-    service: 'sw-website-api',
   });
 });
 
-// Import routes
-const tenantRoutes = require('./routes/tenants');
-const availabilityRoutes = require('./routes/availability');
-const locationRoutes = require('./routes/locations');
-const bookingRoutes = require('./routes/bookings');
-const paymentRoutes = require('./routes/payments');
-const analyticsRoutes = require('./routes/analytics');
-const tenantAnalyticsRoutes = require('./routes/tenantAnalytics');
-const socialAnalyticsRoutes = require('./routes/socialAnalytics');
-const healthRoutes = require('./routes/health');
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.json({
+    status: "healthy",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
 
-// API routes - All routes deployed
-// Note: /api prefix is handled by ingress routing
-app.use('/tenants', tenantRoutes);
-app.use('/availability', availabilityRoutes);
-app.use('/locations', locationRoutes);
-app.use('/bookings', bookingRoutes);
-app.use('/payments', paymentRoutes);
-app.use('/analytics', analyticsRoutes);
-app.use('/tenant-analytics', tenantAnalyticsRoutes);
-app.use('/social-analytics', socialAnalyticsRoutes);
-app.use('/health', healthRoutes);
+// API versioning
+const apiV1 = express.Router();
 
-// Legacy endpoints (keep for backward compatibility)
-app.get('/api/get-data', async (req, res) => {
+// Tenant management endpoints
+apiV1.get("/tenant/:tenantId", async (req, res) => {
   try {
-    const data = {
-      message: 'Hello from DigitalOcean App Platform',
-      timestamp: new Date().toISOString(),
-      params: req.query,
+    const { tenantId } = req.params;
+    
+    // TODO: Replace with actual database query
+    const tenantConfig = {
+      id: tenantId,
+      businessName: "Demo Business",
+      customDomain: null,
+      status: "active",
+      branding: {
+        primaryColor: "#2563eb",
+        secondaryColor: "#6366f1",
+        logo: null,
+      },
+      services: [
+        {
+          id: "service-1",
+          name: "Consultation",
+          description: "Professional consultation service",
+          duration: 60,
+          price: 100,
+          currency: "USD",
+        },
+      ],
+      contact: {
+        email: "contact@yourdomain.com",
+        phone: "+1234567890",
+        address: "123 Main St, City, State 12345",
+      },
     };
-    res.json(data);
+
+    res.json(tenantConfig);
   } catch (error) {
-    console.error('Error in /api/get-data:', error);
-    res.status(500).json({
-      error: 'Failed to fetch data',
-      message: error.message,
-    });
+    console.error("Error fetching tenant:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-// Example POST endpoint
-app.post('/api/submit', async (req, res) => {
+// Booking management endpoints
+apiV1.post("/bookings", async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const bookingData = req.body;
+    
+    // TODO: Validate booking data
+    // TODO: Check availability
+    // TODO: Save to database
+    // TODO: Send confirmation email
+    
+    const booking = {
+      id: `booking-${Date.now()}`,
+      ...bookingData,
+      status: "confirmed",
+      createdAt: new Date().toISOString(),
+    };
 
-    if (!name || !email) {
-      return res.status(400).json({
-        error: 'Validation error',
-        message: 'Name and email are required',
-      });
+    res.status(201).json(booking);
+  } catch (error) {
+    console.error("Error creating booking:", error);
+    res.status(500).json({ error: "Failed to create booking" });
+  }
+});
+
+apiV1.get("/bookings/:bookingId", async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    
+    // TODO: Fetch from database
+    const booking = {
+      id: bookingId,
+      status: "confirmed",
+      // Add other booking details
+    };
+
+    if (!booking) {
+      return res.status(404).json({ error: "Booking not found" });
     }
 
-    // Process the data here
-    res.json({
-      success: true,
-      message: 'Data submitted successfully',
-      data: { name, email },
-    });
+    res.json(booking);
   } catch (error) {
-    console.error('Error in /api/submit:', error);
-    res.status(500).json({
-      error: 'Server error',
-      message: error.message,
-    });
+    console.error("Error fetching booking:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
+// Analytics endpoints
+apiV1.get("/analytics/stats", async (req, res) => {
+  try {
+    // TODO: Implement analytics queries
+    const stats = {
+      totalBookings: 0,
+      totalRevenue: 0,
+      averageBookingValue: 0,
+      periodStart: req.query.startDate,
+      periodEnd: req.query.endDate,
+    };
+
+    res.json(stats);
+  } catch (error) {
+    console.error("Error fetching analytics:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Mount API routes
+app.use("/api/v1", apiV1);
+
 // 404 handler
-app.use((req, res) => {
+app.use("*", (req, res) => {
   res.status(404).json({
-    error: 'Not Found',
-    message: `Route ${req.method} ${req.path} not found`,
+    error: "Endpoint not found",
+    message: `${req.method} ${req.originalUrl} is not a valid endpoint`,
   });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
+  console.error("Unhandled error:", err);
   res.status(500).json({
-    error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'production' ? 'Something went wrong' : err.message,
+    error: "Internal server error",
+    message: process.env.NODE_ENV === "development" ? err.message : undefined,
   });
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`API server running on port ${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(` Service Booking Platform API running on port ${PORT}`);
+  console.log(` Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(` Health check: http://localhost:${PORT}/health`);
 });
 
 module.exports = app;
