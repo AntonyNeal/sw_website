@@ -4,17 +4,17 @@
  * Central mapping of all active tenants
  */
 
-import claireConfig from './claire';
-import type { TenantConfig } from '../core/types/tenant.types';
+import demoConfig from "./_template";
+import type { TenantConfig } from "../core/types/tenant.types";
 
 /**
  * All active tenant configurations
  */
 export const tenants: Record<string, TenantConfig> = {
-  claire: claireConfig,
+  demo: demoConfig,
   // Add new tenants here:
-  // sophie: sophieConfig,
-  // emma: emmaConfig,
+  // tenant1: tenant1Config,
+  // tenant2: tenant2Config,
 };
 
 /**
@@ -36,12 +36,12 @@ export function getTenantByDomain(domain: string): TenantConfig | null {
  * List all active tenants
  */
 export function getAllTenants(): TenantConfig[] {
-  return Object.values(tenants).filter((t) => t.status !== 'inactive');
+  return Object.values(tenants).filter((t) => t.status !== "inactive");
 }
 
 /**
  * Get default tenant (fallback)
  */
 export function getDefaultTenant(): TenantConfig {
-  return claireConfig;
+  return demoConfig;
 }

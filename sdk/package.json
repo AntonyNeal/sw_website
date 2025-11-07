@@ -1,7 +1,7 @@
 {
-  "name": "@clairehamilton/companion-sdk",
+  "name": "@your-organization/service-booking-sdk",
   "version": "1.0.0",
-  "description": "JavaScript SDK for companion booking platform",
+  "description": "JavaScript SDK for service booking platform",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -16,11 +16,13 @@
   },
   "keywords": [
     "booking",
-    "companion",
+    "sdk",
     "api",
-    "sdk"
+    "services",
+    "scheduling",
+    "typescript"
   ],
-  "author": "Claire Hamilton",
+  "author": "Your Organization",
   "license": "MIT",
   "devDependencies": {
     "tsup": "^8.0.0",
@@ -29,7 +31,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AntonyNeal/sw_website.git",
+    "url": "https://github.com/your-username/service-booking-platform-template.git",
     "directory": "sdk"
+  },
+  "homepage": "https://github.com/your-username/service-booking-platform-template#readme",
+  "bugs": {
+    "url": "https://github.com/your-username/service-booking-platform-template/issues"
   }
 }
