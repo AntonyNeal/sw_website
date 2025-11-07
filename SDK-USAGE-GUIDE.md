@@ -49,21 +49,14 @@ console.log(`Welcome to ${tenant.businessName}`);
 import { AvailabilityDataSource } from '@clairehamilton/companion-sdk';
 
 // Check if a specific date is available
-const { available, slot } = await AvailabilityDataSource.checkDate(
-  tenant.id,
-  '2025-12-25'
-);
+const { available, slot } = await AvailabilityDataSource.checkDate(tenant.id, '2025-12-25');
 
 if (available) {
   console.log(`Available: ${slot.availableSlots} slots remaining`);
 }
 
 // Get all available dates in a range
-const dates = await AvailabilityDataSource.getAvailableDates(
-  tenant.id,
-  '2025-01-01',
-  '2025-12-31'
-);
+const dates = await AvailabilityDataSource.getAvailableDates(tenant.id, '2025-01-01', '2025-12-31');
 ```
 
 ### 3. Create a Booking
@@ -96,7 +89,7 @@ import { PaymentDataSource } from '@clairehamilton/companion-sdk';
 
 const payment = await PaymentDataSource.create({
   bookingId: booking.id,
-  amount: 450.00,
+  amount: 450.0,
   currency: 'AUD',
   paymentMethod: 'card',
   processor: 'stripe',
@@ -155,8 +148,10 @@ console.log(`Conversion Rate: ${performance.conversionRate}%`);
 ```typescript
 const sources = await TenantAnalyticsDataSource.getTrafficSources(tenant.id, 30);
 
-sources.forEach(source => {
-  console.log(`${source.source}: ${source.bookings} bookings, ${source.conversionRate}% conversion`);
+sources.forEach((source) => {
+  console.log(
+    `${source.source}: ${source.bookings} bookings, ${source.conversionRate}% conversion`
+  );
 });
 ```
 
@@ -165,9 +160,9 @@ sources.forEach(source => {
 ```typescript
 const tests = await TenantAnalyticsDataSource.getABTestResults(tenant.id);
 
-tests.forEach(test => {
+tests.forEach((test) => {
   console.log(`Test: ${test.testName}`);
-  test.variants.forEach(variant => {
+  test.variants.forEach((variant) => {
     console.log(`  ${variant.variantName}: ${(variant.conversionRate * 100).toFixed(2)}%`);
   });
 });
@@ -184,8 +179,10 @@ import { SocialAnalyticsDataSource } from '@clairehamilton/companion-sdk';
 
 const posts = await SocialAnalyticsDataSource.getPostPerformance(tenant.id, 10);
 
-posts.forEach(post => {
-  console.log(`${post.platform} - ${post.engagement.likes} likes, ${post.conversions.bookings} bookings`);
+posts.forEach((post) => {
+  console.log(
+    `${post.platform} - ${post.engagement.likes} likes, ${post.conversions.bookings} bookings`
+  );
 });
 ```
 
@@ -194,7 +191,7 @@ posts.forEach(post => {
 ```typescript
 const platforms = await SocialAnalyticsDataSource.getPlatformPerformance(tenant.id, 90);
 
-platforms.forEach(platform => {
+platforms.forEach((platform) => {
   console.log(`${platform.platform}: ${platform.totalBookings} bookings, ROI: ${platform.roi}`);
 });
 ```
@@ -202,11 +199,7 @@ platforms.forEach(platform => {
 ### Analyze Follower Growth
 
 ```typescript
-const growth = await SocialAnalyticsDataSource.getFollowerGrowth(
-  tenant.id,
-  'Instagram',
-  90
-);
+const growth = await SocialAnalyticsDataSource.getFollowerGrowth(tenant.id, 'Instagram', 90);
 
 console.log(`Total Growth: ${growth.summary.totalGrowth} followers`);
 console.log(`Avg Daily Growth: ${growth.summary.avgGrowthRate}%`);
@@ -299,45 +292,45 @@ function BookingWidget() {
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Booking System</title>
-</head>
-<body>
-  <div id="app"></div>
+  <head>
+    <title>Booking System</title>
+  </head>
+  <body>
+    <div id="app"></div>
 
-  <script type="module">
-    import {
-      TenantDataSource,
-      AvailabilityDataSource,
-      BookingDataSource,
-      AnalyticsDataSource,
-    } from 'https://cdn.clairehamilton.vip/companion-sdk@1.0.0.js';
+    <script type="module">
+      import {
+        TenantDataSource,
+        AvailabilityDataSource,
+        BookingDataSource,
+        AnalyticsDataSource,
+      } from 'https://cdn.clairehamilton.vip/companion-sdk@1.0.0.js';
 
-    async function init() {
-      // Initialize
-      const tenant = await TenantDataSource.getCurrent();
-      await AnalyticsDataSource.initialize(tenant.id);
+      async function init() {
+        // Initialize
+        const tenant = await TenantDataSource.getCurrent();
+        await AnalyticsDataSource.initialize(tenant.id);
 
-      // Render UI
-      document.getElementById('app').innerHTML = `
+        // Render UI
+        document.getElementById('app').innerHTML = `
         <h1>${tenant.businessName}</h1>
         <button id="bookBtn">Check Availability</button>
       `;
 
-      // Event handler
-      document.getElementById('bookBtn').addEventListener('click', async () => {
-        const dates = await AvailabilityDataSource.getAvailableDates(
-          tenant.id,
-          '2025-01-01',
-          '2025-12-31'
-        );
-        console.log('Available dates:', dates);
-      });
-    }
+        // Event handler
+        document.getElementById('bookBtn').addEventListener('click', async () => {
+          const dates = await AvailabilityDataSource.getAvailableDates(
+            tenant.id,
+            '2025-01-01',
+            '2025-12-31'
+          );
+          console.log('Available dates:', dates);
+        });
+      }
 
-    init();
-  </script>
-</body>
+      init();
+    </script>
+  </body>
 </html>
 ```
 
@@ -345,15 +338,15 @@ function BookingWidget() {
 
 ## 🎨 All Available Datasources
 
-| Datasource | Purpose | Key Methods |
-|------------|---------|-------------|
-| **TenantDataSource** | Tenant discovery | `getCurrent()`, `getBySubdomain()`, `getByDomain()` |
-| **AvailabilityDataSource** | Calendar & scheduling | `checkDate()`, `getAvailableDates()`, `getTouringSchedule()` |
-| **LocationDataSource** | Location management | `getByTenant()`, `getGroupedByCountry()`, `getAvailable()` |
-| **BookingDataSource** | Booking operations | `create()`, `getById()`, `confirm()`, `cancel()` |
-| **PaymentDataSource** | Payment processing | `create()`, `refund()`, `getByBooking()`, `getTotalRevenue()` |
-| **AnalyticsDataSource** | Session tracking | `initialize()`, `track()`, `getSummary()` |
-| **TenantAnalyticsDataSource** | Business metrics | `getPerformance()`, `getTrafficSources()`, `getConversionFunnel()` |
+| Datasource                    | Purpose               | Key Methods                                                               |
+| ----------------------------- | --------------------- | ------------------------------------------------------------------------- |
+| **TenantDataSource**          | Tenant discovery      | `getCurrent()`, `getBySubdomain()`, `getByDomain()`                       |
+| **AvailabilityDataSource**    | Calendar & scheduling | `checkDate()`, `getAvailableDates()`, `getTouringSchedule()`              |
+| **LocationDataSource**        | Location management   | `getByTenant()`, `getGroupedByCountry()`, `getAvailable()`                |
+| **BookingDataSource**         | Booking operations    | `create()`, `getById()`, `confirm()`, `cancel()`                          |
+| **PaymentDataSource**         | Payment processing    | `create()`, `refund()`, `getByBooking()`, `getTotalRevenue()`             |
+| **AnalyticsDataSource**       | Session tracking      | `initialize()`, `track()`, `getSummary()`                                 |
+| **TenantAnalyticsDataSource** | Business metrics      | `getPerformance()`, `getTrafficSources()`, `getConversionFunnel()`        |
 | **SocialAnalyticsDataSource** | Social media insights | `getPostPerformance()`, `getPlatformPerformance()`, `getFollowerGrowth()` |
 
 ---

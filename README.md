@@ -55,6 +55,14 @@ The codebase contains extensive multi-tenant platform infrastructure designed fo
 
 ## ✨ Key Features
 
+### SDK & Frontend Integration
+
+- ✅ **JavaScript/TypeScript SDK** - Complete frontend datasource utilities for easy API integration
+- ✅ **8 Datasources** - TenantDataSource, AvailabilityDataSource, LocationDataSource, BookingDataSource, PaymentDataSource, AnalyticsDataSource, TenantAnalyticsDataSource, SocialAnalyticsDataSource
+- ✅ **Multiple Installation Methods** - NPM package, CDN, ES modules
+- ✅ **TypeScript Support** - Full type definitions and IntelliSense
+- ✅ **React & Vanilla JS** - Examples for all frameworks
+
 ### Backend Infrastructure (Phase 1 - 40% Complete)
 
 - ✅ **PostgreSQL Database Schema** - Complete with 8 tables, indexes, triggers, constraints
@@ -122,6 +130,15 @@ sw_website/
 │   ├── middleware/         # Custom middleware
 │   ├── models/             # Database models
 │   └── server.js           # Express server
+├── sdk/                     # JavaScript/TypeScript SDK ⭐ NEW
+│   ├── src/                # SDK source code
+│   │   ├── datasources/    # Data access layers (8 datasources)
+│   │   ├── client.ts       # API client
+│   │   ├── types.ts        # TypeScript types
+│   │   └── index.ts        # SDK exports
+│   ├── dist/               # Built SDK files
+│   ├── README.md           # SDK API reference
+│   └── package.json        # SDK configuration
 ├── functions/              # DigitalOcean Functions
 │   ├── packages/           # Function packages
 │   └── project.yml         # Functions config
@@ -494,6 +511,8 @@ This project is licensed under the ISC License.
 
 ### Project Documentation
 
+- **[sdk/README.md](./sdk/README.md)** - Complete SDK API reference with all datasource methods
+- **[SDK-USAGE-GUIDE.md](./SDK-USAGE-GUIDE.md)** - Frontend integration guide with React & vanilla JS examples
 - **[mcp-server/README.md](./mcp-server/README.md)** - Complete guide to DigitalOcean MCP integration with Copilot
 - **[mcp-server/QUICK-REFERENCE.md](./mcp-server/QUICK-REFERENCE.md)** - Quick reference for MCP commands
 - **[DEPLOYMENT-GUIDE.md](./DEPLOYMENT-GUIDE.md)** - Complete step-by-step guide to deploy backend to DigitalOcean (30-45 min)

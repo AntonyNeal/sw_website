@@ -64,17 +64,55 @@
    - Feature documentation
    - Integration guides
 
-4. **[BACKEND-IMPLEMENTATION.md](./BACKEND-IMPLEMENTATION.md)**
+4. **[SDK-USAGE-GUIDE.md](./SDK-USAGE-GUIDE.md)**
+   - Complete SDK integration guide
+   - Frontend datasource utilities
+   - React and vanilla JS examples
+   - All 8 datasources documented
+
+5. **[sdk/README.md](./sdk/README.md)**
+   - SDK API reference
+   - Installation methods
+   - TypeScript type definitions
+   - Usage examples
+
+6. **[BACKEND-IMPLEMENTATION.md](./BACKEND-IMPLEMENTATION.md)**
    - Deep dive into backend architecture
    - Database schema explanation
    - API endpoint documentation
    - Code structure and patterns
 
-5. **[TECHNICAL-ANALYSIS-REPORT.md](./TECHNICAL-ANALYSIS-REPORT.md)**
+7. **[TECHNICAL-ANALYSIS-REPORT.md](./TECHNICAL-ANALYSIS-REPORT.md)**
    - System architecture analysis
    - Performance optimization recommendations
    - Security considerations
    - Scalability planning
+
+### I Need to Integrate the SDK
+
+1. **[SDK-USAGE-GUIDE.md](./SDK-USAGE-GUIDE.md)** (Complete Integration Guide)
+   - NPM installation and CDN integration
+   - React component examples
+   - Vanilla JavaScript examples
+   - All 8 datasources with usage examples:
+     - TenantDataSource - tenant discovery
+     - AvailabilityDataSource - calendar & scheduling
+     - LocationDataSource - location management
+     - BookingDataSource - booking operations
+     - PaymentDataSource - payment processing
+     - AnalyticsDataSource - session tracking
+     - TenantAnalyticsDataSource - business metrics
+     - SocialAnalyticsDataSource - social media insights
+
+2. **[sdk/README.md](./sdk/README.md)** (API Reference)
+   - Detailed API documentation
+   - Method signatures and parameters
+   - TypeScript type definitions
+   - Return value specifications
+
+3. **[SDK-INTEGRATION.md](./SDK-INTEGRATION.md)** (Legacy Guide)
+   - Original SDK integration documentation
+   - Basic usage patterns
 
 ### I Need to Deploy the System
 
@@ -276,7 +314,8 @@
 ├── Implementation Guides
 │   ├── BACKEND-IMPLEMENTATION.md         ✅ Backend architecture details
 │   ├── IMPLEMENTATION_SUMMARY.md         ✅ Implementation status
-│   └── SDK-INTEGRATION.md                ✅ SDK usage guide
+│   ├── SDK-INTEGRATION.md                ✅ SDK usage guide (legacy)
+│   └── SDK-USAGE-GUIDE.md                ✅ Complete SDK integration guide (NEW)
 │
 └── Booking System Documentation
     ├── BOOKING_MASTER_INDEX.md           ✅ Booking docs navigation
@@ -333,7 +372,21 @@ db/                                        ✅ Database schema
 
 sdk/                                       ✅ JavaScript/TypeScript SDK
 ├── src/                                  SDK source code
-└── README.md                             SDK documentation
+│   ├── datasources/                      Data access layers (8 datasources)
+│   │   ├── tenant.ts                     Tenant discovery
+│   │   ├── availability.ts               Calendar & scheduling
+│   │   ├── location.ts                   Location management
+│   │   ├── booking.ts                    Booking operations
+│   │   ├── payment.ts                    Payment processing (NEW)
+│   │   ├── analytics.ts                  Session tracking
+│   │   ├── tenantAnalytics.ts            Business metrics
+│   │   └── socialAnalytics.ts            Social media insights
+│   ├── client.ts                         API client
+│   ├── types.ts                          TypeScript types
+│   └── index.ts                          SDK exports
+├── dist/                                 Built SDK files
+├── README.md                             SDK API reference
+└── package.json                          SDK package configuration
 
 mcp-server/                                ✅ MCP server for AI tools
 ├── index.js                              MCP server implementation
@@ -382,7 +435,8 @@ START
   │   └─> DO-CLI-QUICK-REF.md (commands)
   │
   ├─ "I need to integrate the SDK"
-  │   └─> SDK-INTEGRATION.md (SDK guide)
+  │   ├─> SDK-USAGE-GUIDE.md (complete guide)
+  │   └─> sdk/README.md (API reference)
   │
   └─ "I need technical deep dive"
       └─> TECHNICAL-ANALYSIS-REPORT.md (architecture analysis)
@@ -404,7 +458,8 @@ START
 | Implement booking system    | BOOKING_SYSTEM_GUIDE.md           | 2-3 hours | Medium     |
 | Run all tests               | TESTING-GUIDE.md                  | 60-90 min | Medium     |
 | Setup DO CLI                | DO-CLI-SETUP.md                   | 15 min    | Easy       |
-| Integrate SDK               | SDK-INTEGRATION.md                | 30-45 min | Medium     |
+| Integrate SDK               | SDK-USAGE-GUIDE.md                | 30-45 min | Easy       |
+| SDK API reference           | sdk/README.md                     | 15 min    | Easy       |
 | Performance tuning          | TECHNICAL-ANALYSIS-REPORT.md      | 1-2 hours | Hard       |
 | Add payment integration     | docs/PAYMENT-SYSTEM.md            | 2-3 hours | Hard       |
 | Setup social media tracking | docs/SOCIAL-MEDIA-TRACKING-GUIDE. | md        | 1 hour     | Medium |
@@ -449,14 +504,16 @@ git status
 
 | Metric                    | Value    |
 | ------------------------- | -------- |
-| Total Documentation Files | 40+      |
-| Root-level Guides         | 31       |
+| Total Documentation Files | 42+      |
+| Root-level Guides         | 32       |
 | docs/ Directory Files     | 9        |
 | Booking System Docs       | 6        |
+| SDK Documentation         | 2        |
 | Code Documentation        | Complete |
 | API Endpoints Documented  | 19       |
-| Database Tables           | 7        |
-| Total Lines of Code       | 10,000+  |
+| SDK Datasources           | 8        |
+| Database Tables           | 14       |
+| Total Lines of Code       | 15,000+  |
 
 ---
 
@@ -518,6 +575,8 @@ Before considering platform deployment complete:
 - "How do I test it?" → [TESTING-GUIDE.md](./TESTING-GUIDE.md)
 - "How do I use the CLI?" → [DO-CLI-SETUP.md](./DO-CLI-SETUP.md)
 - "How does it work technically?" → [TECHNICAL-ANALYSIS-REPORT.md](./TECHNICAL-ANALYSIS-REPORT.md)
+- "How do I integrate the SDK?" → [SDK-USAGE-GUIDE.md](./SDK-USAGE-GUIDE.md)
+- "What SDK methods are available?" → [sdk/README.md](./sdk/README.md)
 - "How do I integrate payments?" → [docs/PAYMENT-SYSTEM.md](./docs/PAYMENT-SYSTEM.md)
 - "How do I track analytics?" → [docs/SOCIAL-MEDIA-TRACKING-GUIDE.md](./docs/SOCIAL-MEDIA-TRACKING-GUIDE.md)
 
