@@ -1,5 +1,5 @@
-name: claire-hamilton-website
-region: nyc
+name: octopus-app
+region: syd
 
 # API Service (Backend - Express API)
 services:
@@ -7,65 +7,76 @@ services:
     github:
       repo: AntonyNeal/sw_website
       branch: main
+      deploy_on_push: true
     source_dir: /api
     build_command: npm install
     run_command: node server.js
     http_port: 8080
     instance_count: 1
-    instance_size_slug: basic-xs
+    instance_size_slug: basic-xxs
     envs:
       - key: DATABASE_URL
         scope: RUN_TIME
-        value: ${DATABASE_URL}
+        type: SECRET
+        value: ${db.DATABASE_URL}
       - key: DB_HOST
         scope: RUN_TIME
-        value: ${DB_HOST}
+        value: ${db.HOSTNAME}
       - key: DB_PORT
         scope: RUN_TIME
-        value: ${DB_PORT}
+        value: ${db.PORT}
       - key: DB_NAME
         scope: RUN_TIME
-        value: ${DB_NAME}
+        value: ${db.DATABASE}
       - key: DB_USER
         scope: RUN_TIME
-        value: ${DB_USER}
+        value: ${db.USERNAME}
       - key: DB_PASSWORD
         scope: RUN_TIME
-        value: ${DB_PASSWORD}
+        type: SECRET
+        value: ${db.PASSWORD}
       - key: DB_SSL
         scope: RUN_TIME
         value: require
       - key: NODE_ENV
         scope: RUN_TIME
         value: production
+      - key: PORT
+        scope: RUN_TIME
+        value: "8080"
     routes:
       - path: /api
 
-  # Web Service (Frontend - Static Site served via http-server)
-  - name: frontend
+  # Web Service (Frontend - React SPA)
+  - name: sw-website
     github:
       repo: AntonyNeal/sw_website
       branch: main
+      deploy_on_push: true
     build_command: npm install && npm run build
-    run_command: npm run start
+    run_command: npx http-server ./dist -p 8080 -c-1 --proxy https://octopus-app-s8m2n.ondigitalocean.app?
     http_port: 8080
     instance_count: 1
-    instance_size_slug: basic-xs
+    instance_size_slug: basic-xxs
     envs:
-      - key: VITE_GA_MEASUREMENT_ID
-        value: ${GA_MEASUREMENT_ID}
       - key: VITE_API_BASE_URL
-        value: https://octopus-app-s8m2n.ondigitalocean.app/api
-      - key: VITE_FUNCTIONS_URL
-        value: ${FUNCTIONS_URL}
+        value: https://clairehamilton.vip/api
     routes:
       - path: /
 
+# Database
+databases:
+  - name: db
+    engine: PG
+    production: true
+    cluster_name: companion-platform-db
+
 # Domain configuration
 domains:
-  - domain: clairehamilton.com
-    type: PRIMARY
-  - domain: www.clairehamilton.com
-    type: ALIAS
   - domain: clairehamilton.vip
+    type: PRIMARY
+  - domain: www.clairehamilton.vip
     type: ALIAS
+  - domain: prebooking.pro
+    type: ALIAS
+    wildcard: true
