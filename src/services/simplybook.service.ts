@@ -3,7 +3,8 @@
 
 import axios, { AxiosInstance } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_SIMPLYBOOK_API_URL || 'https://user-api.simplybook.me';
+const JSON_RPC_URL = 'https://user-api.simplybook.me';
+const REST_API_URL = import.meta.env.VITE_SIMPLYBOOK_API_URL || 'https://user-api-v2.simplybook.net';
 
 export interface SimplybookConfig {
   company: string;
@@ -79,7 +80,7 @@ class SimplybookService {
     };
 
     this.axiosInstance = axios.create({
-      baseURL: API_BASE_URL,
+      baseURL: REST_API_URL,
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
@@ -122,7 +123,7 @@ class SimplybookService {
   }
 
   /**
-   * Authenticate and get access token
+   * Authenticate and get access token using SimplyBook.me JSON-RPC API
    */
   private async getToken(): Promise<string> {
     // Return cached token if still valid
@@ -131,18 +132,36 @@ class SimplybookService {
     }
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/login`, {
-        company: this.config.company,
-        login: this.config.apiKey,
-      });
+      // Step 1: Get login token using JSON-RPC API
+      const loginResponse = await axios.post(
+        `${JSON_RPC_URL}/login`,
+        {
+          jsonrpc: '2.0',
+          method: 'getToken',
+          params: [this.config.company, this.config.apiKey],
+          id: 1,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      this.token = response.data.token;
+      if (loginResponse.data.error) {
+        throw new Error(loginResponse.data.error.message || 'Authentication failed');
+      }
+
+      this.token = loginResponse.data.result;
       // Token typically valid for 24 hours, set expiry to 23 hours from now
       this.tokenExpiry = Date.now() + 23 * 60 * 60 * 1000;
 
       return this.token as string;
     } catch (error) {
       console.error('SimplyBook.me authentication failed:', error);
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Response data:', error.response.data);
+      }
       throw new Error('Failed to authenticate with booking system');
     }
   }
