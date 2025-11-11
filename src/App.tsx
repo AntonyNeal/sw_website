@@ -60,12 +60,29 @@ function App() {
         <meta name="description" content="Claire Hamilton - Melbourne Companion" />
       </Helmet>
 
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen" style={{ backgroundColor: '#d0d0d0' }}>
         {/* Navigation Header */}
         <header
-          className={`sticky top-0 z-50 ${location.pathname === '/' ? 'bg-transparent backdrop-blur-md border-b-0' : 'bg-white/95 backdrop-blur-sm shadow-sm border-b border-rose-100'}`}
+          className={`sticky top-0 z-50 ${location.pathname === '/' ? 'backdrop-blur-md border-b-0' : 'backdrop-blur-sm shadow-sm border-b border-gray-300'}`}
+          style={{
+            background:
+              'linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 25%, #d0d0d0 50%, #f5f5f5 75%, #e8e8e8 100%)',
+            boxShadow:
+              'inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.1)',
+            borderBottom: '1px solid rgba(255,255,255,0.5)',
+            position: 'relative',
+          }}
         >
-          <div className="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 xl:py-6">
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background:
+                'linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(0,0,0,0.05) 100%)',
+              pointerEvents: 'none',
+            }}
+          />
+          <div className="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 xl:py-6 relative z-10">
             <nav className="max-w-7xl mx-auto">
               {/* Mobile Layout */}
               <div className="lg:hidden flex justify-between items-center">
@@ -114,10 +131,11 @@ function App() {
                       }, 500);
                     }
                   }}
-                  className={`text-xl sm:text-2xl font-light ${location.pathname === '/' ? 'text-white' : 'text-gray-900'} tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none`}
-                  style={
-                    location.pathname === '/' ? { textShadow: '0 2px 8px rgba(0,0,0,0.8)' } : {}
-                  }
+                  className="text-xl sm:text-2xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
+                  style={{
+                    color: '#2d3748',
+                    textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                  }}
                   title={
                     location.pathname === '/admin'
                       ? 'Click to return home'
@@ -141,12 +159,7 @@ function App() {
                       e.stopPropagation();
                       setIsMobileMenuOpen(!isMobileMenuOpen);
                     }}
-                    className={`p-2 ${location.pathname === '/' ? 'text-white' : 'text-gray-900'} hover:text-rose-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 rounded-lg`}
-                    style={
-                      location.pathname === '/'
-                        ? { filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.8))' }
-                        : {}
-                    }
+                    className="p-2 text-gray-800 hover:text-rose-600 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 rounded-lg"
                     aria-label="Toggle mobile menu"
                   >
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -220,10 +233,11 @@ function App() {
                       }, 500);
                     }
                   }}
-                  className={`text-3xl xl:text-4xl font-light ${location.pathname === '/' ? 'text-white' : 'text-gray-900'} tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none`}
-                  style={
-                    location.pathname === '/' ? { textShadow: '0 2px 8px rgba(0,0,0,0.8)' } : {}
-                  }
+                  className="text-3xl xl:text-4xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
+                  style={{
+                    color: '#2d3748',
+                    textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                  }}
                   title={
                     location.pathname === '/admin'
                       ? 'Click to return home'
@@ -240,13 +254,11 @@ function App() {
                     className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
                       location.pathname === '/about'
                         ? 'text-rose-600'
-                        : location.pathname === '/'
-                          ? 'text-white hover:text-rose-400'
-                          : 'text-gray-900 hover:text-rose-600'
+                        : 'text-gray-800 hover:text-rose-600'
                     }`}
-                    style={
-                      location.pathname === '/' ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}
-                    }
+                    style={{
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
                     aria-label="About page"
                   >
                     About
@@ -256,13 +268,11 @@ function App() {
                     className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
                       location.pathname === '/prices'
                         ? 'text-rose-600'
-                        : location.pathname === '/'
-                          ? 'text-white hover:text-rose-400'
-                          : 'text-gray-900 hover:text-rose-600'
+                        : 'text-gray-800 hover:text-rose-600'
                     }`}
-                    style={
-                      location.pathname === '/' ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}
-                    }
+                    style={{
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
                     aria-label="Prices page"
                   >
                     Prices
@@ -272,13 +282,11 @@ function App() {
                     className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
                       location.pathname === '/services'
                         ? 'text-rose-600'
-                        : location.pathname === '/'
-                          ? 'text-white hover:text-rose-400'
-                          : 'text-gray-900 hover:text-rose-600'
+                        : 'text-gray-800 hover:text-rose-600'
                     }`}
-                    style={
-                      location.pathname === '/' ? { textShadow: '0 2px 4px rgba(0,0,0,0.8)' } : {}
-                    }
+                    style={{
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
                     aria-label="Services page"
                   >
                     Services
@@ -353,42 +361,96 @@ function App() {
 
         {/* Footer - Hidden on home page and admin page */}
         {location.pathname !== '/' && location.pathname !== '/admin' && (
-          <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-t border-rose-900/20">
-            <div className="w-full px-4 sm:px-6 lg:px-8">
+          <footer
+            className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-t border-gray-400/30 relative"
+            style={{
+              background:
+                'linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 25%, #d0d0d0 50%, #f5f5f5 75%, #e8e8e8 100%)',
+              boxShadow:
+                'inset 0 1px 0 rgba(255,255,255,0.8), inset 0 -1px 0 rgba(0,0,0,0.1), 0 -4px 6px rgba(0,0,0,0.1)',
+            }}
+          >
+            {/* Chrome shine overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.05) 100%)',
+              }}
+            />
+            <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
               <div className="max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 sm:gap-16 lg:gap-20 mb-12 sm:mb-16 lg:mb-20">
                   <div>
                     <h3
                       className="text-2xl sm:text-3xl lg:text-4xl font-light mb-6 tracking-tight"
-                      style={{ fontFamily: '"Playfair Display", serif' }}
+                      style={{
+                        fontFamily: '"Playfair Display", serif',
+                        color: '#2d3748',
+                        textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                      }}
                     >
                       Claire Hamilton
                     </h3>
-                    <p className="text-gray-300 mb-4 text-base sm:text-lg italic font-light">
+                    <p
+                      className="mb-4 text-base sm:text-lg italic font-light"
+                      style={{
+                        color: '#4a5568',
+                        textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                      }}
+                    >
                       Exclusive Premium Companion
                     </p>
-                    <p className="text-gray-400 text-sm sm:text-base font-light">
+                    <p
+                      className="text-sm sm:text-base font-light"
+                      style={{
+                        color: '#718096',
+                        textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                      }}
+                    >
                       Canberra, Australia
                     </p>
                   </div>
                   <div>
                     <h3
                       className="text-xl sm:text-2xl lg:text-3xl font-light mb-6 tracking-tight"
-                      style={{ fontFamily: '"Playfair Display", serif' }}
+                      style={{
+                        fontFamily: '"Playfair Display", serif',
+                        color: '#2d3748',
+                        textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                      }}
                     >
                       Contact
                     </h3>
-                    <div className="space-y-3 text-gray-300 text-sm sm:text-base font-light">
-                      <p className="flex items-center gap-2">
-                        <span className="text-rose-400">📱</span>
+                    <div className="space-y-3 text-sm sm:text-base font-light">
+                      <p
+                        className="flex items-center gap-2"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        <span className="text-rose-600">📱</span>
                         <span>SMS: 0403 977 680</span>
                       </p>
-                      <p className="flex items-center gap-2">
-                        <span className="text-rose-400">✉️</span>
+                      <p
+                        className="flex items-center gap-2"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        <span className="text-rose-600">✉️</span>
                         <span>contact.clairehamilton@proton.me</span>
                       </p>
-                      <p className="flex items-center gap-2">
-                        <span className="text-rose-400">💬</span>
+                      <p
+                        className="flex items-center gap-2"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        <span className="text-rose-600">💬</span>
                         <span>WhatsApp: +61 403 977 680</span>
                       </p>
                     </div>
@@ -396,14 +458,22 @@ function App() {
                   <div>
                     <h3
                       className="text-xl sm:text-2xl lg:text-3xl font-light mb-6 tracking-tight"
-                      style={{ fontFamily: '"Playfair Display", serif' }}
+                      style={{
+                        fontFamily: '"Playfair Display", serif',
+                        color: '#2d3748',
+                        textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                      }}
                     >
                       Connect
                     </h3>
                     <div className="space-y-3">
                       <a
                         href="#"
-                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
+                        className="group flex items-center gap-2 hover:text-rose-600 transition-all duration-300 text-sm sm:text-base font-light"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
                       >
                         <span className="transform group-hover:translate-x-1 transition-transform">
                           →
@@ -412,7 +482,11 @@ function App() {
                       </a>
                       <a
                         href="#"
-                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
+                        className="group flex items-center gap-2 hover:text-rose-600 transition-all duration-300 text-sm sm:text-base font-light"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
                       >
                         <span className="transform group-hover:translate-x-1 transition-transform">
                           →
@@ -421,7 +495,11 @@ function App() {
                       </a>
                       <a
                         href="#"
-                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
+                        className="group flex items-center gap-2 hover:text-rose-600 transition-all duration-300 text-sm sm:text-base font-light"
+                        style={{
+                          color: '#4a5568',
+                          textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                        }}
                       >
                         <span className="transform group-hover:translate-x-1 transition-transform">
                           →
@@ -431,11 +509,23 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-800/50 pt-8 sm:pt-12 text-center">
-                  <p className="text-gray-500 text-xs sm:text-sm font-light tracking-wide">
+                <div className="border-t border-gray-500/30 pt-8 sm:pt-12 text-center">
+                  <p
+                    className="text-xs sm:text-sm font-light tracking-wide"
+                    style={{
+                      color: '#718096',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
+                  >
                     © 2025 Claire Hamilton. All rights reserved.
                   </p>
-                  <p className="text-gray-600 text-xs mt-2 font-light italic">
+                  <p
+                    className="text-xs mt-2 font-light italic"
+                    style={{
+                      color: '#a0aec0',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
+                  >
                     Privacy & Discretion Guaranteed
                   </p>
                 </div>

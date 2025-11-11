@@ -30,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 7350); // Increased speed by another 30% (10500ms * 0.7 = 7350ms)
+    }, 6248); // Increased speed by 15% (7350ms * 0.85 = 6247.5ms)
 
     return () => clearInterval(interval);
   }, []);
@@ -87,6 +87,61 @@ export default function Home() {
               50% { opacity: 0.95; transform: scale(1.02); }
             }
 
+            @keyframes mercury-flow {
+              0% { 
+                background-position: 0% 50%;
+              }
+              50% { 
+                background-position: 100% 50%;
+              }
+              100% { 
+                background-position: 0% 50%;
+              }
+            }
+
+            @keyframes mercury-shimmer {
+              0% { 
+                transform: translateX(-100%) translateY(-100%) rotate(0deg);
+                opacity: 0;
+              }
+              50% { 
+                opacity: 0.15;
+              }
+              100% { 
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+                opacity: 0;
+              }
+            }
+
+            .mercury-background {
+              background: #d0d0d0;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .mercury-background::before {
+              content: '';
+              position: absolute;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 55%
+              );
+              animation: mercury-shimmer 15s linear infinite;
+              pointer-events: none;
+            }
+
+            .mercury-liquid-edge {
+              box-shadow: 
+                inset 0 1px 1px rgba(255,255,255,0.3),
+                inset 0 -1px 1px rgba(100,100,100,0.15);
+            }
+
             /* Hide scroll bar globally when on home page */
             html, body {
               overflow: hidden;
@@ -112,11 +167,11 @@ export default function Home() {
         </style>
       </Helmet>
 
-      <div className="home-page bg-gradient-to-br from-rose-950 via-rose-900 to-pink-950 fixed inset-0 overflow-hidden">
+      <div className="home-page mercury-background mercury-liquid-edge min-h-screen overflow-hidden">
         {/* Full-Screen Hero Section with Photo Carousel */}
-        <section className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
+        <section className="fixed inset-0 w-full h-full overflow-hidden flex items-center justify-center">
           {/* Carousel Container */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
             {heroImages.map((image, index) => {
               let transformClass = '';
               let zIndex = 0;
@@ -138,17 +193,17 @@ export default function Home() {
                   src={image}
                   alt="Claire Hamilton"
                   className={`absolute inset-0 w-full h-full object-contain transition-transform duration-1000 ease-in-out ${transformClass}`}
-                  style={{ zIndex, backgroundColor: 'rgb(76, 29, 47)' }}
+                  style={{ zIndex, backgroundColor: '#d0d0d0' }}
                 />
               );
             })}
           </div>
 
-          {/* Dark Pink Chrome Overlay - Subtle for photo impact */}
-          <div className="absolute inset-0 bg-gradient-to-b from-rose-950/40 via-pink-900/30 to-rose-950/50" />
+          {/* Dark Overlay - Subtle for photo impact */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/25 z-20" />
 
           {/* Content Overlay - Conversion-Optimized Layout */}
-          <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">
+          <div className="relative z-30 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">
             <h1
               className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light mb-6 sm:mb-8 drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] leading-none tracking-tight"
               style={{
