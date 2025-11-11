@@ -17,6 +17,16 @@ const heroImages = [
   '/IMG_1147-22.jpeg',
 ];
 
+// Carousel speed presets (in milliseconds)
+const CAROUSEL_SPEEDS = {
+  slow: 10000,
+  medium: 6248,
+  fast: 3000,
+  pause: null,
+};
+
+type CarouselSpeed = keyof typeof CAROUSEL_SPEEDS;
+
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -25,6 +35,7 @@ export default function Home() {
   const [dragOffset, setDragOffset] = useState(0);
   const [clickLog, setClickLog] = useState<string[]>([]);
   const [_isAgeVerified, setIsAgeVerified] = useState(false);
+  const [carouselSpeed, setCarouselSpeed] = useState<CarouselSpeed>('medium');
 
   // Add diagnostic info to window for debugging
   useEffect(() => {
@@ -40,14 +51,19 @@ export default function Home() {
   }, [clickLog]);
 
   useEffect(() => {
+    const speed = CAROUSEL_SPEEDS[carouselSpeed];
+
+    // If paused, don't set interval
+    if (speed === null) return;
+
     const interval = setInterval(() => {
       if (!isDragging) {
         setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
       }
-    }, 6248);
+    }, speed);
 
     return () => clearInterval(interval);
-  }, [isDragging]);
+  }, [isDragging, carouselSpeed]);
 
   // Listen for booking modal open event from header buttons
   useEffect(() => {
@@ -364,6 +380,70 @@ export default function Home() {
             </p>
           </div>
         </section>
+
+        {/* Carousel Speed Controls */}
+        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 sm:gap-3 justify-center select-none pointer-events-auto">
+          <button
+            onClick={() => setCarouselSpeed('slow')}
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              carouselSpeed === 'slow'
+                ? 'bg-white/90 text-gray-800 shadow-lg'
+                : 'bg-white/30 text-white hover:bg-white/50'
+            }`}
+            style={{
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+            }}
+            aria-label="Slow carousel speed"
+          >
+            🐢 Slow
+          </button>
+          <button
+            onClick={() => setCarouselSpeed('medium')}
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              carouselSpeed === 'medium'
+                ? 'bg-white/90 text-gray-800 shadow-lg'
+                : 'bg-white/30 text-white hover:bg-white/50'
+            }`}
+            style={{
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+            }}
+            aria-label="Medium carousel speed"
+          >
+            🚶 Medium
+          </button>
+          <button
+            onClick={() => setCarouselSpeed('fast')}
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              carouselSpeed === 'fast'
+                ? 'bg-white/90 text-gray-800 shadow-lg'
+                : 'bg-white/30 text-white hover:bg-white/50'
+            }`}
+            style={{
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+            }}
+            aria-label="Fast carousel speed"
+          >
+            🏃 Fast
+          </button>
+          <button
+            onClick={() => setCarouselSpeed('pause')}
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              carouselSpeed === 'pause'
+                ? 'bg-white/90 text-gray-800 shadow-lg'
+                : 'bg-white/30 text-white hover:bg-white/50'
+            }`}
+            style={{
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+            }}
+            aria-label="Pause carousel"
+          >
+            ⏸️ Pause
+          </button>
+        </div>
 
         {/* Carousel Indicators - Subtle and refined */}
         <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3 sm:gap-3 justify-center select-none pointer-events-auto">
