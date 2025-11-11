@@ -4,7 +4,20 @@ import { useState, useEffect, type MouseEvent } from 'react';
 import BookingModal from '../components/BookingModal';
 import AgeVerification from '../components/AgeVerification';
 
-const heroImages = ['/IMG_1079-6.jpeg', '/IMG_1111-15.jpeg', '/IMG_1188-26.jpeg'];
+const heroImages = [
+  '/IMG_1069-3.jpeg',
+  '/IMG_1070-4.jpeg',
+  '/IMG_1079-6.jpeg',
+  '/IMG_1109-14.jpeg',
+  '/IMG_1111-15.jpeg',
+  '/IMG_1114-16.jpeg',
+  '/IMG_1144-21.jpeg',
+  '/IMG_1117-17.jpeg',
+  '/IMG_1148-23.jpeg',
+  '/IMG_1147-22.jpeg',
+  '/IMG_1182-25.jpeg',
+  '/IMG_1188-26.jpeg',
+];
 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
