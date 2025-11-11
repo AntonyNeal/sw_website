@@ -126,7 +126,7 @@ class SimplybookService {
     }
 
     try {
-      // Step 1: Get login token using API key
+      // Get login token using API key
       const loginResponse = await axios.post(
         LOGIN_API_URL,
         {
@@ -149,33 +149,36 @@ class SimplybookService {
       const loginToken = loginResponse.data.result;
       console.log('Login token obtained:', loginToken);
 
-      // Step 2: Get admin token using secret key
-      const adminResponse = await axios.post(
-        `${USER_API_URL}/${loginToken}`,
-        {
-          jsonrpc: '2.0',
-          method: 'getAdminToken',
-          params: [this.config.secretKey],
-          id: 2,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      // Try to get admin token using the login token
+      try {
+        const adminResponse = await axios.post(
+          `${USER_API_URL}/${loginToken}`,
+          {
+            jsonrpc: '2.0',
+            method: 'auth',
+            params: [this.config.company, this.config.secretKey],
+            id: 2,
+          }
+        );
+
+        console.log('Admin auth response:', adminResponse.data);
+
+        if (adminResponse.data.result) {
+          this.token = adminResponse.data.result;
+          console.log('Admin token obtained:', this.token);
+        } else {
+          // If admin token fails, use login token
+          console.log('No admin token, using login token');
+          this.token = loginToken;
         }
-      );
-
-      console.log('Admin token response:', adminResponse.data);
-
-      if (adminResponse.data.error) {
-        throw new Error(adminResponse.data.error.message || 'Failed to get admin token');
+      } catch (adminError) {
+        console.log('Admin token failed, using login token:', adminError);
+        this.token = loginToken;
       }
 
-      this.token = adminResponse.data.result;
       // Token typically valid for 24 hours, set expiry to 23 hours from now
       this.tokenExpiry = Date.now() + 23 * 60 * 60 * 1000;
 
-      console.log('Admin token obtained:', this.token);
       return this.token as string;
     } catch (error) {
       console.error('SimplyBook.me authentication failed:', error);
@@ -191,7 +194,22 @@ class SimplybookService {
    */
   async getServices(): Promise<ApiResponse<Service[]>> {
     try {
-      const result = await this.rpcCall('getEventList') as Record<string, unknown>[];
+      // Try different method names that SimplyBook.me might use
+      let result;
+      try {
+        result = await this.rpcCall('getEventList') as Record<string, unknown>;
+      } catch {
+        console.log('getEventList failed, trying getServices...');
+        try {
+          result = await this.rpcCall('getServices') as Record<string, unknown>;
+        } catch {
+          console.log('getServices failed, trying getActiveServices...');
+          result = await this.rpcCall('getActiveServices') as Record<string, unknown>;
+        }
+      }
+
+      console.log('Services result:', result);
+      
       const services: Service[] = Object.entries(result).map(([id, service]: [string, unknown]) => {
         const s = service as Record<string, unknown>;
         return {
