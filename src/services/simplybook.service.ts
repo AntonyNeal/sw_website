@@ -9,6 +9,7 @@ const USER_API_URL = 'https://user-api.simplybook.me';
 export interface SimplybookConfig {
   company: string;
   apiKey: string;
+  secretKey: string;
 }
 
 export interface Service {
@@ -77,6 +78,7 @@ class SimplybookService {
     this.config = {
       company: import.meta.env.VITE_SIMPLYBOOK_COMPANY || '',
       apiKey: import.meta.env.VITE_SIMPLYBOOK_API_KEY || '',
+      secretKey: import.meta.env.VITE_SIMPLYBOOK_SECRET_KEY || '',
     };
   }
 
@@ -87,6 +89,8 @@ class SimplybookService {
     const token = await this.getToken();
     
     try {
+      console.log(`Making RPC call: ${method}`, { params, url: `${USER_API_URL}/${token}` });
+      
       const response = await axios.post(`${USER_API_URL}/${token}`, {
         jsonrpc: '2.0',
         method,
@@ -94,13 +98,20 @@ class SimplybookService {
         id: this.rpcId++,
       });
 
+      console.log(`RPC response for ${method}:`, response.data);
+
       if (response.data.error) {
+        console.error(`RPC error for ${method}:`, response.data.error);
         throw new Error(response.data.error.message || 'RPC call failed');
       }
 
       return response.data.result;
     } catch (error) {
       console.error(`RPC call failed (${method}):`, error);
+      if (axios.isAxiosError(error)) {
+        console.error('Response:', error.response?.data);
+        console.error('Status:', error.response?.status);
+      }
       throw error;
     }
   }
@@ -115,8 +126,8 @@ class SimplybookService {
     }
 
     try {
-      // Get login token using JSON-RPC API
-      const response = await axios.post(
+      // Step 1: Get login token using API key
+      const loginResponse = await axios.post(
         LOGIN_API_URL,
         {
           jsonrpc: '2.0',
@@ -131,14 +142,40 @@ class SimplybookService {
         }
       );
 
-      if (response.data.error) {
-        throw new Error(response.data.error.message || 'Authentication failed');
+      if (loginResponse.data.error) {
+        throw new Error(loginResponse.data.error.message || 'Authentication failed');
       }
 
-      this.token = response.data.result;
+      const loginToken = loginResponse.data.result;
+      console.log('Login token obtained:', loginToken);
+
+      // Step 2: Get admin token using secret key
+      const adminResponse = await axios.post(
+        `${USER_API_URL}/${loginToken}`,
+        {
+          jsonrpc: '2.0',
+          method: 'getAdminToken',
+          params: [this.config.secretKey],
+          id: 2,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('Admin token response:', adminResponse.data);
+
+      if (adminResponse.data.error) {
+        throw new Error(adminResponse.data.error.message || 'Failed to get admin token');
+      }
+
+      this.token = adminResponse.data.result;
       // Token typically valid for 24 hours, set expiry to 23 hours from now
       this.tokenExpiry = Date.now() + 23 * 60 * 60 * 1000;
 
+      console.log('Admin token obtained:', this.token);
       return this.token as string;
     } catch (error) {
       console.error('SimplyBook.me authentication failed:', error);
