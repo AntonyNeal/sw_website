@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Calendar } from 'lucide-react';
 
 interface FloatingCTAProps {
@@ -6,18 +6,7 @@ interface FloatingCTAProps {
 }
 
 export default function FloatingCTA({ onBookNow }: FloatingCTAProps) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    // Show CTA after a short delay when page loads
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+  const [isVisible] = useState(true);
 
   return (
     <button
