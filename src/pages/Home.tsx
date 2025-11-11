@@ -15,8 +15,6 @@ const heroImages = [
   '/IMG_1117-17.jpeg',
   '/IMG_1148-23.jpeg',
   '/IMG_1147-22.jpeg',
-  '/IMG_1182-25.jpeg',
-  '/IMG_1188-26.jpeg',
 ];
 
 export default function Home() {
