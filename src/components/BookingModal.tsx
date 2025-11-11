@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+//clairehamilton.com.au
+//www.clairehamilton.com.auimport React, { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import type { BookingModalProps } from '../types/booking.types';
 
