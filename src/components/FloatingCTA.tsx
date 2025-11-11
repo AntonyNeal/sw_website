@@ -14,17 +14,8 @@ export default function FloatingCTA({ onBookNow }: FloatingCTAProps) {
       setIsVisible(true);
     }, 1000);
 
-    // Hide CTA when scrolling near top
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      setIsVisible(scrollPosition > 200);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
