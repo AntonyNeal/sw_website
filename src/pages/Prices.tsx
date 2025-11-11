@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { useState, useEffect } from 'react';
 import { Calendar } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
+import FloatingCTA from '../components/FloatingCTA';
 
 export default function Prices() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -329,6 +330,7 @@ export default function Prices() {
         </section>
       </div>
 
+      <FloatingCTA onBookNow={() => setIsBookingOpen(true)} />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </>
   );

@@ -1,6 +1,7 @@
 # Setup clairehamilton.com.au Domain
 
 ## Current Status
+
 - ✅ Domain registered: `clairehamilton.com.au` (Crazy Domains)
 - ✅ Domain expires: November 8, 2027
 - ✅ App deployed: `octopus-app-tw5wu.ondigitalocean.app`
@@ -16,6 +17,7 @@
    - Click "Name Servers" tab
 
 2. **Update Nameservers to DigitalOcean**
+
    ```
    ns1.digitalocean.com
    ns2.digitalocean.com
@@ -34,6 +36,7 @@
 2. **Add/Update DNS Records**
 
    **For root domain (clairehamilton.com.au):**
+
    ```
    Type: A
    Name: @ (or leave blank)
@@ -42,6 +45,7 @@
    ```
 
    **For www subdomain:**
+
    ```
    Type: CNAME
    Name: www
@@ -76,6 +80,7 @@
 ## Step 3: Update App Configuration (If Needed)
 
 The app is already configured for `clairehamilton.com.au` in:
+
 - ✅ `app-spec.yaml` - domain configured
 - ✅ Email settings ready (bookings@clairehamilton.com.au)
 - ✅ CORS/API settings configured
@@ -87,6 +92,7 @@ The app is already configured for `clairehamilton.com.au` in:
 After DNS propagates (15 minutes to 48 hours):
 
 1. **Test DNS Resolution**
+
    ```powershell
    nslookup clairehamilton.com.au
    ```
@@ -105,11 +111,11 @@ After DNS propagates (15 minutes to 48 hours):
 
 ## Quick Reference: Current URLs
 
-| Type | URL | Status |
-|------|-----|--------|
-| DigitalOcean Default | https://octopus-app-tw5wu.ondigitalocean.app | ✅ Active |
-| Custom Domain (Goal) | https://clairehamilton.com.au | 🎯 To Configure |
-| WWW Subdomain | https://www.clairehamilton.com.au | 🎯 To Configure |
+| Type                 | URL                                          | Status          |
+| -------------------- | -------------------------------------------- | --------------- |
+| DigitalOcean Default | https://octopus-app-tw5wu.ondigitalocean.app | ✅ Active       |
+| Custom Domain (Goal) | https://clairehamilton.com.au                | 🎯 To Configure |
+| WWW Subdomain        | https://www.clairehamilton.com.au            | 🎯 To Configure |
 
 ## Recommended Next Steps
 
@@ -122,16 +128,19 @@ After DNS propagates (15 minutes to 48 hours):
 ## Troubleshooting
 
 ### Domain Not Working After 24 Hours
+
 - Check DNS propagation: https://www.whatsmydns.net/#A/clairehamilton.com.au
 - Verify nameservers are correct
 - Check DigitalOcean domain verification status
 
 ### SSL Certificate Issues
+
 - Wait 10-15 minutes after adding domain
 - Check DigitalOcean dashboard for certificate status
 - Ensure DNS is pointing correctly
 
 ### "Site Can't Be Reached" Error
+
 - DNS hasn't propagated yet (wait longer)
 - Check A record points to correct IP
 - Verify domain is added in DigitalOcean
@@ -139,6 +148,7 @@ After DNS propagates (15 minutes to 48 hours):
 ## Domain Health Checklist
 
 Before going live, ensure:
+
 - [ ] DNS records configured at Crazy Domains
 - [ ] Domain added in DigitalOcean App Platform
 - [ ] SSL certificate issued (green padlock)

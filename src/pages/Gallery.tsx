@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
+import FloatingCTA from '../components/FloatingCTA';
 
 const galleryImages = [
   {
@@ -188,6 +189,12 @@ export default function Gallery() {
           </div>
         )}
       </div>
+
+      <FloatingCTA
+        onBookNow={() => {
+          window.dispatchEvent(new CustomEvent('openBookingModal'));
+        }}
+      />
     </>
   );
 }
