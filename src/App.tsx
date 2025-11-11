@@ -5,9 +5,9 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Services from './pages/Services';
 import Prices from './pages/Prices';
+import Gallery from './pages/Gallery';
 import AdminDashboard from './pages/AdminDashboard';
 import BookingModal from './components/BookingModal';
-import MobileCTABar from './components/MobileCTABar';
 import { initializeSession, registerSession, trackConversion } from './utils/utm.service';
 
 function App() {
@@ -319,65 +319,96 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/prices" element={<Prices />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
 
         {/* Footer - Hidden on home page and admin page */}
         {location.pathname !== '/' && location.pathname !== '/admin' && (
-          <footer className="bg-gray-900 text-white py-12 sm:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8">
+          <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 border-t border-rose-900/20">
             <div className="w-full px-4 sm:px-6 lg:px-8">
               <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12 lg:gap-16 mb-8 sm:mb-12 lg:mb-16">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 sm:gap-16 lg:gap-20 mb-12 sm:mb-16 lg:mb-20">
                   <div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold mb-4 sm:mb-6">
+                    <h3
+                      className="text-2xl sm:text-3xl lg:text-4xl font-light mb-6 tracking-tight"
+                      style={{ fontFamily: '"Playfair Display", serif' }}
+                    >
                       Claire Hamilton
                     </h3>
-                    <p className="text-gray-300 mb-4 sm:text-base lg:text-lg">
-                      Real curves. Real connection. Ultimate GFE.
+                    <p className="text-gray-300 mb-4 text-base sm:text-lg italic font-light">
+                      Exclusive Premium Companion
                     </p>
-                    <p className="text-gray-300 text-sm sm:text-base">
-                      Independent escort based in Canberra, Australia
+                    <p className="text-gray-400 text-sm sm:text-base font-light">
+                      Canberra, Australia
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold mb-4 sm:mb-6">
+                    <h3
+                      className="text-xl sm:text-2xl lg:text-3xl font-light mb-6 tracking-tight"
+                      style={{ fontFamily: '"Playfair Display", serif' }}
+                    >
                       Contact
                     </h3>
-                    <div className="space-y-2 sm:space-y-3 text-gray-300 sm:text-base lg:text-lg">
-                      <p>SMS Only: 0403 977 680</p>
-                      <p>Email: contact.clairehamilton@proton.me</p>
-                      <p>WhatsApp: +61 403 977 680</p>
+                    <div className="space-y-3 text-gray-300 text-sm sm:text-base font-light">
+                      <p className="flex items-center gap-2">
+                        <span className="text-rose-400">📱</span>
+                        <span>SMS: 0403 977 680</span>
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <span className="text-rose-400">✉️</span>
+                        <span>contact.clairehamilton@proton.me</span>
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <span className="text-rose-400">💬</span>
+                        <span>WhatsApp: +61 403 977 680</span>
+                      </p>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold mb-4 sm:mb-6">
-                      Follow Me
+                    <h3
+                      className="text-xl sm:text-2xl lg:text-3xl font-light mb-6 tracking-tight"
+                      style={{ fontFamily: '"Playfair Display", serif' }}
+                    >
+                      Connect
                     </h3>
-                    <div className="space-y-2 sm:space-y-3">
+                    <div className="space-y-3">
                       <a
                         href="#"
-                        className="block text-gray-300 hover:text-pink-400 transition-colors sm:text-base lg:text-lg"
+                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
                       >
-                        Twitter
+                        <span className="transform group-hover:translate-x-1 transition-transform">
+                          →
+                        </span>
+                        <span>Twitter</span>
                       </a>
                       <a
                         href="#"
-                        className="block text-gray-300 hover:text-pink-400 transition-colors sm:text-base lg:text-lg"
+                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
                       >
-                        OnlyFans (Free)
+                        <span className="transform group-hover:translate-x-1 transition-transform">
+                          →
+                        </span>
+                        <span>OnlyFans</span>
                       </a>
                       <a
                         href="#"
-                        className="block text-gray-300 hover:text-pink-400 transition-colors sm:text-base lg:text-lg"
+                        className="group flex items-center gap-2 text-gray-300 hover:text-rose-400 transition-all duration-300 text-sm sm:text-base font-light"
                       >
-                        Bluesky
+                        <span className="transform group-hover:translate-x-1 transition-transform">
+                          →
+                        </span>
+                        <span>Bluesky</span>
                       </a>
                     </div>
                   </div>
                 </div>
-                <div className="border-t border-gray-700 pt-8 sm:pt-12 lg:pt-16 text-center">
-                  <p className="text-gray-400 text-xs sm:text-sm lg:text-base">
-                    © 2025 Claire Hamilton. All rights reserved. | Privacy & Discretion Guaranteed
+                <div className="border-t border-gray-800/50 pt-8 sm:pt-12 text-center">
+                  <p className="text-gray-500 text-xs sm:text-sm font-light tracking-wide">
+                    © 2025 Claire Hamilton. All rights reserved.
+                  </p>
+                  <p className="text-gray-600 text-xs mt-2 font-light italic">
+                    Privacy & Discretion Guaranteed
                   </p>
                 </div>
               </div>
@@ -396,9 +427,6 @@ function App() {
         hourlyRate={100}
         platformFeePercentage={0.1}
       />
-      {location.pathname !== '/admin' && (
-        <MobileCTABar ctaText="Book Now" ctaAction={handleBookingOpen} />
-      )}
     </>
   );
 }

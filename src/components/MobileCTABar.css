@@ -17,10 +17,12 @@
   gap: 0.75rem;
   padding: 0.75rem 1rem;
 
-  /* Basic styling */
-  background: white;
-  border-top: 1px solid #e5e7eb;
-  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+  /* Glassmorphism styling */
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 -8px 32px 0 rgba(244, 63, 94, 0.1);
 }
 
 /* Hide on desktop - adjust breakpoint as needed */

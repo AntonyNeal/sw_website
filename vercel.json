@@ -9,7 +9,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "*"
+          "value": "https://clairehamilton.com.au"
         },
         {
           "key": "Access-Control-Allow-Methods",

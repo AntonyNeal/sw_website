@@ -2,26 +2,13 @@
 # Copy this file to 'app-spec.yaml' and customize for your deployment
 # Replace all placeholder values with your actual configuration
 
-name: your-service-booking-app
-region: nyc1 # Choose: nyc1, sfo3, ams3, sgp1, lon1, fra1, tor1, blr1, syd1
+name: octopus-app
+region: syd1 # Sydney region for clairehamilton.com.au (Australian domain)
 
 domains:
-  - domain: yourdomain.com
+  - domain: clairehamilton.com.au
     type: PRIMARY
     wildcard: true
-
-ingress:
-  rules:
-    - component:
-        name: api
-      match:
-        path:
-          prefix: /api
-    - component:
-        name: service-booking-platform
-      match:
-        path:
-          prefix: /
 
 services:
   # Backend API Service
@@ -63,20 +50,20 @@ services:
 
       - key: SENDGRID_FROM_EMAIL
         scope: RUN_AND_BUILD_TIME
-        value: bookings@yourdomain.com
+        value: bookings@clairehamilton.com.au
 
       - key: BUSINESS_NOTIFICATION_EMAIL
         scope: RUN_AND_BUILD_TIME
-        value: notifications@yourdomain.com
+        value: notifications@clairehamilton.com.au
 
       # API Configuration
       - key: ALLOWED_ORIGIN
         scope: RUN_AND_BUILD_TIME
-        value: https://yourdomain.com
+        value: https://clairehamilton.com.au
 
       - key: VITE_API_BASE_URL
         scope: RUN_AND_BUILD_TIME
-        value: https://yourdomain.com/api
+        value: https://clairehamilton.com.au/api
 
       # Security
       - key: JWT_SECRET
@@ -109,7 +96,7 @@ services:
     github:
       branch: main
       deploy_on_push: true
-      repo: AntonyNeal/service-booking-platform-template
+      repo: AntonyNeal/sw_website
 
     http_port: 8080
     instance_count: 1
@@ -120,12 +107,16 @@ services:
     run_command: npm start
     source_dir: /api
 
+static_sites:
   # Frontend Static Site
   - build_command: npm install && npm run build
+    catchall_document: index.html
+    index_document: index.html
+    output_dir: dist
     envs:
       - key: VITE_API_BASE_URL
         scope: BUILD_TIME
-        value: https://yourdomain.com/api
+        value: https://clairehamilton.com.au/api
 
       - key: VITE_GA_MEASUREMENT_ID
         scope: BUILD_TIME
@@ -138,17 +129,12 @@ services:
     github:
       branch: main
       deploy_on_push: true
-      repo: AntonyNeal/service-booking-platform-template
+      repo: AntonyNeal/sw_website
 
     name: service-booking-platform
     routes:
       - path: /
     source_dir: /
-    static_sites:
-      - build_command: npm run build
-        catchall_document: index.html
-        index_document: index.html
-        output_dir: dist
 # Optional: Managed Database (uncomment to use DigitalOcean managed database)
 # databases:
 #   - cluster_name: your-app-database

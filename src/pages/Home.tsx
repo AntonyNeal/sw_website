@@ -72,10 +72,10 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Claire Hamilton - Canberra Companion</title>
+        <title>Claire Hamilton - Exclusive Premium Companion in Canberra</title>
         <meta
           name="description"
-          content="Claire Hamilton - Real curves. Real connection. Ultimate GFE. Independent escort based in Canberra, Australia."
+          content="Claire Hamilton - Exclusive premium companion offering sophisticated companionship in Canberra, Australia. Elegance, discretion, and genuine connection."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -169,7 +169,7 @@ export default function Home() {
                 fontFamily: '"Crimson Text", serif',
               }}
             >
-              Real curves. Real connection. Ultimate GFE.
+              Exclusive Premium Companion
             </p>
             <div className="flex gap-3 sm:gap-4 md:gap-6 justify-center flex-wrap px-4 mb-8 sm:mb-12">
               <button

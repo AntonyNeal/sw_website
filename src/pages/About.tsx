@@ -9,10 +9,10 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About Claire Hamilton - Canberra Companion</title>
+        <title>About Claire Hamilton - Premium Companion in Canberra</title>
         <meta
           name="description"
-          content="Learn about Claire Hamilton - 32-year-old petite auburn-haired sweetheart with soft curves and a love for genuine connection."
+          content="Learn about Claire Hamilton - sophisticated, elegant companion offering genuine connection, warmth, and unforgettable experiences."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -36,14 +36,14 @@ export default function About() {
               className="text-xl md:text-2xl text-gray-700 italic mb-8"
               style={{ fontFamily: '"Crimson Text", serif' }}
             >
-              Hi there, I&apos;m Claire. Your 32-year-old petite auburn-haired sweetheart with soft
-              curves, a cheeky spark, and a love for genuine connection.
+              A sophisticated companion for discerning individuals. At 32, I bring petite elegance,
+              auburn warmth, soft curves, and an unmistakable spark to every encounter.
             </p>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              I&apos;m all about slow-burning chemistry, sensual kisses, deep conversations, and
-              playful moments that will stay with you forever. I melt for neck kisses, deep voices,
-              and arms wrapped tightly around my waist. If you&apos;re after warmth, depth, and a
-              touch of wicked fun, I might just be your new favourite escape.
+              I specialize in creating genuine connections filled with sensual chemistry, meaningful
+              conversation, and unforgettable moments. Whether you seek the tender intimacy of a
+              girlfriend experience or the passionate intensity of something more adventurous, I
+              bring warmth, depth, and sophisticated allure to every experience.
             </p>
           </div>
         </section>
@@ -168,14 +168,14 @@ export default function About() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 px-4 bg-gradient-to-r from-pink-600 to-purple-600">
+        <section className="py-16 px-4 bg-gradient-to-r from-rose-500 to-pink-600">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-light text-white mb-6">
-              Ready for Something Real?
+              Experience Luxury Companionship
             </h2>
             <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              If you&apos;ve made it this far and you&apos;re craving something slow, sensual, and
-              grounded in connection — I&apos;d love to meet you.
+              If you appreciate sophistication, genuine connection, and unforgettable experiences —
+              I would be delighted to meet you.
             </p>
             <button
               onClick={() => setIsBookingOpen(true)}
