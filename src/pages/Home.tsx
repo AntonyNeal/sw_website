@@ -4,11 +4,10 @@ import { useState, useEffect, type MouseEvent } from 'react';
 import BookingModal from '../components/BookingModal';
 
 const heroImages = [
-  'https://pbs.twimg.com/media/G3hgK2hX0AAB8RL.jpg:large',
-  'https://pbs.twimg.com/media/G3Gh-hdbUAAQTDo.jpg:large',
-  'https://pbs.twimg.com/media/G3qlG5VWwAAkv0w.jpg:large',
-  'https://pbs.twimg.com/media/G4OoP7-WoAA4YbX.jpg:large',
-  'https://pbs.twimg.com/media/G22stVEaYAAuqaG.jpg:large',
+  '/IMG_1079-6.jpeg',
+  '/IMG_1074-5.jpeg',
+  '/IMG_1111-15.jpeg',
+  '/IMG_1188-26.jpeg',
 ];
 
 export default function Home() {
