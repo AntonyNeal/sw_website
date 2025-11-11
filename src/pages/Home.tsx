@@ -35,6 +35,19 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Listen for booking modal open event from header buttons
+  useEffect(() => {
+    const handleOpenBooking = () => {
+      setIsBookingOpen(true);
+    };
+
+    window.addEventListener('openBookingModal', handleOpenBooking);
+
+    return () => {
+      window.removeEventListener('openBookingModal', handleOpenBooking);
+    };
+  }, []);
+
   const goToImage = (index: number) => {
     setCurrentImageIndex(index);
   };

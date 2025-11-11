@@ -1,10 +1,23 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar } from 'lucide-react';
 import BookingModal from '../components/BookingModal';
 
 export default function Services() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+
+  // Listen for booking modal open event from header buttons
+  useEffect(() => {
+    const handleOpenBooking = () => {
+      setIsBookingOpen(true);
+    };
+
+    window.addEventListener('openBookingModal', handleOpenBooking);
+
+    return () => {
+      window.removeEventListener('openBookingModal', handleOpenBooking);
+    };
+  }, []);
 
   return (
     <>
