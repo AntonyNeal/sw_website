@@ -30,7 +30,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 10500); // Increased speed by 30% (15000ms * 0.7 = 10500ms)
+    }, 7350); // Increased speed by another 30% (10500ms * 0.7 = 7350ms)
 
     return () => clearInterval(interval);
   }, []);
@@ -112,7 +112,7 @@ export default function Home() {
         </style>
       </Helmet>
 
-      <div className="home-page bg-black fixed inset-0 overflow-hidden">
+      <div className="home-page bg-gradient-to-br from-rose-950 via-rose-900 to-pink-950 fixed inset-0 overflow-hidden">
         {/* Full-Screen Hero Section with Photo Carousel */}
         <section className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center">
           {/* Carousel Container */}
@@ -138,14 +138,14 @@ export default function Home() {
                   src={image}
                   alt="Claire Hamilton"
                   className={`absolute inset-0 w-full h-full object-contain transition-transform duration-1000 ease-in-out ${transformClass}`}
-                  style={{ zIndex, backgroundColor: '#000' }}
+                  style={{ zIndex, backgroundColor: 'rgb(76, 29, 47)' }}
                 />
               );
             })}
           </div>
 
-          {/* Dark Overlay - Subtle for photo impact */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-rose-900/20 to-black/40" />
+          {/* Dark Pink Chrome Overlay - Subtle for photo impact */}
+          <div className="absolute inset-0 bg-gradient-to-b from-rose-950/40 via-pink-900/30 to-rose-950/50" />
 
           {/* Content Overlay - Conversion-Optimized Layout */}
           <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">

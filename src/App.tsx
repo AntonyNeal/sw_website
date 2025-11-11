@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -12,6 +12,7 @@ import { initializeSession, registerSession, trackConversion } from './utils/utm
 
 function App() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const clickCountRef = useRef(0);
@@ -71,15 +72,26 @@ function App() {
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log('Claire Hamilton logo clicked! Current path:', location.pathname);
+
                     // If on admin page, go home on any click
                     if (location.pathname === '/admin') {
-                      window.location.href = '/';
+                      console.log('Navigating from admin to home');
+                      navigate('/');
                       return;
                     }
 
-                    // Otherwise, use triple-click to access admin
+                    // If NOT on home, navigate to home
+                    if (location.pathname !== '/') {
+                      console.log('Navigating to home from:', location.pathname);
+                      navigate('/');
+                      return;
+                    }
+
+                    // If already on home, use triple-click for admin
                     clickCountRef.current += 1;
                     const newCount = clickCountRef.current;
+                    console.log('Click count:', newCount);
 
                     if (newCount === 3) {
                       clickCountRef.current = 0;
@@ -87,7 +99,8 @@ function App() {
                         clearTimeout(resetTimerRef.current);
                         resetTimerRef.current = null;
                       }
-                      window.location.href = '/admin';
+                      console.log('Triple-click detected! Navigating to admin');
+                      navigate('/admin');
                     } else {
                       // Clear existing timer
                       if (resetTimerRef.current) {
@@ -162,15 +175,29 @@ function App() {
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
+                    console.log(
+                      'Claire Hamilton logo clicked (Desktop)! Current path:',
+                      location.pathname
+                    );
+
                     // If on admin page, go home on any click
                     if (location.pathname === '/admin') {
-                      window.location.href = '/';
+                      console.log('Navigating from admin to home');
+                      navigate('/');
                       return;
                     }
 
-                    // Otherwise, use triple-click to access admin
+                    // If NOT on home, navigate to home
+                    if (location.pathname !== '/') {
+                      console.log('Navigating to home from:', location.pathname);
+                      navigate('/');
+                      return;
+                    }
+
+                    // If already on home, use triple-click for admin
                     clickCountRef.current += 1;
                     const newCount = clickCountRef.current;
+                    console.log('Click count:', newCount);
 
                     if (newCount === 3) {
                       clickCountRef.current = 0;
@@ -178,7 +205,8 @@ function App() {
                         clearTimeout(resetTimerRef.current);
                         resetTimerRef.current = null;
                       }
-                      window.location.href = '/admin';
+                      console.log('Triple-click detected! Navigating to admin');
+                      navigate('/admin');
                     } else {
                       // Clear existing timer
                       if (resetTimerRef.current) {
