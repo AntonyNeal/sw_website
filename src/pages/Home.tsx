@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { useState, useEffect, type MouseEvent } from 'react';
+import { useState, useEffect, type MouseEvent, type TouchEvent } from 'react';
 import BookingModal from '../components/BookingModal';
 import AgeVerification from '../components/AgeVerification';
 
@@ -21,7 +21,8 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState(0);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState(0);
   const [clickLog, setClickLog] = useState<string[]>([]);
   const [_isAgeVerified, setIsAgeVerified] = useState(false);
 
@@ -40,11 +41,13 @@ export default function Home() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 6248); // Increased speed by 15% (7350ms * 0.85 = 6247.5ms)
+      if (!isDragging) {
+        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+      }
+    }, 6248);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isDragging]);
 
   // Listen for booking modal open event from header buttons
   useEffect(() => {
@@ -63,31 +66,72 @@ export default function Home() {
     setCurrentImageIndex(index);
   };
 
-  const handleIndicatorMouseDown = (e: MouseEvent<HTMLButtonElement>, index: number) => {
-    setIsDragging(true);
-    setDragStart(e.clientX);
-    goToImage(index);
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
   };
 
-  const handleIndicatorMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+  };
+
+  // Mouse drag handlers
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    setDragOffset(0);
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStart.x;
+    setDragOffset(deltaX);
+  };
+
+  const handleMouseUp = () => {
     if (!isDragging) return;
 
-    const delta = e.clientX - dragStart;
-    if (Math.abs(delta) > 30) {
-      // Dragged more than 30px
-      if (delta > 0) {
-        // Dragged right - go to previous image
-        setCurrentImageIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
+    const threshold = 50; // Minimum pixels to trigger swipe
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        prevImage(); // Swiped right
       } else {
-        // Dragged left - go to next image
-        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+        nextImage(); // Swiped left
       }
-      setDragStart(e.clientX);
     }
+
+    setIsDragging(false);
+    setDragOffset(0);
   };
 
-  const handleIndicatorMouseUp = () => {
+  // Touch handlers for mobile
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    const touch = e.touches[0];
+    setIsDragging(true);
+    setDragStart({ x: touch.clientX, y: touch.clientY });
+    setDragOffset(0);
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - dragStart.x;
+    setDragOffset(deltaX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!isDragging) return;
+
+    const threshold = 50;
+    if (Math.abs(dragOffset) > threshold) {
+      if (dragOffset > 0) {
+        prevImage();
+      } else {
+        nextImage();
+      }
+    }
+
     setIsDragging(false);
+    setDragOffset(0);
   };
 
   return (
@@ -194,14 +238,24 @@ export default function Home() {
       <div className="home-page mercury-background mercury-liquid-edge min-h-screen overflow-hidden">
         {/* Full-Screen Hero Section with Photo Carousel */}
         <section className="fixed inset-0 w-full h-full overflow-hidden flex items-center justify-center">
-          {/* Carousel Container */}
-          <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
+          {/* Carousel Container with Swipe Support */}
+          <div
+            className="absolute inset-0 w-full h-full overflow-hidden z-0 cursor-grab active:cursor-grabbing"
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{ touchAction: 'pan-y' }}
+          >
             {heroImages.map((image, index) => {
               let transformClass = '';
               let zIndex = 0;
 
               if (index === currentImageIndex) {
-                transformClass = 'translate-x-0';
+                transformClass = isDragging ? `translate-x-[${dragOffset}px]` : 'translate-x-0';
                 zIndex = 10;
               } else if (index < currentImageIndex) {
                 transformClass = '-translate-x-full';
@@ -211,13 +265,27 @@ export default function Home() {
                 zIndex = 5;
               }
 
+              const style: {
+                zIndex: number;
+                backgroundColor: string;
+                transform?: string;
+                transition?: string;
+              } = {
+                zIndex,
+                backgroundColor: '#d0d0d0',
+                ...(isDragging && index === currentImageIndex
+                  ? { transform: `translateX(${dragOffset}px)`, transition: 'none' }
+                  : {}),
+              };
+
               return (
                 <img
                   key={index}
                   src={image}
                   alt="Claire Hamilton"
                   className={`absolute inset-0 w-full h-full object-contain transition-transform duration-1000 ease-in-out ${transformClass}`}
-                  style={{ zIndex, backgroundColor: '#d0d0d0' }}
+                  style={style}
+                  draggable={false}
                 />
               );
             })}
@@ -298,16 +366,11 @@ export default function Home() {
         </section>
 
         {/* Carousel Indicators - Subtle and refined */}
-        <div
-          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3 sm:gap-3 justify-center select-none pointer-events-auto"
-          onMouseMove={handleIndicatorMouseMove}
-          onMouseUp={handleIndicatorMouseUp}
-          onMouseLeave={handleIndicatorMouseUp}
-        >
+        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3 sm:gap-3 justify-center select-none pointer-events-auto">
           {heroImages.map((_, index) => (
             <button
               key={index}
-              onMouseDown={(e) => handleIndicatorMouseDown(e, index)}
+              onClick={() => goToImage(index)}
               className={`rounded-full transition-all duration-300 cursor-pointer focus:outline-none flex-shrink-0 ${
                 index === currentImageIndex
                   ? 'bg-white/80 w-2.5 h-2.5'
