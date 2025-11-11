@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface AgeVerificationProps {
   onVerified: () => void;
@@ -8,18 +8,19 @@ export default function AgeVerification({ onVerified }: AgeVerificationProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    // Check if user has already verified age (stored in session)
-    const isVerified = sessionStorage.getItem('ageVerified');
-    if (isVerified === 'true') {
-      setIsVisible(false);
-      onVerified();
-    }
-  }, [onVerified]);
+  // Temporarily disabled sessionStorage check - modal appears on every refresh
+  // useEffect(() => {
+  //   // Check if user has already verified age (stored in session)
+  //   const isVerified = sessionStorage.getItem('ageVerified');
+  //   if (isVerified === 'true') {
+  //     setIsVisible(false);
+  //     onVerified();
+  //   }
+  // }, [onVerified]);
 
   const handleEnter = () => {
     setIsAnimating(true);
-    sessionStorage.setItem('ageVerified', 'true');
+    // sessionStorage.setItem('ageVerified', 'true'); // Disabled for now
 
     // Fade out animation
     setTimeout(() => {
