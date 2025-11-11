@@ -9,18 +9,13 @@ const galleryImages = [
   },
   {
     id: 2,
-    src: '/IMG_1074-5.jpeg',
+    src: '/IMG_1111-15.jpeg',
     alt: 'Claire Hamilton - Photo 2',
   },
   {
     id: 3,
-    src: '/IMG_1111-15.jpeg',
-    alt: 'Claire Hamilton - Photo 3',
-  },
-  {
-    id: 4,
     src: '/IMG_1188-26.jpeg',
-    alt: 'Claire Hamilton - Photo 4',
+    alt: 'Claire Hamilton - Photo 3',
   },
 ];
 

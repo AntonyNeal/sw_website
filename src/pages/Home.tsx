@@ -3,12 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, type MouseEvent } from 'react';
 import BookingModal from '../components/BookingModal';
 
-const heroImages = [
-  '/IMG_1079-6.jpeg',
-  '/IMG_1074-5.jpeg',
-  '/IMG_1111-15.jpeg',
-  '/IMG_1188-26.jpeg',
-];
+const heroImages = ['/IMG_1079-6.jpeg', '/IMG_1111-15.jpeg', '/IMG_1188-26.jpeg'];
 
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
