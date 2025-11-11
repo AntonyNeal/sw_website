@@ -1,10 +1,10 @@
 // SimplyBook.me API Service
-// Full API integration for booking management
+// Full API integration using JSON-RPC 2.0
 
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 
-const JSON_RPC_URL = 'https://user-api.simplybook.me';
-const REST_API_URL = import.meta.env.VITE_SIMPLYBOOK_API_URL || 'https://user-api-v2.simplybook.net';
+const LOGIN_API_URL = 'https://user-api.simplybook.me/login';
+const USER_API_URL = 'https://user-api.simplybook.me';
 
 export interface SimplybookConfig {
   company: string;
@@ -71,55 +71,38 @@ class SimplybookService {
   private config: SimplybookConfig;
   private token: string | null = null;
   private tokenExpiry: number | null = null;
-  private axiosInstance: AxiosInstance;
+  private rpcId = 1;
 
   constructor() {
     this.config = {
       company: import.meta.env.VITE_SIMPLYBOOK_COMPANY || '',
       apiKey: import.meta.env.VITE_SIMPLYBOOK_API_KEY || '',
     };
+  }
 
-    this.axiosInstance = axios.create({
-      baseURL: REST_API_URL,
-      timeout: 30000,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  /**
+   * Make a JSON-RPC 2.0 call
+   */
+  private async rpcCall(method: string, params: unknown[] = []): Promise<unknown> {
+    const token = await this.getToken();
+    
+    try {
+      const response = await axios.post(`${USER_API_URL}/${token}`, {
+        jsonrpc: '2.0',
+        method,
+        params,
+        id: this.rpcId++,
+      });
 
-    // Request interceptor to add authentication
-    this.axiosInstance.interceptors.request.use(
-      async (config) => {
-        if (config.url !== '/login') {
-          const token = await this.getToken();
-          config.headers['X-Company-Login'] = this.config.company;
-          config.headers['X-Token'] = token;
-        }
-        return config;
-      },
-      (error) => Promise.reject(error)
-    );
-
-    // Response interceptor for error handling
-    this.axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        if (error.response?.status === 401) {
-          // Token expired, clear and retry
-          this.token = null;
-          this.tokenExpiry = null;
-
-          const originalRequest = error.config;
-          if (!originalRequest._retry) {
-            originalRequest._retry = true;
-            const token = await this.getToken();
-            originalRequest.headers['X-Token'] = token;
-            return this.axiosInstance(originalRequest);
-          }
-        }
-        return Promise.reject(error);
+      if (response.data.error) {
+        throw new Error(response.data.error.message || 'RPC call failed');
       }
-    );
+
+      return response.data.result;
+    } catch (error) {
+      console.error(`RPC call failed (${method}):`, error);
+      throw error;
+    }
   }
 
   /**
@@ -132,9 +115,9 @@ class SimplybookService {
     }
 
     try {
-      // Step 1: Get login token using JSON-RPC API
-      const loginResponse = await axios.post(
-        `${JSON_RPC_URL}/login`,
+      // Get login token using JSON-RPC API
+      const response = await axios.post(
+        LOGIN_API_URL,
         {
           jsonrpc: '2.0',
           method: 'getToken',
@@ -148,11 +131,11 @@ class SimplybookService {
         }
       );
 
-      if (loginResponse.data.error) {
-        throw new Error(loginResponse.data.error.message || 'Authentication failed');
+      if (response.data.error) {
+        throw new Error(response.data.error.message || 'Authentication failed');
       }
 
-      this.token = loginResponse.data.result;
+      this.token = response.data.result;
       // Token typically valid for 24 hours, set expiry to 23 hours from now
       this.tokenExpiry = Date.now() + 23 * 60 * 60 * 1000;
 
@@ -171,10 +154,24 @@ class SimplybookService {
    */
   async getServices(): Promise<ApiResponse<Service[]>> {
     try {
-      const response = await this.axiosInstance.get('/booking/services');
+      const result = await this.rpcCall('getEventList') as Record<string, unknown>[];
+      const services: Service[] = Object.entries(result).map(([id, service]: [string, unknown]) => {
+        const s = service as Record<string, unknown>;
+        return {
+          id,
+          name: String(s.name || ''),
+          description: String(s.description || ''),
+          duration: Number(s.duration || 0),
+          price: Number(s.price || 0),
+          currency: String(s.currency || 'USD'),
+          is_active: Boolean(s.is_visible),
+          picture: s.picture as string | undefined,
+        };
+      });
+      
       return {
         success: true,
-        data: response.data,
+        data: services,
       };
     } catch (error) {
       console.error('Failed to fetch services:', error);
@@ -190,10 +187,19 @@ class SimplybookService {
    */
   async getService(serviceId: string): Promise<ApiResponse<Service>> {
     try {
-      const response = await this.axiosInstance.get(`/booking/services/${serviceId}`);
+      const services = await this.getServices();
+      if (!services.success || !services.data) {
+        throw new Error('Failed to load services');
+      }
+      
+      const service = services.data.find(s => s.id === serviceId);
+      if (!service) {
+        throw new Error('Service not found');
+      }
+
       return {
         success: true,
-        data: response.data,
+        data: service,
       };
     } catch (error) {
       console.error('Failed to fetch service details:', error);
@@ -209,10 +215,21 @@ class SimplybookService {
    */
   async getProviders(): Promise<ApiResponse<Provider[]>> {
     try {
-      const response = await this.axiosInstance.get('/booking/providers');
+      const result = await this.rpcCall('getUnitList') as Record<string, unknown>[];
+      const providers: Provider[] = Object.entries(result).map(([id, provider]: [string, unknown]) => {
+        const p = provider as Record<string, unknown>;
+        return {
+          id,
+          name: String(p.name || ''),
+          description: String(p.description || ''),
+          picture: p.picture as string | undefined,
+          is_active: Boolean(p.is_visible),
+        };
+      });
+
       return {
         success: true,
-        data: response.data,
+        data: providers,
       };
     } catch (error) {
       console.error('Failed to fetch providers:', error);
@@ -233,19 +250,12 @@ class SimplybookService {
     toDate?: string
   ): Promise<ApiResponse<string[]>> {
     try {
-      const params: Record<string, string> = {};
-      if (providerId) params.provider_id = providerId;
-      if (fromDate) params.from = fromDate;
-      if (toDate) params.to = toDate;
-
-      const response = await this.axiosInstance.get(
-        `/booking/services/${serviceId}/available-dates`,
-        { params }
-      );
+      const params = [serviceId, providerId || null, fromDate || null, toDate || null];
+      const result = await this.rpcCall('getFirstWorkingDate', params) as string[];
 
       return {
         success: true,
-        data: response.data,
+        data: result || [],
       };
     } catch (error) {
       console.error('Failed to fetch available dates:', error);
@@ -265,17 +275,21 @@ class SimplybookService {
     providerId?: string
   ): Promise<ApiResponse<TimeSlot[]>> {
     try {
-      const params: Record<string, string> = { date };
-      if (providerId) params.provider_id = providerId;
+      const params = [serviceId, date, providerId || null];
+      const result = await this.rpcCall('getStartTimeMatrix', params) as Record<string, string[]>;
 
-      const response = await this.axiosInstance.get(
-        `/booking/services/${serviceId}/available-slots`,
-        { params }
-      );
+      const timeSlots: TimeSlot[] = [];
+      for (const [time, slots] of Object.entries(result)) {
+        timeSlots.push({
+          time,
+          datetime: `${date}T${time}:00`,
+          is_available: slots.length > 0,
+        });
+      }
 
       return {
         success: true,
-        data: response.data,
+        data: timeSlots,
       };
     } catch (error) {
       console.error('Failed to fetch available time slots:', error);
@@ -291,19 +305,31 @@ class SimplybookService {
    */
   async createBooking(bookingData: BookingData): Promise<ApiResponse<Booking>> {
     try {
-      const response = await this.axiosInstance.post('/booking/bookings', {
-        service_id: bookingData.service_id,
-        provider_id: bookingData.provider_id,
-        start_date_time: `${bookingData.date} ${bookingData.time}`,
-        client_name: bookingData.client.name,
-        client_email: bookingData.client.email,
-        client_phone: bookingData.client.phone,
-        ...bookingData.additional_fields,
-      });
+      const params = [
+        bookingData.service_id,
+        bookingData.provider_id,
+        `${bookingData.date} ${bookingData.time}`,
+        bookingData.client.name,
+        bookingData.client.email,
+        bookingData.client.phone,
+        bookingData.additional_fields || {},
+      ];
+      
+      const result = await this.rpcCall('book', params) as string;
 
       return {
         success: true,
-        data: response.data,
+        data: {
+          id: result,
+          service_id: bookingData.service_id,
+          provider_id: bookingData.provider_id,
+          client_id: '',
+          start_datetime: `${bookingData.date} ${bookingData.time}`,
+          end_datetime: '',
+          status: 'confirmed',
+          price: 0,
+          currency: 'USD',
+        },
       };
     } catch (error) {
       console.error('Failed to create booking:', error);
@@ -319,10 +345,21 @@ class SimplybookService {
    */
   async getBooking(bookingId: string): Promise<ApiResponse<Booking>> {
     try {
-      const response = await this.axiosInstance.get(`/booking/bookings/${bookingId}`);
+      const result = await this.rpcCall('getBookingDetails', [bookingId]) as Record<string, unknown>;
+
       return {
         success: true,
-        data: response.data,
+        data: {
+          id: bookingId,
+          service_id: String(result.event_id || ''),
+          provider_id: String(result.unit_id || ''),
+          client_id: String(result.client_id || ''),
+          start_datetime: String(result.start_date_time || ''),
+          end_datetime: String(result.end_date_time || ''),
+          status: result.status as 'pending' | 'confirmed' | 'cancelled' || 'confirmed',
+          price: Number(result.price || 0),
+          currency: String(result.currency || 'USD'),
+        },
       };
     } catch (error) {
       console.error('Failed to fetch booking:', error);
@@ -338,7 +375,7 @@ class SimplybookService {
    */
   async cancelBooking(bookingId: string): Promise<ApiResponse<boolean>> {
     try {
-      await this.axiosInstance.delete(`/booking/bookings/${bookingId}`);
+      await this.rpcCall('cancelBooking', [bookingId]);
       return {
         success: true,
         data: true,
