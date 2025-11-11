@@ -7,28 +7,14 @@ import Services from './pages/Services';
 import Prices from './pages/Prices';
 import Gallery from './pages/Gallery';
 import AdminDashboard from './pages/AdminDashboard';
-import BookingModal from './components/BookingModal';
 import { initializeSession, registerSession, trackConversion } from './utils/utm.service';
 
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const clickCountRef = useRef(0);
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Handle booking modal open
-  const handleBookingOpen = () => {
-    setIsBookingOpen(true);
-    window.dispatchEvent(new CustomEvent('modalOpened'));
-  };
-
-  // Handle booking modal close
-  const handleBookingClose = () => {
-    setIsBookingOpen(false);
-    window.dispatchEvent(new CustomEvent('modalClosed'));
-  };
 
   useEffect(() => {
     // Initialize UTM tracking and session on app load
@@ -147,7 +133,10 @@ function App() {
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={() => {
-                      handleBookingOpen();
+                      if (location.pathname !== '/') {
+                        navigate('/');
+                      }
+                      window.dispatchEvent(new CustomEvent('openBookingModal'));
                     }}
                     className="px-3 py-2 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-lg font-semibold hover:from-rose-700 hover:to-rose-800 transition-all duration-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 text-sm cursor-pointer"
                     aria-label="Book an appointment now"
@@ -293,7 +282,10 @@ function App() {
                   </Link>
                   <button
                     onClick={() => {
-                      handleBookingOpen();
+                      if (location.pathname !== '/') {
+                        navigate('/');
+                      }
+                      window.dispatchEvent(new CustomEvent('openBookingModal'));
                     }}
                     className="px-4 sm:px-5 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-gradient-to-r from-rose-600 to-rose-700 text-white rounded-lg font-semibold hover:from-rose-700 hover:to-rose-800 transition-all duration-300 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 whitespace-nowrap text-xs sm:text-sm lg:text-base cursor-pointer"
                     aria-label="Book an appointment now"
@@ -534,17 +526,6 @@ function App() {
           </footer>
         )}
       </div>
-
-      <BookingModal
-        isOpen={isBookingOpen}
-        onClose={handleBookingClose}
-        provider={{
-          id: 'default',
-          name: 'Service Provider',
-        }}
-        hourlyRate={100}
-        platformFeePercentage={0.1}
-      />
     </>
   );
 }
