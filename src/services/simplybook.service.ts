@@ -171,7 +171,7 @@ class SimplybookService {
    */
   async getServices(): Promise<ApiResponse<Service[]>> {
     try {
-      const response = await this.axiosInstance.get('/admin/services');
+      const response = await this.axiosInstance.get('/booking/services');
       return {
         success: true,
         data: response.data,
@@ -190,13 +190,13 @@ class SimplybookService {
    */
   async getService(serviceId: string): Promise<ApiResponse<Service>> {
     try {
-      const response = await this.axiosInstance.get(`/admin/services/${serviceId}`);
+      const response = await this.axiosInstance.get(`/booking/services/${serviceId}`);
       return {
         success: true,
         data: response.data,
       };
     } catch (error) {
-      console.error('Failed to fetch service:', error);
+      console.error('Failed to fetch service details:', error);
       return {
         success: false,
         error: 'Failed to load service details',
@@ -209,7 +209,7 @@ class SimplybookService {
    */
   async getProviders(): Promise<ApiResponse<Provider[]>> {
     try {
-      const response = await this.axiosInstance.get('/admin/providers');
+      const response = await this.axiosInstance.get('/booking/providers');
       return {
         success: true,
         data: response.data,
@@ -239,7 +239,7 @@ class SimplybookService {
       if (toDate) params.to = toDate;
 
       const response = await this.axiosInstance.get(
-        `/admin/services/${serviceId}/available-dates`,
+        `/booking/services/${serviceId}/available-dates`,
         { params }
       );
 
@@ -269,7 +269,7 @@ class SimplybookService {
       if (providerId) params.provider_id = providerId;
 
       const response = await this.axiosInstance.get(
-        `/admin/services/${serviceId}/available-slots`,
+        `/booking/services/${serviceId}/available-slots`,
         { params }
       );
 
@@ -291,7 +291,7 @@ class SimplybookService {
    */
   async createBooking(bookingData: BookingData): Promise<ApiResponse<Booking>> {
     try {
-      const response = await this.axiosInstance.post('/admin/bookings', {
+      const response = await this.axiosInstance.post('/booking/bookings', {
         service_id: bookingData.service_id,
         provider_id: bookingData.provider_id,
         start_date_time: `${bookingData.date} ${bookingData.time}`,
@@ -319,7 +319,7 @@ class SimplybookService {
    */
   async getBooking(bookingId: string): Promise<ApiResponse<Booking>> {
     try {
-      const response = await this.axiosInstance.get(`/admin/bookings/${bookingId}`);
+      const response = await this.axiosInstance.get(`/booking/bookings/${bookingId}`);
       return {
         success: true,
         data: response.data,
@@ -338,7 +338,7 @@ class SimplybookService {
    */
   async cancelBooking(bookingId: string): Promise<ApiResponse<boolean>> {
     try {
-      await this.axiosInstance.delete(`/admin/bookings/${bookingId}`);
+      await this.axiosInstance.delete(`/booking/bookings/${bookingId}`);
       return {
         success: true,
         data: true,
