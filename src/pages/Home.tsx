@@ -35,7 +35,7 @@ export default function Home() {
   const [dragOffset, setDragOffset] = useState(0);
   const [clickLog, setClickLog] = useState<string[]>([]);
   const [_isAgeVerified, setIsAgeVerified] = useState(false);
-  const [carouselSpeed, setCarouselSpeed] = useState<CarouselSpeed>('medium');
+  const [carouselSpeed, setCarouselSpeed] = useState<CarouselSpeed>('fast');
 
   // Add diagnostic info to window for debugging
   useEffect(() => {
@@ -384,6 +384,21 @@ export default function Home() {
         {/* Carousel Speed Controls */}
         <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 sm:gap-3 justify-center select-none pointer-events-auto">
           <button
+            onClick={() => setCarouselSpeed('pause')}
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+              carouselSpeed === 'pause'
+                ? 'bg-white/90 text-gray-800 shadow-lg'
+                : 'bg-white/30 text-white hover:bg-white/50'
+            }`}
+            style={{
+              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+              backdropFilter: 'blur(8px)',
+            }}
+            aria-label="Pause carousel"
+          >
+            ⏸️ Pause
+          </button>
+          <button
             onClick={() => setCarouselSpeed('slow')}
             className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
               carouselSpeed === 'slow'
@@ -396,7 +411,7 @@ export default function Home() {
             }}
             aria-label="Slow carousel speed"
           >
-            🐢 Slow
+            � Slow
           </button>
           <button
             onClick={() => setCarouselSpeed('medium')}
@@ -427,21 +442,6 @@ export default function Home() {
             aria-label="Fast carousel speed"
           >
             🏃 Fast
-          </button>
-          <button
-            onClick={() => setCarouselSpeed('pause')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
-              carouselSpeed === 'pause'
-                ? 'bg-white/90 text-gray-800 shadow-lg'
-                : 'bg-white/30 text-white hover:bg-white/50'
-            }`}
-            style={{
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(8px)',
-            }}
-            aria-label="Pause carousel"
-          >
-            ⏸️ Pause
           </button>
         </div>
 
