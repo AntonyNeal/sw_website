@@ -5,7 +5,7 @@
 import { ApiClient } from '../client';
 import { Booking, ApiResponse, ListResponse } from '../types';
 
-interface CreateBookingRequest {
+export interface CreateBookingRequest {
   tenantId: string | number;
   locationId: number;
   clientName: string;
@@ -23,7 +23,7 @@ interface CreateBookingRequest {
   utmContent?: string;
 }
 
-interface UpdateStatusRequest {
+export interface UpdateStatusRequest {
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   notes?: string;
 }

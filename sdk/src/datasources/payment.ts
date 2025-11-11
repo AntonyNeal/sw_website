@@ -39,7 +39,7 @@ interface RefundRequest {
   reason?: string;
 }
 
-interface RefundResponse {
+export interface RefundResponse {
   payment: Payment;
   refundAmount: number;
   refundId: string;

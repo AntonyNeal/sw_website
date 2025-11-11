@@ -5,7 +5,7 @@
 import { ApiClient } from '../client';
 import { AnalyticsSummary, ApiResponse } from '../types';
 
-interface CreateSessionRequest {
+export interface CreateSessionRequest {
   tenantId: string | number;
   sessionToken?: string;
   fingerprint?: string;
@@ -25,7 +25,7 @@ interface CreateSessionRequest {
   osVersion?: string;
 }
 
-interface SessionResponse {
+export interface SessionResponse {
   id: string;
   sessionToken: string;
   pageViews: number;
@@ -33,7 +33,7 @@ interface SessionResponse {
   isNew: boolean;
 }
 
-interface CreateEventRequest {
+export interface CreateEventRequest {
   sessionId?: string;
   tenantId: string | number;
   eventType: string;

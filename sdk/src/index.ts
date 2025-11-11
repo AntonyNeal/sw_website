@@ -3,13 +3,24 @@
  * @packageDocumentation
  */
 
-// Export client
+// Export new SDK class (primary export)
+export { ServiceBookingSDK } from './sdk';
+export type { SDKConfig } from './enhancedClient';
+
+// Export enhanced client
+export { EnhancedApiClient } from './enhancedClient';
+
+// Export errors
+export { SDKError, ErrorType } from './errors';
+export type { ErrorDetails } from './errors';
+
+// Export legacy client for backward compatibility
 export { ApiClient } from './client';
 
 // Export types
 export * from './types';
 
-// Export data sources
+// Export data sources (for advanced usage)
 export { TenantDataSource } from './datasources/tenant';
 export { AvailabilityDataSource } from './datasources/availability';
 export { LocationDataSource } from './datasources/location';
@@ -43,7 +54,9 @@ export type {
   FollowerGrowthSummary,
 } from './datasources/socialAnalytics';
 
-export type { Payment } from './datasources/payment';
+export type { Payment, RefundResponse } from './datasources/payment';
+
+export type { CreateBookingRequest, UpdateStatusRequest } from './datasources/booking';
 
 export type {
   TouringLocation,
@@ -51,3 +64,9 @@ export type {
   DateAvailability,
   AvailableDate,
 } from './datasources/availability';
+
+export type {
+  SessionResponse,
+  CreateSessionRequest,
+  CreateEventRequest,
+} from './datasources/analytics';
