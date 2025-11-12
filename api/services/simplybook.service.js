@@ -127,10 +127,48 @@ class SimplybookService {
 
   /**
    * Get all locations (tours)
+   * Tours are stored as providers with location names in their descriptions
    */
   async getLocations() {
     console.log('📍 Fetching locations from SimplyBook.me...');
-    return await this.callApi('getLocationList');
+
+    // Get providers - tours are stored as providers with location info
+    const providers = await this.getProviders();
+
+    // Extract unique cities from provider names
+    // Provider names format: "Claire Hamilton in {CITY} | {Type}"
+    const locations = {};
+
+    Object.values(providers).forEach((provider) => {
+      const name = provider.name || '';
+
+      // Extract city from format "Claire Hamilton in {CITY} | ..."
+      const match = name.match(/in\s+([^|]+)/);
+      if (match) {
+        const city = match[1].trim();
+
+        // Parse tour dates from description
+        const description = provider.description || '';
+        const dateMatches = description.match(/(\w+\s+\d+\s*-\s*\d+,\s*\d{4})/g);
+
+        if (!locations[city]) {
+          locations[city] = {
+            id: provider.id,
+            city: city,
+            stateProvince: '', // Could parse from description
+            country: 'Australia', // Default for Claire
+            availableFrom: null,
+            availableUntil: null,
+            daysAvailable: 0,
+            description: description,
+            tourDates: dateMatches || [],
+          };
+        }
+      }
+    });
+
+    console.log(`✅ Found ${Object.keys(locations).length} locations:`, Object.keys(locations));
+    return Object.values(locations);
   }
 
   /**

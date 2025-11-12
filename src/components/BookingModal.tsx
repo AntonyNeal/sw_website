@@ -44,7 +44,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [services, setServices] = useState<SimplybookService[]>([]);
   const [selectedService, setSelectedService] = useState<SimplybookService | null>(null);
-  const [selectedExtras, setSelectedExtras] = useState<SimplybookService[]>([]);
+  const [_selectedExtras, _setSelectedExtras] = useState<SimplybookService[]>([]);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [timeSlots, setTimeSlots] = useState<SimplybookTimeSlot[]>([]);
@@ -71,18 +71,30 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       console.log('📊 [BookingModal] Locations count:', locations?.length || 0);
 
       // Transform SimplyBook locations to our Tour format
-      const toursData = locations.map((loc: any) => {
-        console.log('🔄 [BookingModal] Transforming location:', loc);
-        return {
-          id: loc.id?.toString() || String(Math.random()),
-          city: loc.name || loc.city || 'Unknown',
-          stateProvince: loc.state || loc.region || '',
-          country: loc.country || 'Australia',
-          availableFrom: loc.available_from || new Date().toISOString().split('T')[0],
-          availableUntil: loc.available_until || new Date().toISOString().split('T')[0],
-          daysAvailable: loc.days_available || 7,
-        };
-      });
+      const toursData = locations.map(
+        (loc: {
+          id?: string | number;
+          name?: string;
+          city?: string;
+          state?: string;
+          region?: string;
+          country?: string;
+          availableFrom?: string;
+          availableUntil?: string;
+          daysAvailable?: number;
+        }) => {
+          console.log('🔄 [BookingModal] Transforming location:', loc);
+          return {
+            id: loc.id?.toString() || String(Math.random()),
+            city: loc.name || loc.city || 'Unknown',
+            stateProvince: loc.state || loc.region || '',
+            country: loc.country || 'Australia',
+            availableFrom: loc.availableFrom || new Date().toISOString().split('T')[0],
+            availableUntil: loc.availableUntil || new Date().toISOString().split('T')[0],
+            daysAvailable: loc.daysAvailable || 7,
+          };
+        }
+      );
       console.log('✨ [BookingModal] Transformed tours:', toursData);
       setTours(toursData);
       console.log('💾 [BookingModal] Tours state updated');
@@ -392,7 +404,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   Choose your tour location
                 </h3>
                 <p className="text-slate-500 text-sm">
-                  Select where you'd like to book your experience
+                  Select where you&apos;d like to book your experience
                 </p>
               </div>
               {loading ? (
@@ -548,7 +560,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               {/* Date Selection */}
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                   <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
                     <Calendar className="w-4 h-4 text-indigo-600" />
                   </div>
@@ -611,7 +623,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               {/* Time Slot Selection */}
               {selectedDate && (
                 <div className="animate-fadeIn">
-                  <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                  <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Clock className="w-4 h-4 text-purple-600" />
                     </div>
