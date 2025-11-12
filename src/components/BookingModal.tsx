@@ -45,7 +45,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [services, setServices] = useState<SimplybookService[]>([]);
   const [selectedService, setSelectedService] = useState<SimplybookService | null>(null);
   const [_selectedExtras, _setSelectedExtras] = useState<SimplybookService[]>([]);
-  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [_availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [timeSlots, setTimeSlots] = useState<SimplybookTimeSlot[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -127,7 +127,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setLoading(false);
   }, []);
 
-  const loadAvailableDates = useCallback(async () => {
+  const _loadAvailableDates = useCallback(async () => {
     if (!selectedService) return;
     setLoading(true);
     setError(null);
@@ -201,12 +201,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     }
   }, [isOpen, currentStep, selectedTour, services.length, loadServices]);
 
-  // Load dates when service is selected (step 3)
-  useEffect(() => {
-    if (selectedService && selectedTour && currentStep === 3 && availableDates.length === 0) {
-      loadAvailableDates();
-    }
-  }, [selectedService, selectedTour, currentStep, availableDates.length, loadAvailableDates]);
+  // Load dates when service is selected (step 3) - DISABLED for performance
+  // The date availability check is too slow, so we'll just let users pick any date
+  // and check availability for that specific date only
+  // useEffect(() => {
+  //   if (selectedService && selectedTour && currentStep === 3 && availableDates.length === 0) {
+  //     loadAvailableDates();
+  //   }
+  // }, [selectedService, selectedTour, currentStep, availableDates.length, loadAvailableDates]);
 
   // Load time slots when date is selected
   useEffect(() => {
@@ -265,11 +267,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   // Navigation
   const handleNext = () => {
-    if (currentStep === 1 && selectedService) {
+    if (currentStep === 1 && selectedTour) {
+      // Move from Tour to Service
       setCurrentStep(2);
-    } else if (currentStep === 2 && selectedDate && selectedTime) {
+    } else if (currentStep === 2 && selectedService) {
+      // Move from Service to Schedule
       setCurrentStep(3);
-    } else if (currentStep === 3) {
+    } else if (currentStep === 3 && selectedDate && selectedTime) {
+      // Move from Schedule to Extras
+      setCurrentStep(4);
+    } else if (currentStep === 4) {
+      // Move from Extras to Confirm
+      setCurrentStep(5);
+    } else if (currentStep === 5) {
+      // Final confirmation - create booking
       if (!clientInfo.firstName || !clientInfo.lastName || !clientInfo.email || !clientInfo.phone) {
         setError('Please fill in all required fields');
         return;
@@ -566,58 +577,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   </div>
                   Select Date
                 </label>
-                {loading && !selectedDate ? (
-                  <div className="flex flex-col items-center justify-center py-12 bg-slate-50 rounded-2xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-3" />
-                    <p className="text-slate-500 text-sm">Finding available dates...</p>
-                  </div>
-                ) : availableDates.length === 0 ? (
-                  <div className="text-center py-12 px-6 bg-slate-50 rounded-2xl">
-                    <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Calendar className="w-8 h-8 text-slate-400" />
-                    </div>
-                    <p className="text-slate-600 font-medium">No dates available</p>
-                    <p className="text-slate-400 text-sm mt-1">Please try again later.</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-3 gap-3">
-                    {availableDates.slice(0, 21).map((date) => {
-                      const dateObj = new Date(date);
-                      const isSelected = selectedDate === date;
-                      return (
-                        <button
-                          key={date}
-                          onClick={() => {
-                            setSelectedDate(date);
-                            setSelectedTime(null);
-                            setTimeSlots([]);
-                          }}
-                          className={`p-4 rounded-xl text-center font-medium transition-all duration-200 border-2 hover:scale-105 ${
-                            isSelected
-                              ? 'border-indigo-600 bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30'
-                              : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:shadow-md'
-                          }`}
-                        >
-                          <div
-                            className={`text-xs mb-1 ${isSelected ? 'text-indigo-200' : 'text-slate-500'}`}
-                          >
-                            {dateObj.toLocaleDateString('en-US', { weekday: 'short' })}
-                          </div>
-                          <div
-                            className={`text-2xl font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}
-                          >
-                            {dateObj.getDate()}
-                          </div>
-                          <div
-                            className={`text-xs mt-1 ${isSelected ? 'text-indigo-200' : 'text-slate-500'}`}
-                          >
-                            {dateObj.toLocaleDateString('en-US', { month: 'short' })}
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+                <input
+                  type="date"
+                  min={new Date().toISOString().split('T')[0]}
+                  max={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                  value={selectedDate || ''}
+                  onChange={(e) => {
+                    setSelectedDate(e.target.value);
+                    setSelectedTime(null);
+                    setTimeSlots([]);
+                  }}
+                  className="w-full p-4 border-2 border-slate-200 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-slate-900 font-medium"
+                />
+                <p className="text-slate-400 text-xs mt-2">Select a date within the next 90 days</p>
               </div>
 
               {/* Time Slot Selection */}
@@ -928,19 +900,21 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
               onClick={handleNext}
               disabled={
                 loading ||
-                (currentStep === 1 && !selectedService) ||
-                (currentStep === 2 && (!selectedDate || !selectedTime))
+                (currentStep === 1 && !selectedTour) ||
+                (currentStep === 2 && !selectedService) ||
+                (currentStep === 3 && (!selectedDate || !selectedTime))
               }
               className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 text-white ${
                 loading ||
-                (currentStep === 1 && !selectedService) ||
-                (currentStep === 2 && (!selectedDate || !selectedTime))
+                (currentStep === 1 && !selectedTour) ||
+                (currentStep === 2 && !selectedService) ||
+                (currentStep === 3 && (!selectedDate || !selectedTime))
                   ? 'opacity-50 cursor-not-allowed bg-slate-400'
                   : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-xl hover:scale-105 shadow-lg shadow-indigo-500/30'
               }`}
             >
               {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-              {currentStep === 3 ? 'Confirm Booking' : 'Continue'}
+              {currentStep === 5 ? 'Confirm Booking' : 'Continue'}
               {!loading && <span className="text-xl">→</span>}
             </button>
           </div>

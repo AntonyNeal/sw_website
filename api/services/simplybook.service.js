@@ -189,6 +189,16 @@ class SimplybookService {
   }
 
   /**
+   * Alias for getAvailability - Get available time slots
+   * @param {string} serviceId - Service ID
+   * @param {string} date - Date in YYYY-MM-DD format
+   * @param {string} providerId - Optional provider ID
+   */
+  async getAvailableTimeSlots(serviceId, date, providerId = null) {
+    return await this.getAvailability(serviceId, date, providerId);
+  }
+
+  /**
    * Get available dates for a service within a date range
    * @param {string} serviceId - Service ID
    * @param {string} fromDate - Start date (YYYY-MM-DD)
