@@ -143,6 +143,69 @@ class SimplybookService {
   }
 
   /**
+   * Get available dates for a service within a date range
+   * @param {string} serviceId - Service ID
+   * @param {string} fromDate - Start date (YYYY-MM-DD)
+   * @param {string} toDate - End date (YYYY-MM-DD)
+   * @param {string} providerId - Optional provider ID
+   * @returns {Array<string>} Array of available dates in YYYY-MM-DD format
+   */
+  async getAvailableDates(serviceId, fromDate, toDate, providerId = null) {
+    console.log(
+      `📅 Getting available dates for service ${serviceId} from ${fromDate} to ${toDate}`
+    );
+
+    const availableDates = [];
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+
+    // Calculate total days and limit to prevent excessive API calls
+    const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+    const maxDaysToCheck = Math.min(totalDays, 30); // Limit to 30 days for performance
+
+    console.log(`📊 Checking ${maxDaysToCheck} days (requested ${totalDays})`);
+
+    // Check dates in batches to avoid overwhelming the API
+    let daysChecked = 0;
+    for (
+      let date = new Date(start);
+      date <= end && daysChecked < maxDaysToCheck;
+      date.setDate(date.getDate() + 1)
+    ) {
+      const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      daysChecked++;
+
+      try {
+        // Check if there are any available time slots for this date
+        const availability = await this.getAvailability(serviceId, dateStr, providerId);
+
+        // If availability exists and has time slots, add this date
+        if (availability && Object.keys(availability).length > 0) {
+          // availability is an object with provider IDs as keys, each containing time slots
+          const hasTimeSlots = Object.values(availability).some(
+            (slots) => slots && Array.isArray(slots) && slots.length > 0
+          );
+
+          if (hasTimeSlots) {
+            availableDates.push(dateStr);
+          }
+        }
+      } catch (error) {
+        console.warn(`⚠️ Could not check availability for ${dateStr}:`, error.message);
+        // Continue checking other dates
+      }
+
+      // Add small delay to avoid rate limiting (50ms between requests)
+      if (daysChecked < maxDaysToCheck) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+    }
+
+    console.log(`✅ Found ${availableDates.length} available dates (checked ${daysChecked} days)`);
+    return availableDates;
+  }
+
+  /**
    * Get booking details by ID
    */
   async getBooking(bookingId) {
