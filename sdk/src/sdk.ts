@@ -18,6 +18,7 @@ import type {
 import { AnalyticsDataSource } from './datasources/analytics';
 import { TenantAnalyticsDataSource } from './datasources/tenantAnalytics';
 import { SocialAnalyticsDataSource } from './datasources/socialAnalytics';
+import { SimplybookDataSource } from './datasources/simplybook';
 
 export class ServiceBookingSDK {
   private client: EnhancedApiClient;
@@ -31,6 +32,7 @@ export class ServiceBookingSDK {
   public readonly analytics: AnalyticsDataSourceInstance;
   public readonly tenantAnalytics: TenantAnalyticsDataSourceInstance;
   public readonly socialAnalytics: SocialAnalyticsDataSourceInstance;
+  public readonly simplybook: SimplybookDataSourceInstance;
 
   constructor(config: SDKConfig) {
     this.client = new EnhancedApiClient(config);
@@ -44,6 +46,7 @@ export class ServiceBookingSDK {
     this.analytics = new AnalyticsDataSourceInstance(this.client);
     this.tenantAnalytics = new TenantAnalyticsDataSourceInstance(this.client);
     this.socialAnalytics = new SocialAnalyticsDataSourceInstance(this.client);
+    this.simplybook = new SimplybookDataSourceInstance(this.client);
   }
 
   /**
@@ -405,5 +408,69 @@ class SocialAnalyticsDataSourceInstance {
       platform,
       days
     );
+  }
+}
+
+class SimplybookDataSourceInstance {
+  constructor(private client: EnhancedApiClient) {}
+
+  async getServices() {
+    return SimplybookDataSource.getServices.call({ client: this.client });
+  }
+
+  async getServiceById(serviceId: string | number) {
+    return SimplybookDataSource.getServiceById.call({ client: this.client }, serviceId);
+  }
+
+  async getCompanyInfo() {
+    return SimplybookDataSource.getCompanyInfo.call({ client: this.client });
+  }
+
+  async getTimeSlots(serviceId: string | number, date: string, providerId?: string | number) {
+    return SimplybookDataSource.getTimeSlots.call({ client: this.client }, serviceId, date, providerId);
+  }
+
+  async getProviders() {
+    return SimplybookDataSource.getProviders.call({ client: this.client });
+  }
+
+  async getProvidersForService(serviceId: string | number) {
+    return SimplybookDataSource.getProvidersForService.call({ client: this.client }, serviceId);
+  }
+
+  async createBooking(bookingData: Parameters<typeof SimplybookDataSource.createBooking>[0]) {
+    return SimplybookDataSource.createBooking.call({ client: this.client }, bookingData);
+  }
+
+  async getBookingById(bookingId: string | number) {
+    return SimplybookDataSource.getBookingById.call({ client: this.client }, bookingId);
+  }
+
+  async getBookingByCode(bookingCode: string) {
+    return SimplybookDataSource.getBookingByCode.call({ client: this.client }, bookingCode);
+  }
+
+  async cancelBooking(bookingId: string | number) {
+    return SimplybookDataSource.cancelBooking.call({ client: this.client }, bookingId);
+  }
+
+  async getIntakeFormFields(serviceId: string | number) {
+    return SimplybookDataSource.getIntakeFormFields.call({ client: this.client }, serviceId);
+  }
+
+  async getAvailableDates(serviceId: string | number, startDate: string, endDate: string, providerId?: string | number) {
+    return SimplybookDataSource.getAvailableDates.call({ client: this.client }, serviceId, startDate, endDate, providerId);
+  }
+
+  async checkTimeAvailability(serviceId: string | number, datetime: string, providerId?: string | number) {
+    return SimplybookDataSource.checkTimeAvailability.call({ client: this.client }, serviceId, datetime, providerId);
+  }
+
+  async getCompanyParam(param: string) {
+    return SimplybookDataSource.getCompanyParam.call({ client: this.client }, param);
+  }
+
+  async getBookings(startDate: string, endDate: string) {
+    return SimplybookDataSource.getBookings.call({ client: this.client }, startDate, endDate);
   }
 }

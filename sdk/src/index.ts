@@ -29,6 +29,7 @@ export { PaymentDataSource } from './datasources/payment';
 export { AnalyticsDataSource } from './datasources/analytics';
 export { TenantAnalyticsDataSource } from './datasources/tenantAnalytics';
 export { SocialAnalyticsDataSource } from './datasources/socialAnalytics';
+export { SimplybookDataSource } from './datasources/simplybook';
 
 // Export additional types from new datasources
 export type {
@@ -70,3 +71,13 @@ export type {
   CreateSessionRequest,
   CreateEventRequest,
 } from './datasources/analytics';
+
+export type {
+  SimplybookService,
+  SimplybookCompanyInfo,
+  SimplybookTimeSlot,
+  SimplybookProvider,
+  SimplybookBookingData,
+  SimplybookBookingResponse,
+  SimplybookIntakeField,
+} from './datasources/simplybook';
