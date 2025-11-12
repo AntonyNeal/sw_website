@@ -1,0 +1,66 @@
+Hey Claire!
+
+I ran a comprehensive diagnostic test on your API and found the issue:
+
+**Good News:**
+✅ Your API key is working perfectly
+✅ Authentication is successful  
+✅ Connection to SimplyBook is solid
+
+**The Problem:**
+❌ Your API key has ZERO permissions enabled
+❌ Every single method returns "Access denied" - even basic ones like viewing your services
+
+This means either:
+1. Your subscription plan doesn't include API access, OR
+2. SimplyBook needs to manually enable permissions for your account
+
+**What you need to do:**
+
+1. Check your plan first:
+   - Go to Settings → Subscription (or Billing)
+   - What plan are you on?
+   - Does it mention "API Access" or "Developer Access"?
+
+2. Email SimplyBook support at: support@simplybook.me
+
+Copy/paste this:
+
+---
+
+Subject: API Permissions Not Working - clairehamilton
+
+Hi SimplyBook Support Team,
+
+I need help enabling API permissions for my account.
+
+Account Details:
+• Company Login: clairehamilton
+• Issue: All API methods return "Access denied" (error code -32600)
+
+What I've tried:
+1. Generated new API keys
+2. Saved the configuration
+3. Tested authentication - tokens generate successfully  
+4. Tested multiple API methods - ALL return "Access denied"
+
+I'm trying to integrate my booking system with my website. The API key authenticates successfully, but no methods are accessible.
+
+Can you please:
+1. Enable full API permissions for my account
+2. Confirm which subscription plan is required for API access
+3. Let me know if there's a setting I'm missing
+
+Thank you for your help!
+
+Best regards,
+Claire Hamilton
+clairehamilton.simplybook.me
+
+---
+
+They should respond within 1-2 business days. Once they enable permissions, we can go live same day!
+
+Let me know what plan you're on and what they say.
+
+Julian 😊

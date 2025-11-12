@@ -1,12 +1,12 @@
 {
-  "timestamp": "2025-11-11T22:14:37.429Z",
-  "overall": "DEGRADED",
+  "timestamp": "2025-11-12T05:44:43.651Z",
+  "overall": "UNHEALTHY",
   "checks": [
     {
       "category": "Environment",
       "name": "SIMPLYBOOK_API_KEY",
       "status": "PASS",
-      "details": "f3c86908989b8625161c7f55aea014d78f8c690a276903b20531015cdfb8c8"
+      "details": "052ca42b114bcbdb04051f925a7a29bc3e0471c36057fe58589ec43ab83cd8c7"
     },
     {
       "category": "Environment",
@@ -88,9 +88,33 @@
     },
     {
       "category": "API",
-      "name": "API Connection",
+      "name": "Authentication",
+      "status": "PASS",
+      "details": "Token: 7f9b5ef48333774ddd33..."
+    },
+    {
+      "category": "API",
+      "name": "Get Company Info",
       "status": "FAIL",
-      "details": "Failed to authenticate with SimplyBook.me"
+      "details": "SimplyBook API Error: Access denied"
+    },
+    {
+      "category": "API",
+      "name": "Get Services",
+      "status": "FAIL",
+      "details": "SimplyBook API Error: Access denied"
+    },
+    {
+      "category": "API",
+      "name": "Get Providers",
+      "status": "FAIL",
+      "details": "SimplyBook API Error: Access denied"
+    },
+    {
+      "category": "API",
+      "name": "Token caching",
+      "status": "PASS",
+      "details": "Using cached token"
     },
     {
       "category": "Webhook",
@@ -154,11 +178,13 @@
     }
   ],
   "warnings": [
+    "Company info retrieval failed: SimplyBook API Error: Access denied",
     "Not in production mode - ensure proper security for production",
     "Some async functions may not have proper error handling"
   ],
   "errors": [
-    "API connection failed: Failed to authenticate with SimplyBook.me"
+    "Services retrieval failed: SimplyBook API Error: Access denied",
+    "Providers retrieval failed: SimplyBook API Error: Access denied"
   ],
   "recommendations": [
     "Set NODE_ENV=production for production deployment",

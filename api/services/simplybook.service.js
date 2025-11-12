@@ -54,17 +54,28 @@ class SimplybookService {
 
   /**
    * Make authenticated JSON-RPC API call
+   * Uses X-Company-Login and X-Token headers as required by SimplyBook API
    */
   async callApi(method, params = []) {
     const token = await this.getToken();
 
     try {
-      const response = await axios.post(`${this.jsonRpcUrl}`, {
-        jsonrpc: '2.0',
-        method,
-        params: [token, ...params],
-        id: 1,
-      });
+      const response = await axios.post(
+        `${this.jsonRpcUrl}`,
+        {
+          jsonrpc: '2.0',
+          method,
+          params, // No token in params!
+          id: 1,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Company-Login': this.company,
+            'X-Token': token,
+          },
+        }
+      );
 
       if (response.data.error) {
         throw new Error(`SimplyBook API Error: ${response.data.error.message}`);
