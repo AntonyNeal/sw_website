@@ -108,6 +108,20 @@ export const SimplybookDataSource = {
   },
 
   /**
+   * Get all locations (tours) from SimplyBook
+   */
+  async getLocations(this: { client: EnhancedApiClient }): Promise<any[]> {
+    const response = await this.client.get<Record<string, any> | any[]>('/simplybook/locations');
+
+    // Convert object to array if needed
+    if (typeof response === 'object' && response !== null && !Array.isArray(response)) {
+      return Object.values(response);
+    }
+
+    return response as any[];
+  },
+
+  /**
    * Get service details by ID
    */
   async getServiceById(

@@ -60,6 +60,28 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // API Functions
+  const loadTours = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const locations = await sdk.simplybook.getLocations();
+      // Transform SimplyBook locations to our Tour format
+      const toursData = locations.map((loc: any) => ({
+        id: loc.id?.toString() || String(Math.random()),
+        city: loc.name || loc.city || 'Unknown',
+        stateProvince: loc.state || loc.region || '',
+        country: loc.country || 'Australia',
+        availableFrom: loc.available_from || new Date().toISOString().split('T')[0],
+        availableUntil: loc.available_until || new Date().toISOString().split('T')[0],
+        daysAvailable: loc.days_available || 7,
+      }));
+      setTours(toursData);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load tour locations');
+    }
+    setLoading(false);
+  }, []);
+
   const loadServices = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -128,10 +150,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   // Load tours when modal opens
   useEffect(() => {
     if (isOpen && currentStep === 1 && tours.length === 0) {
-      // TODO: Load tours from API
-      // For now, set empty array - need to implement tour loading
+      loadTours();
     }
-  }, [isOpen, currentStep, tours.length]);
+  }, [isOpen, currentStep, tours.length, loadTours]);
 
   // Load services when tour is selected (step 2)
   useEffect(() => {
@@ -339,8 +360,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
           {currentStep === 1 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Choose your tour location</h3>
-                <p className="text-slate-500 text-sm">Select where you'd like to book your experience</p>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                  Choose your tour location
+                </h3>
+                <p className="text-slate-500 text-sm">
+                  Select where you'd like to book your experience
+                </p>
               </div>
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-16">
@@ -352,7 +377,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Calendar className="w-8 h-8 text-slate-400" />
                   </div>
-                  <p className="text-slate-600 font-medium">No tour locations available at this time.</p>
+                  <p className="text-slate-600 font-medium">
+                    No tour locations available at this time.
+                  </p>
                   <p className="text-slate-400 text-sm mt-1">Please check back later.</p>
                 </div>
               ) : (
@@ -392,7 +419,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                         <div className="flex items-center gap-2 text-slate-700">
                           <Calendar className="w-4 h-4 text-indigo-600" />
                           <span>
-                            {new Date(tour.availableFrom).toLocaleDateString()} - {new Date(tour.availableUntil).toLocaleDateString()}
+                            {new Date(tour.availableFrom).toLocaleDateString()} -{' '}
+                            {new Date(tour.availableUntil).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="px-3 py-1.5 bg-slate-100 rounded-lg inline-block font-medium text-slate-700">

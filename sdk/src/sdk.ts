@@ -418,6 +418,10 @@ class SimplybookDataSourceInstance {
     return SimplybookDataSource.getServices.call({ client: this.client });
   }
 
+  async getLocations() {
+    return SimplybookDataSource.getLocations.call({ client: this.client });
+  }
+
   async getServiceById(serviceId: string | number) {
     return SimplybookDataSource.getServiceById.call({ client: this.client }, serviceId);
   }
