@@ -14,7 +14,10 @@ async function testTimeSlots() {
     console.log('✅ Method exists!\n');
   } else {
     console.log('❌ Method does NOT exist!');
-    console.log('Available methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(simplebookService)));
+    console.log(
+      'Available methods:',
+      Object.getOwnPropertyNames(Object.getPrototypeOf(simplebookService))
+    );
     return;
   }
 
@@ -23,7 +26,7 @@ async function testTimeSlots() {
     console.log('2. Fetching services...');
     const services = await simplebookService.getServices();
     console.log(`✅ Found ${Object.keys(services).length} services`);
-    
+
     if (Object.keys(services).length > 0) {
       const firstService = Object.values(services)[0];
       console.log(`   First service: ${firstService.name} (ID: ${firstService.id})\n`);
@@ -32,14 +35,14 @@ async function testTimeSlots() {
       console.log('3. Testing getAvailableTimeSlots...');
       const testDate = '2025-11-18'; // Monday
       console.log(`   Service: ${firstService.id}, Date: ${testDate}`);
-      
+
       try {
         const slots = await simplebookService.getAvailableTimeSlots(firstService.id, testDate);
         console.log('✅ Method called successfully!');
         console.log('   Response:', JSON.stringify(slots, null, 2));
       } catch (error) {
         console.log('❌ API call failed:', error.message);
-        
+
         // Test if it's a 500 error from SimplyBook
         if (error.message.includes('500')) {
           console.log('\n⚠️  This is a SimplyBook.me API error, not our code!');
