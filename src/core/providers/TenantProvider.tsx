@@ -124,8 +124,8 @@ function getSubdomain(hostname: string): string {
     return parts[0];
   }
 
-  // For clairehamilton.com.au or www.clairehamilton.com.au, return 'claire'
-  if (host === 'clairehamilton.com.au' || host === 'www.clairehamilton.com.au') {
+  // For clairehamilton.net or www.clairehamilton.net, return 'claire'
+  if (host === 'clairehamilton.net' || host === 'www.clairehamilton.net') {
     return 'claire';
   }
 

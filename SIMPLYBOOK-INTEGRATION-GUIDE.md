@@ -33,7 +33,7 @@ https://clairehamilton.simplybook.me
 Or with custom domain:
 
 ```
-https://book.clairehamilton.com.au
+https://book.clairehamilton.net
 ```
 
 ### Step 2: Update BookingModal.tsx
@@ -697,7 +697,7 @@ After integration, test:
 ### Your Responsibility:
 
 - ⚠️ Don't expose API keys in client-side code (use backend proxy if API integration)
-- ⚠️ Use HTTPS (already set up on clairehamilton.com.au)
+- ⚠️ Use HTTPS (already set up on clairehamilton.net)
 - ⚠️ Don't store sensitive data in localStorage
 
 ---

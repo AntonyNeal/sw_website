@@ -31,7 +31,7 @@ export class TenantDataSource {
     const hostname = window.location.hostname;
 
     // Check for custom domains
-    if (hostname === 'clairehamilton.com.au' || hostname === 'www.clairehamilton.com.au') {
+    if (hostname === 'clairehamilton.net' || hostname === 'www.clairehamilton.net') {
       return this.getBySubdomain('claire');
     }
 

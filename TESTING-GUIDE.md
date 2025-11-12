@@ -75,7 +75,7 @@ ORDER BY indexname;
 1. Open your website with UTM parameters:
 
    ```
-   https://clairehamilton.com.au?utm_source=google&utm_medium=cpc&utm_campaign=q1_2025&utm_content=ad_5&utm_term=booking
+   https://clairehamilton.net?utm_source=google&utm_medium=cpc&utm_campaign=q1_2025&utm_content=ad_5&utm_term=booking
    ```
 
 2. Open browser Developer Tools → Console
@@ -152,10 +152,10 @@ Use Postman, Thunder Client, or PowerShell:
 
 ```powershell
 # Test create-booking endpoint
-$apiUrl = "https://clairehamilton.com.au/api/bookings"
+$apiUrl = "https://clairehamilton.net/api/bookings"
 $headers = @{
     "Content-Type" = "application/json"
-    "Origin" = "https://clairehamilton.com.au"
+    "Origin" = "https://clairehamilton.net"
 }
 
 $body = @{
@@ -283,7 +283,7 @@ $response = Invoke-WebRequest -Uri $apiUrl -Method POST -Headers $headers -Body 
 ### Test 3.4: Session Registration Endpoint
 
 ```powershell
-$sessionUrl = "https://clairehamilton.com.au/api/sessions/register"
+$sessionUrl = "https://clairehamilton.net/api/sessions/register"
 $sessionBody = @{
     userId = "test-user-123"
     utm_source = "google"
@@ -314,7 +314,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ### Test 3.5: Analytics Endpoint
 
 ```powershell
-$analyticsUrl = "https://clairehamilton.com.au/api/analytics/bookings?groupBy=utm_source"
+$analyticsUrl = "https://clairehamilton.net/api/analytics/bookings?groupBy=utm_source"
 
 $response = Invoke-WebRequest -Uri $analyticsUrl -Method GET -Headers $headers
 
@@ -357,7 +357,7 @@ $response.Content | ConvertFrom-Json | Format-List
 ### Test 3.6: Invalid Analytics Parameter
 
 ```powershell
-$analyticsUrl = "https://clairehamilton.com.au/api/analytics/bookings?groupBy=invalid_field"
+$analyticsUrl = "https://clairehamilton.net/api/analytics/bookings?groupBy=invalid_field"
 
 $response = Invoke-WebRequest -Uri $analyticsUrl -Method GET -Headers $headers
 ```

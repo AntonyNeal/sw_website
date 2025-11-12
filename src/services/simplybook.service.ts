@@ -87,10 +87,10 @@ class SimplybookService {
    */
   private async rpcCall(method: string, params: unknown[] = []): Promise<unknown> {
     const token = await this.getToken();
-    
+
     try {
       console.log(`Making RPC call: ${method}`, { params, url: `${USER_API_URL}/${token}` });
-      
+
       const response = await axios.post(`${USER_API_URL}/${token}`, {
         jsonrpc: '2.0',
         method,
@@ -151,15 +151,12 @@ class SimplybookService {
 
       // Try to get admin token using the login token
       try {
-        const adminResponse = await axios.post(
-          `${USER_API_URL}/${loginToken}`,
-          {
-            jsonrpc: '2.0',
-            method: 'auth',
-            params: [this.config.company, this.config.secretKey],
-            id: 2,
-          }
-        );
+        const adminResponse = await axios.post(`${USER_API_URL}/${loginToken}`, {
+          jsonrpc: '2.0',
+          method: 'auth',
+          params: [this.config.company, this.config.secretKey],
+          id: 2,
+        });
 
         console.log('Admin auth response:', adminResponse.data);
 
@@ -197,19 +194,19 @@ class SimplybookService {
       // Try different method names that SimplyBook.me might use
       let result;
       try {
-        result = await this.rpcCall('getEventList') as Record<string, unknown>;
+        result = (await this.rpcCall('getEventList')) as Record<string, unknown>;
       } catch {
         console.log('getEventList failed, trying getServices...');
         try {
-          result = await this.rpcCall('getServices') as Record<string, unknown>;
+          result = (await this.rpcCall('getServices')) as Record<string, unknown>;
         } catch {
           console.log('getServices failed, trying getActiveServices...');
-          result = await this.rpcCall('getActiveServices') as Record<string, unknown>;
+          result = (await this.rpcCall('getActiveServices')) as Record<string, unknown>;
         }
       }
 
       console.log('Services result:', result);
-      
+
       const services: Service[] = Object.entries(result).map(([id, service]: [string, unknown]) => {
         const s = service as Record<string, unknown>;
         return {
@@ -223,7 +220,7 @@ class SimplybookService {
           picture: s.picture as string | undefined,
         };
       });
-      
+
       return {
         success: true,
         data: services,
@@ -246,8 +243,8 @@ class SimplybookService {
       if (!services.success || !services.data) {
         throw new Error('Failed to load services');
       }
-      
-      const service = services.data.find(s => s.id === serviceId);
+
+      const service = services.data.find((s) => s.id === serviceId);
       if (!service) {
         throw new Error('Service not found');
       }
@@ -270,17 +267,19 @@ class SimplybookService {
    */
   async getProviders(): Promise<ApiResponse<Provider[]>> {
     try {
-      const result = await this.rpcCall('getUnitList') as Record<string, unknown>[];
-      const providers: Provider[] = Object.entries(result).map(([id, provider]: [string, unknown]) => {
-        const p = provider as Record<string, unknown>;
-        return {
-          id,
-          name: String(p.name || ''),
-          description: String(p.description || ''),
-          picture: p.picture as string | undefined,
-          is_active: Boolean(p.is_visible),
-        };
-      });
+      const result = (await this.rpcCall('getUnitList')) as Record<string, unknown>[];
+      const providers: Provider[] = Object.entries(result).map(
+        ([id, provider]: [string, unknown]) => {
+          const p = provider as Record<string, unknown>;
+          return {
+            id,
+            name: String(p.name || ''),
+            description: String(p.description || ''),
+            picture: p.picture as string | undefined,
+            is_active: Boolean(p.is_visible),
+          };
+        }
+      );
 
       return {
         success: true,
@@ -306,7 +305,7 @@ class SimplybookService {
   ): Promise<ApiResponse<string[]>> {
     try {
       const params = [serviceId, providerId || null, fromDate || null, toDate || null];
-      const result = await this.rpcCall('getFirstWorkingDate', params) as string[];
+      const result = (await this.rpcCall('getFirstWorkingDate', params)) as string[];
 
       return {
         success: true,
@@ -331,7 +330,7 @@ class SimplybookService {
   ): Promise<ApiResponse<TimeSlot[]>> {
     try {
       const params = [serviceId, date, providerId || null];
-      const result = await this.rpcCall('getStartTimeMatrix', params) as Record<string, string[]>;
+      const result = (await this.rpcCall('getStartTimeMatrix', params)) as Record<string, string[]>;
 
       const timeSlots: TimeSlot[] = [];
       for (const [time, slots] of Object.entries(result)) {
@@ -369,8 +368,8 @@ class SimplybookService {
         bookingData.client.phone,
         bookingData.additional_fields || {},
       ];
-      
-      const result = await this.rpcCall('book', params) as string;
+
+      const result = (await this.rpcCall('book', params)) as string;
 
       return {
         success: true,
@@ -400,7 +399,10 @@ class SimplybookService {
    */
   async getBooking(bookingId: string): Promise<ApiResponse<Booking>> {
     try {
-      const result = await this.rpcCall('getBookingDetails', [bookingId]) as Record<string, unknown>;
+      const result = (await this.rpcCall('getBookingDetails', [bookingId])) as Record<
+        string,
+        unknown
+      >;
 
       return {
         success: true,
@@ -411,7 +413,7 @@ class SimplybookService {
           client_id: String(result.client_id || ''),
           start_datetime: String(result.start_date_time || ''),
           end_datetime: String(result.end_date_time || ''),
-          status: result.status as 'pending' | 'confirmed' | 'cancelled' || 'confirmed',
+          status: (result.status as 'pending' | 'confirmed' | 'cancelled') || 'confirmed',
           price: Number(result.price || 0),
           currency: String(result.currency || 'USD'),
         },

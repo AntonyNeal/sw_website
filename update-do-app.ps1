@@ -38,12 +38,12 @@ try {
             },
             @{
                 key = "SENDGRID_FROM_EMAIL"
-                value = "bookings@clairehamilton.com.au"
+                value = "bookings@clairehamilton.net"
                 scope = "RUN_AND_BUILD_TIME"
             },
             @{
                 key = "CLAIRE_NOTIFICATION_EMAIL"
-                value = "claire@clairehamilton.com.au"
+                value = "claire@clairehamilton.net"
                 scope = "RUN_AND_BUILD_TIME"
             }
         )

@@ -1,0 +1,172 @@
+{
+  "timestamp": "2025-11-11T22:14:37.429Z",
+  "overall": "DEGRADED",
+  "checks": [
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_API_KEY",
+      "status": "PASS",
+      "details": "f3c86908989b8625161c7f55aea014d78f8c690a276903b20531015cdfb8c8"
+    },
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_SECRET_KEY",
+      "status": "PASS",
+      "details": "✓ Set (hidden)"
+    },
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_COMPANY",
+      "status": "PASS",
+      "details": "clairehamilton"
+    },
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_JSON_RPC_URL",
+      "status": "PASS",
+      "details": "https://user-api.simplybook.net/"
+    },
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_REST_API_URL",
+      "status": "PASS",
+      "details": "https://user-api-v2.simplybook.net/"
+    },
+    {
+      "category": "Environment",
+      "name": "SIMPLYBOOK_WEBHOOK_URL",
+      "status": "PASS",
+      "details": "https://api.clairehamilton.net/api/v1/webhooks/simplybook"
+    },
+    {
+      "category": "Files",
+      "name": "Main API service",
+      "status": "PASS",
+      "details": "6.4KB"
+    },
+    {
+      "category": "Files",
+      "name": "Webhook handler",
+      "status": "PASS",
+      "details": "7.3KB"
+    },
+    {
+      "category": "Files",
+      "name": "Webhook routes",
+      "status": "PASS",
+      "details": "0.8KB"
+    },
+    {
+      "category": "Service",
+      "name": "Service instantiation",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Service",
+      "name": "API Key configured",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Service",
+      "name": "Secret Key configured",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Service",
+      "name": "Company identifier",
+      "status": "PASS",
+      "details": "clairehamilton"
+    },
+    {
+      "category": "Service",
+      "name": "All required methods",
+      "status": "PASS",
+      "details": "10 methods"
+    },
+    {
+      "category": "API",
+      "name": "API Connection",
+      "status": "FAIL",
+      "details": "Failed to authenticate with SimplyBook.me"
+    },
+    {
+      "category": "Webhook",
+      "name": "Controller loaded",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Webhook",
+      "name": "Handler function",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Webhook",
+      "name": "Test endpoint",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Webhook",
+      "name": "Routes loaded",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "category": "Webhook",
+      "name": "Webhook URL",
+      "status": "PASS",
+      "details": "https://api.clairehamilton.net/api/v1/webhooks/simplybook"
+    },
+    {
+      "category": "Security",
+      "name": "Secret key length",
+      "status": "PASS",
+      "details": "Adequate length"
+    },
+    {
+      "category": "Security",
+      "name": "Signature verification",
+      "status": "PASS",
+      "details": "Function available"
+    },
+    {
+      "category": "Security",
+      "name": "Environment mode",
+      "status": "WARN",
+      "details": "development mode"
+    },
+    {
+      "category": "Error Handling",
+      "name": "API error handling",
+      "status": "PASS",
+      "details": "Errors properly caught"
+    },
+    {
+      "category": "Error Handling",
+      "name": "Try-catch coverage",
+      "status": "WARN",
+      "details": "Some functions lack error handling"
+    }
+  ],
+  "warnings": [
+    "Not in production mode - ensure proper security for production",
+    "Some async functions may not have proper error handling"
+  ],
+  "errors": [
+    "API connection failed: Failed to authenticate with SimplyBook.me"
+  ],
+  "recommendations": [
+    "Set NODE_ENV=production for production deployment",
+    "Enable webhook signature verification in production",
+    "Test webhook by creating a booking in SimplyBook.me",
+    "Monitor webhook logs for incoming events",
+    "Set up database integration for storing bookings",
+    "Configure email notifications (SendGrid)",
+    "Add error monitoring (e.g., Sentry) for production"
+  ]
+}

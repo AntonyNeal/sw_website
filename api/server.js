@@ -68,6 +68,12 @@ app.get('/health', (req, res) => {
 // API versioning
 const apiV1 = express.Router();
 
+// Import routes
+const webhookRoutes = require('./routes/webhook.routes');
+
+// Mount webhook routes
+apiV1.use('/webhooks', webhookRoutes);
+
 // Tenant management endpoints
 apiV1.get('/tenant/:tenantId', async (req, res) => {
   try {
