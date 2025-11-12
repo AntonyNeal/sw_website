@@ -3,10 +3,10 @@
 # Replace all placeholder values with your actual configuration
 
 name: octopus-app
-region: syd1 # Sydney region for clairehamilton.com.au (Australian domain)
+region: syd1 # Sydney region
 
 domains:
-  - domain: clairehamilton.com.au
+  - domain: clairehamilton.net
     type: PRIMARY
     wildcard: true
 
