@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
-import removeConsole from 'vite-plugin-remove-console';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -8,7 +7,6 @@ export default defineConfig({
     react({
       include: ['**/*.tsx', '**/*.ts'],
     }),
-    removeConsole(),
   ],
   resolve: {
     alias: {
@@ -60,8 +58,8 @@ export default defineConfig({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: false,
-        drop_debugger: false,
+        drop_console: true,
+        drop_debugger: true,
         passes: 3,
         dead_code: true,
         unused: true,
