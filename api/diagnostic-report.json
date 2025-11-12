@@ -1,0 +1,200 @@
+{
+  "timestamp": "2025-11-12T21:22:57.164Z",
+  "environment": {
+    "nodeVersion": "v22.21.0",
+    "apiKey": "SET",
+    "secretKey": "SET",
+    "company": "clairehamilton",
+    "jsonRpcUrl": "https://user-api.simplybook.net/",
+    "restApiUrl": "https://user-api-v2.simplybook.net/"
+  },
+  "tests": {
+    "Environment Configuration": {
+      "status": "passed",
+      "duration": 1,
+      "data": {
+        "configured": true,
+        "missing": []
+      },
+      "message": "All environment variables configured"
+    },
+    "Network Connectivity (SimplyBook.me)": {
+      "status": "passed",
+      "duration": 423,
+      "data": {
+        "reachable": true,
+        "status": 200
+      },
+      "message": "SimplyBook API is reachable"
+    },
+    "Authentication & Token Generation": {
+      "status": "passed",
+      "duration": 177,
+      "data": {
+        "authenticated": true,
+        "tokenLength": 64
+      },
+      "message": "Authentication successful"
+    },
+    "Providers API (getProviders)": {
+      "status": "failed",
+      "duration": 174,
+      "error": "providers.slice is not a function",
+      "stack": "TypeError: providers.slice is not a function\n    at C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:162:26\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async testEndpoint (C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:36:20)\n    at async runComprehensiveDiagnostics (C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:147:3)"
+    },
+    "Services API (getServices)": {
+      "status": "failed",
+      "duration": 179,
+      "error": "services.slice is not a function",
+      "stack": "TypeError: services.slice is not a function\n    at C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:183:25\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async testEndpoint (C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:36:20)\n    at async runComprehensiveDiagnostics (C:\\Repos\\sw_website\\api\\comprehensive-diagnostic.js:168:3)"
+    },
+    "Locations API (getLocations)": {
+      "status": "passed",
+      "duration": 179,
+      "data": {
+        "count": 3,
+        "withDates": 1,
+        "locations": [
+          {
+            "id": "2",
+            "city": "Canberra",
+            "stateProvince": "",
+            "country": "Australia",
+            "availableFrom": null,
+            "availableUntil": null,
+            "daysAvailable": 0,
+            "description": "",
+            "tourDates": []
+          },
+          {
+            "id": "3",
+            "city": "Melbourne",
+            "stateProvince": "",
+            "country": "Australia",
+            "availableFrom": "2025-11-27",
+            "availableUntil": "2025-11-28",
+            "daysAvailable": 2,
+            "description": "Hosted at my hotel\n\nUpcoming Melbourne Tours\nNovember 28 - 29, 2025\nJanuary 17 - 24, 2026\n\nPlease contact me directly to enquiry about Fly-Me-To-You options. ",
+            "tourDates": [
+              "November 28 - 29, 2025",
+              "January 17 - 24, 2026"
+            ]
+          },
+          {
+            "id": "4",
+            "city": "Sydney",
+            "stateProvince": "",
+            "country": "Australia",
+            "availableFrom": null,
+            "availableUntil": null,
+            "daysAvailable": 0,
+            "description": "Hosted at my hotel\n\nUpcoming Sydney Tours\n-\n\nPlease contact me directly to enquiry about Fly-Me-To-You options. ",
+            "tourDates": []
+          }
+        ]
+      },
+      "message": "3 locations found, 1 with dates configured"
+    },
+    "Date Parsing from Descriptions": {
+      "status": "passed",
+      "duration": 0,
+      "data": {
+        "testResults": [
+          {
+            "text": "November 28 - 29, 2025",
+            "expected": true,
+            "actual": true,
+            "passed": true
+          },
+          {
+            "text": "January 17 - 24, 2026",
+            "expected": true,
+            "actual": true,
+            "passed": true
+          },
+          {
+            "text": "December 1 - 5, 2025",
+            "expected": true,
+            "actual": true,
+            "passed": true
+          },
+          {
+            "text": "No dates here",
+            "expected": false,
+            "actual": false,
+            "passed": true
+          },
+          {
+            "text": "",
+            "expected": false,
+            "actual": false,
+            "passed": true
+          }
+        ]
+      },
+      "message": "Date parsing regex working correctly"
+    },
+    "API Rate Limiting Check": {
+      "status": "passed",
+      "duration": 0,
+      "data": {
+        "totalTime": 0,
+        "avgTime": 0,
+        "successRate": 100,
+        "requests": [
+          {
+            "success": true,
+            "duration": 0
+          },
+          {
+            "success": true,
+            "duration": 0
+          },
+          {
+            "success": true,
+            "duration": 0
+          },
+          {
+            "success": true,
+            "duration": 0
+          },
+          {
+            "success": true,
+            "duration": 0
+          }
+        ]
+      },
+      "message": "No rate limiting detected"
+    },
+    "Error Handling & Recovery": {
+      "status": "passed",
+      "duration": 165,
+      "data": {
+        "errors": [
+          {
+            "test": "Invalid company",
+            "handled": true,
+            "message": true
+          }
+        ]
+      },
+      "message": "Error handling working correctly"
+    },
+    "Token Caching Mechanism": {
+      "status": "passed",
+      "duration": 188,
+      "data": {
+        "firstCallDuration": 188,
+        "secondCallDuration": 0,
+        "cacheWorking": true
+      },
+      "message": "Token caching is working"
+    }
+  },
+  "summary": {
+    "total": 10,
+    "passed": 8,
+    "failed": 2,
+    "warnings": 0
+  }
+}
