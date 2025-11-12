@@ -186,6 +186,7 @@ apiV1.get('/analytics/stats', async (req, res) => {
 
 // Mount API routes
 app.use('/api/v1', apiV1);
+app.use('/api', apiV1); // Alias for convenience
 
 // 404 handler
 app.use('*', (req, res) => {

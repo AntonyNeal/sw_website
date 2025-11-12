@@ -61,11 +61,11 @@ router.get('/company', async (req, res) => {
 router.get('/timeslots', async (req, res) => {
   try {
     const { service_id, date, provider_id } = req.query;
-    
+
     if (!service_id || !date) {
       return res.status(400).json({ error: 'service_id and date are required' });
     }
-    
+
     console.log(`⏰ Getting time slots for service ${service_id} on ${date}`);
     const slots = await simplebookService.getAvailableTimeSlots(service_id, date, provider_id);
     res.json(slots);
@@ -113,11 +113,11 @@ router.get('/services/:id/providers', async (req, res) => {
 router.post('/bookings', async (req, res) => {
   try {
     const bookingData = req.body;
-    
+
     if (!bookingData.event_id || !bookingData.date || !bookingData.time || !bookingData.client) {
       return res.status(400).json({ error: 'Missing required booking fields' });
     }
-    
+
     console.log('📅 Creating booking:', bookingData);
     const booking = await simplebookService.createBooking(bookingData);
     res.json(booking);
@@ -199,11 +199,11 @@ router.get('/services/:id/fields', async (req, res) => {
 router.get('/available-dates', async (req, res) => {
   try {
     const { service_id, from, to, provider_id } = req.query;
-    
+
     if (!service_id || !from || !to) {
       return res.status(400).json({ error: 'service_id, from, and to are required' });
     }
-    
+
     console.log(`📅 Getting available dates for service ${service_id} from ${from} to ${to}`);
     const dates = await simplebookService.getAvailableDates(service_id, from, to, provider_id);
     res.json(dates);
@@ -221,13 +221,17 @@ router.get('/available-dates', async (req, res) => {
 router.get('/check-availability', async (req, res) => {
   try {
     const { service_id, datetime, provider_id } = req.query;
-    
+
     if (!service_id || !datetime) {
       return res.status(400).json({ error: 'service_id and datetime are required' });
     }
-    
+
     console.log(`✓ Checking availability for service ${service_id} at ${datetime}`);
-    const availability = await simplebookService.checkTimeAvailability(service_id, datetime, provider_id);
+    const availability = await simplebookService.checkTimeAvailability(
+      service_id,
+      datetime,
+      provider_id
+    );
     res.json(availability);
   } catch (error) {
     console.error('Error checking availability:', error);
@@ -259,11 +263,11 @@ router.get('/company/param/:param', async (req, res) => {
 router.get('/bookings', async (req, res) => {
   try {
     const { from, to } = req.query;
-    
+
     if (!from || !to) {
       return res.status(400).json({ error: 'from and to dates are required' });
     }
-    
+
     console.log(`📚 Getting bookings from ${from} to ${to}`);
     const bookings = await simplebookService.getBookings(from, to);
     res.json(bookings);
