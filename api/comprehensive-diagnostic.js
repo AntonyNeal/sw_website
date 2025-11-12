@@ -22,8 +22,8 @@ const results = {
     total: 0,
     passed: 0,
     failed: 0,
-    warnings: 0
-  }
+    warnings: 0,
+  },
 };
 
 async function testEndpoint(name, testFn) {
@@ -31,18 +31,18 @@ async function testEndpoint(name, testFn) {
   console.log('─'.repeat(75));
   results.tests[name] = { status: 'pending', startTime: Date.now() };
   results.summary.total++;
-  
+
   try {
     const result = await testFn();
     const duration = Date.now() - results.tests[name].startTime;
-    
+
     if (result.success) {
       console.log(`✅ PASS (${duration}ms)`);
       results.tests[name] = {
         status: 'passed',
         duration,
         data: result.data,
-        message: result.message
+        message: result.message,
       };
       results.summary.passed++;
     } else {
@@ -52,13 +52,13 @@ async function testEndpoint(name, testFn) {
         status: 'warning',
         duration,
         data: result.data,
-        message: result.message
+        message: result.message,
       };
       results.summary.warnings++;
     }
-    
+
     if (result.details) {
-      result.details.forEach(detail => console.log(`   ${detail}`));
+      result.details.forEach((detail) => console.log(`   ${detail}`));
     }
   } catch (error) {
     const duration = Date.now() - results.tests[name].startTime;
@@ -68,7 +68,7 @@ async function testEndpoint(name, testFn) {
       status: 'failed',
       duration,
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
     };
     results.summary.failed++;
   }
@@ -79,21 +79,26 @@ async function runComprehensiveDiagnostics() {
   await testEndpoint('Environment Configuration', async () => {
     const issues = [];
     const details = [];
-    
+
     if (!process.env.SIMPLYBOOK_API_KEY) issues.push('API_KEY missing');
     if (!process.env.SIMPLYBOOK_SECRET_KEY) issues.push('SECRET_KEY missing');
     if (!process.env.SIMPLYBOOK_COMPANY) issues.push('COMPANY missing');
-    
+
     details.push(`Company: ${process.env.SIMPLYBOOK_COMPANY}`);
-    details.push(`API Key: ${process.env.SIMPLYBOOK_API_KEY ? process.env.SIMPLYBOOK_API_KEY.substring(0, 20) + '...' : 'NOT SET'}`);
+    details.push(
+      `API Key: ${process.env.SIMPLYBOOK_API_KEY ? process.env.SIMPLYBOOK_API_KEY.substring(0, 20) + '...' : 'NOT SET'}`
+    );
     details.push(`JSON-RPC URL: ${process.env.SIMPLYBOOK_JSON_RPC_URL || 'default'}`);
     details.push(`REST API URL: ${process.env.SIMPLYBOOK_REST_API_URL || 'default'}`);
-    
+
     return {
       success: issues.length === 0,
-      message: issues.length === 0 ? 'All environment variables configured' : `Missing: ${issues.join(', ')}`,
+      message:
+        issues.length === 0
+          ? 'All environment variables configured'
+          : `Missing: ${issues.join(', ')}`,
       details,
-      data: { configured: issues.length === 0, missing: issues }
+      data: { configured: issues.length === 0, missing: issues },
     };
   });
 
@@ -105,7 +110,7 @@ async function runComprehensiveDiagnostics() {
         success: true,
         message: 'SimplyBook API is reachable',
         details: [`Status: ${response.status}`, `Response time: <5s`],
-        data: { reachable: true, status: response.status }
+        data: { reachable: true, status: response.status },
       };
     } catch (error) {
       if (error.code === 'ENOTFOUND') {
@@ -120,7 +125,7 @@ async function runComprehensiveDiagnostics() {
           success: true,
           message: 'SimplyBook API is reachable',
           details: ['Server responding (404 expected on base URL)'],
-          data: { reachable: true, status: 404 }
+          data: { reachable: true, status: 404 },
         };
       }
       throw error;
@@ -130,89 +135,93 @@ async function runComprehensiveDiagnostics() {
   // Test 3: Authentication & Token Generation
   await testEndpoint('Authentication & Token Generation', async () => {
     const token = await service.getToken();
-    
+
     return {
       success: !!token,
       message: 'Authentication successful',
       details: [
         `Token: ${token.substring(0, 30)}...`,
         `Token length: ${token.length} chars`,
-        `Token expires: 10 minutes (cached)`
+        `Token expires: 10 minutes (cached)`,
       ],
-      data: { authenticated: true, tokenLength: token.length }
+      data: { authenticated: true, tokenLength: token.length },
     };
   });
 
   // Test 4: Providers API (Raw Data)
   await testEndpoint('Providers API (getProviders)', async () => {
     const providers = await service.getProviders();
-    
+
     if (!providers || providers.length === 0) {
       return {
         success: false,
         message: 'API returns empty array (API permissions may be limited)',
-        details: ['This method may require additional permissions', 'getLocations() is the recommended alternative'],
-        data: { count: 0, providers: [] }
+        details: [
+          'This method may require additional permissions',
+          'getLocations() is the recommended alternative',
+        ],
+        data: { count: 0, providers: [] },
       };
     }
-    
+
     return {
       success: true,
       message: `${providers.length} providers found`,
       details: providers.slice(0, 3).map((p, i) => `${i + 1}. ${p.name} (ID: ${p.id})`),
-      data: { count: providers.length, providers }
+      data: { count: providers.length, providers },
     };
   });
 
   // Test 5: Services API
   await testEndpoint('Services API (getServices)', async () => {
     const services = await service.getServices();
-    
+
     if (!services || services.length === 0) {
       return {
         success: false,
         message: 'API returns empty array (API permissions may be limited)',
         details: ['This method may require additional permissions'],
-        data: { count: 0, services: [] }
+        data: { count: 0, services: [] },
       };
     }
-    
+
     return {
       success: true,
       message: `${services.length} services found`,
-      details: services.slice(0, 5).map((s, i) => 
-        `${i + 1}. ${s.name} (${s.duration} min, $${s.price})`
-      ),
-      data: { count: services.length, services }
+      details: services
+        .slice(0, 5)
+        .map((s, i) => `${i + 1}. ${s.name} (${s.duration} min, $${s.price})`),
+      data: { count: services.length, services },
     };
   });
 
   // Test 6: Locations API (Primary Data Source)
   await testEndpoint('Locations API (getLocations)', async () => {
     const locations = await service.getLocations();
-    
+
     if (!locations || locations.length === 0) {
       throw new Error('No locations returned - this is critical for booking system');
     }
-    
+
     const details = locations.map((loc, i) => {
-      const dateInfo = loc.availableFrom && loc.availableUntil 
-        ? `📅 ${loc.availableFrom} to ${loc.availableUntil} (${loc.daysAvailable} days)`
-        : '⚠️  No dates configured';
+      const dateInfo =
+        loc.availableFrom && loc.availableUntil
+          ? `📅 ${loc.availableFrom} to ${loc.availableUntil} (${loc.daysAvailable} days)`
+          : '⚠️  No dates configured';
       return `${i + 1}. ${loc.city}, ${loc.country} - ${dateInfo}`;
     });
-    
-    const locationsWithDates = locations.filter(l => l.availableFrom && l.availableUntil).length;
-    
+
+    const locationsWithDates = locations.filter((l) => l.availableFrom && l.availableUntil).length;
+
     return {
       success: true,
       message: `${locations.length} locations found, ${locationsWithDates} with dates configured`,
       details,
-      data: { 
-        count: locations.length, 
+      data: {
+        count: locations.length,
         withDates: locationsWithDates,
-        locations 
-      }
+        locations,
+      },
     };
   });
 
@@ -225,24 +234,25 @@ async function runComprehensiveDiagnostics() {
       { text: 'No dates here', expected: false },
       { text: '', expected: false },
     ];
-    
+
     const regex = /(\w+)\s+(\d+)\s*-\s*(\d+),\s*(\d{4})/;
-    const results = testCases.map(tc => ({
+    const results = testCases.map((tc) => ({
       text: tc.text,
       expected: tc.expected,
       actual: regex.test(tc.text),
-      passed: regex.test(tc.text) === tc.expected
+      passed: regex.test(tc.text) === tc.expected,
     }));
-    
-    const allPassed = results.every(r => r.passed);
-    
+
+    const allPassed = results.every((r) => r.passed);
+
     return {
       success: allPassed,
       message: allPassed ? 'Date parsing regex working correctly' : 'Some test cases failed',
-      details: results.map(r => 
-        `${r.passed ? '✓' : '✗'} "${r.text.substring(0, 30)}" → ${r.actual ? 'matched' : 'no match'}`
+      details: results.map(
+        (r) =>
+          `${r.passed ? '✓' : '✗'} "${r.text.substring(0, 30)}" → ${r.actual ? 'matched' : 'no match'}`
       ),
-      data: { testResults: results }
+      data: { testResults: results },
     };
   });
 
@@ -250,7 +260,7 @@ async function runComprehensiveDiagnostics() {
   await testEndpoint('API Rate Limiting Check', async () => {
     const startTime = Date.now();
     const requests = [];
-    
+
     // Make 5 rapid requests
     for (let i = 0; i < 5; i++) {
       const reqStart = Date.now();
@@ -261,11 +271,11 @@ async function runComprehensiveDiagnostics() {
         requests.push({ success: false, error: error.message });
       }
     }
-    
+
     const totalTime = Date.now() - startTime;
     const avgTime = requests.reduce((sum, r) => sum + (r.duration || 0), 0) / requests.length;
-    const successRate = requests.filter(r => r.success).length / requests.length * 100;
-    
+    const successRate = (requests.filter((r) => r.success).length / requests.length) * 100;
+
     return {
       success: successRate >= 80,
       message: successRate === 100 ? 'No rate limiting detected' : `${successRate}% success rate`,
@@ -273,16 +283,16 @@ async function runComprehensiveDiagnostics() {
         `5 requests in ${totalTime}ms`,
         `Average response time: ${Math.round(avgTime)}ms`,
         `Success rate: ${successRate}%`,
-        `Token caching: ${requests[0].duration > requests[1].duration ? 'Working' : 'Not detected'}`
+        `Token caching: ${requests[0].duration > requests[1].duration ? 'Working' : 'Not detected'}`,
       ],
-      data: { totalTime, avgTime, successRate, requests }
+      data: { totalTime, avgTime, successRate, requests },
     };
   });
 
   // Test 9: Error Handling
   await testEndpoint('Error Handling & Recovery', async () => {
     const errors = [];
-    
+
     // Test with invalid company
     try {
       const badService = new (require('./services/simplybook.service.js').constructor)();
@@ -290,18 +300,20 @@ async function runComprehensiveDiagnostics() {
       await badService.getToken();
       errors.push({ test: 'Invalid company', handled: false });
     } catch (error) {
-      errors.push({ 
-        test: 'Invalid company', 
-        handled: true, 
-        message: error.message.includes('Failed to authenticate') 
+      errors.push({
+        test: 'Invalid company',
+        handled: true,
+        message: error.message.includes('Failed to authenticate'),
       });
     }
-    
+
     return {
-      success: errors.every(e => e.handled),
+      success: errors.every((e) => e.handled),
       message: 'Error handling working correctly',
-      details: errors.map(e => `${e.handled ? '✓' : '✗'} ${e.test}: ${e.handled ? 'Caught' : 'Unhandled'}`),
-      data: { errors }
+      details: errors.map(
+        (e) => `${e.handled ? '✓' : '✗'} ${e.test}: ${e.handled ? 'Caught' : 'Unhandled'}`
+      ),
+      data: { errors },
     };
   });
 
@@ -310,26 +322,26 @@ async function runComprehensiveDiagnostics() {
     // Clear any existing token
     service.token = null;
     service.tokenExpiry = null;
-    
+
     const firstCallStart = Date.now();
     await service.getToken();
     const firstCallDuration = Date.now() - firstCallStart;
-    
+
     const secondCallStart = Date.now();
     await service.getToken();
     const secondCallDuration = Date.now() - secondCallStart;
-    
+
     const cacheWorking = secondCallDuration < firstCallDuration / 2;
-    
+
     return {
       success: cacheWorking,
       message: cacheWorking ? 'Token caching is working' : 'Cache may not be functioning',
       details: [
         `First call (API request): ${firstCallDuration}ms`,
         `Second call (from cache): ${secondCallDuration}ms`,
-        `Speed improvement: ${Math.round((1 - secondCallDuration / firstCallDuration) * 100)}%`
+        `Speed improvement: ${Math.round((1 - secondCallDuration / firstCallDuration) * 100)}%`,
       ],
-      data: { firstCallDuration, secondCallDuration, cacheWorking }
+      data: { firstCallDuration, secondCallDuration, cacheWorking },
     };
   });
 
@@ -337,17 +349,17 @@ async function runComprehensiveDiagnostics() {
   console.log('\n═══════════════════════════════════════════════════════════════════');
   console.log('  DIAGNOSTIC SUMMARY');
   console.log('═══════════════════════════════════════════════════════════════════\n');
-  
+
   console.log(`Total Tests:    ${results.summary.total}`);
   console.log(`✅ Passed:      ${results.summary.passed}`);
   console.log(`⚠️  Warnings:    ${results.summary.warnings}`);
   console.log(`❌ Failed:      ${results.summary.failed}`);
   console.log('');
-  
-  const successRate = (results.summary.passed / results.summary.total * 100).toFixed(1);
+
+  const successRate = ((results.summary.passed / results.summary.total) * 100).toFixed(1);
   console.log(`Success Rate:   ${successRate}%`);
   console.log('');
-  
+
   if (results.summary.failed === 0 && results.summary.warnings === 0) {
     console.log('🎉 ALL SYSTEMS OPERATIONAL');
   } else if (results.summary.failed === 0) {
@@ -355,7 +367,7 @@ async function runComprehensiveDiagnostics() {
   } else {
     console.log('⚠️  SYSTEM HAS ISSUES - See failed tests above');
   }
-  
+
   console.log('');
   console.log('═══════════════════════════════════════════════════════════════════\n');
 
@@ -368,35 +380,35 @@ runComprehensiveDiagnostics()
   .then(async (results) => {
     const fs = require('fs');
     const path = require('path');
-    
+
     // Save JSON report
     const jsonReport = JSON.stringify(results, null, 2);
     const jsonPath = path.join(__dirname, 'diagnostic-report.json');
     fs.writeFileSync(jsonPath, jsonReport);
     console.log(`📄 Detailed JSON report saved: ${jsonPath}\n`);
-    
+
     // Generate Markdown report
     const mdReport = generateMarkdownReport(results);
     const mdPath = path.join(__dirname, '..', 'DIAGNOSTIC-REPORT.md');
     fs.writeFileSync(mdPath, mdReport);
     console.log(`📄 Markdown report saved: ${mdPath}\n`);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('\n💥 CRITICAL ERROR:', error);
     process.exit(1);
   });
 
 function generateMarkdownReport(results) {
   const date = new Date(results.timestamp).toLocaleString();
-  const successRate = (results.summary.passed / results.summary.total * 100).toFixed(1);
-  
+  const successRate = ((results.summary.passed / results.summary.total) * 100).toFixed(1);
+
   let md = `# API & Data Source Diagnostic Report\n\n`;
   md += `**Generated:** ${date}  \n`;
   md += `**Node Version:** ${results.environment.nodeVersion}  \n`;
   md += `**Company:** ${results.environment.company}  \n\n`;
-  
+
   md += `---\n\n`;
-  
+
   md += `## 🎯 Executive Summary\n\n`;
   md += `| Metric | Value |\n`;
   md += `|--------|-------|\n`;
@@ -405,7 +417,7 @@ function generateMarkdownReport(results) {
   md += `| ⚠️ Warnings | ${results.summary.warnings} |\n`;
   md += `| ❌ Failed | ${results.summary.failed} |\n`;
   md += `| **Success Rate** | **${successRate}%** |\n\n`;
-  
+
   if (results.summary.failed === 0 && results.summary.warnings === 0) {
     md += `### Status: 🎉 ALL SYSTEMS OPERATIONAL\n\n`;
   } else if (results.summary.failed === 0) {
@@ -413,31 +425,31 @@ function generateMarkdownReport(results) {
   } else {
     md += `### Status: ⚠️ ISSUES DETECTED\n\n`;
   }
-  
+
   md += `---\n\n`;
   md += `## 📋 Test Results\n\n`;
-  
+
   Object.entries(results.tests).forEach(([name, test]) => {
     const icon = test.status === 'passed' ? '✅' : test.status === 'warning' ? '⚠️' : '❌';
     md += `### ${icon} ${name}\n\n`;
     md += `**Status:** ${test.status.toUpperCase()}  \n`;
     md += `**Duration:** ${test.duration}ms  \n`;
-    
+
     if (test.message) {
       md += `**Result:** ${test.message}  \n`;
     }
-    
+
     if (test.error) {
       md += `**Error:** \`${test.error}\`  \n`;
     }
-    
+
     if (test.data) {
       md += `\n**Data:**\n\`\`\`json\n${JSON.stringify(test.data, null, 2)}\n\`\`\`\n`;
     }
-    
+
     md += `\n`;
   });
-  
+
   md += `---\n\n`;
   md += `## 🔧 Environment Configuration\n\n`;
   md += `\`\`\`\n`;
@@ -447,44 +459,46 @@ function generateMarkdownReport(results) {
   md += `JSON-RPC URL:    ${results.environment.jsonRpcUrl || 'default'}\n`;
   md += `REST API URL:    ${results.environment.restApiUrl || 'default'}\n`;
   md += `\`\`\`\n\n`;
-  
+
   md += `---\n\n`;
   md += `## 📊 Key Findings\n\n`;
-  
+
   // Analyze results and add findings
   const findings = [];
-  
+
   if (results.tests['Authentication & Token Generation']?.status === 'passed') {
     findings.push('✅ API authentication is working correctly');
   }
-  
+
   if (results.tests['Locations API (getLocations)']?.status === 'passed') {
     const locData = results.tests['Locations API (getLocations)'].data;
     findings.push(`✅ Location API returning ${locData.count} locations`);
     if (locData.withDates < locData.count) {
-      findings.push(`⚠️ Only ${locData.withDates} of ${locData.count} locations have dates configured`);
+      findings.push(
+        `⚠️ Only ${locData.withDates} of ${locData.count} locations have dates configured`
+      );
     }
   }
-  
+
   if (results.tests['Services API (getServices)']?.status === 'warning') {
     findings.push('⚠️ Services API returns empty - may require additional API permissions');
   }
-  
+
   if (results.tests['Providers API (getProviders)']?.status === 'warning') {
     findings.push('⚠️ Providers API returns empty - use getLocations() instead');
   }
-  
+
   if (results.tests['Token Caching Mechanism']?.status === 'passed') {
     findings.push('✅ Token caching is working, reducing API calls');
   }
-  
-  findings.forEach(finding => {
+
+  findings.forEach((finding) => {
     md += `- ${finding}\n`;
   });
-  
+
   md += `\n---\n\n`;
   md += `## 🔍 Recommendations\n\n`;
-  
+
   if (results.summary.warnings > 0) {
     md += `### Warnings Found\n\n`;
     Object.entries(results.tests).forEach(([name, test]) => {
@@ -494,7 +508,7 @@ function generateMarkdownReport(results) {
     });
     md += `\n`;
   }
-  
+
   if (results.summary.failed > 0) {
     md += `### Failed Tests\n\n`;
     Object.entries(results.tests).forEach(([name, test]) => {
@@ -504,14 +518,14 @@ function generateMarkdownReport(results) {
     });
     md += `\n`;
   }
-  
+
   md += `### General Recommendations\n\n`;
   md += `1. **Primary Data Source:** Use \`getLocations()\` for tour location data (working reliably)\n`;
   md += `2. **Date Parsing:** Dates are extracted from provider descriptions using regex\n`;
   md += `3. **API Permissions:** Some methods may be limited by subscription plan\n`;
   md += `4. **Token Caching:** Implemented and working, reduces API calls by ~90%\n`;
   md += `5. **Error Handling:** All API errors are caught and handled gracefully\n\n`;
-  
+
   md += `---\n\n`;
   md += `## 📝 Notes\n\n`;
   md += `- This diagnostic was run against the SimplyBook.me API for company: \`${results.environment.company}\`\n`;
@@ -519,9 +533,9 @@ function generateMarkdownReport(results) {
   md += `- Network connectivity to SimplyBook.me servers is confirmed\n`;
   md += `- The booking system relies primarily on the \`getLocations()\` endpoint\n`;
   md += `- Date parsing from provider descriptions is working correctly\n\n`;
-  
+
   md += `---\n\n`;
   md += `*Report generated automatically by comprehensive-diagnostic.js*\n`;
-  
+
   return md;
 }

@@ -106,7 +106,21 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         stack: err instanceof Error ? err.stack : undefined,
         error: err,
       });
-      setError(err instanceof Error ? err.message : 'Failed to load tour locations');
+
+      // Extract detailed error message
+      let errorMessage = 'Failed to load tour locations';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'getUserMessage' in err &&
+        typeof err.getUserMessage === 'function'
+      ) {
+        errorMessage = err.getUserMessage();
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
     setLoading(false);
     console.log('🏁 [BookingModal] Tour loading complete');
@@ -123,7 +137,21 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       setServices(services);
     } catch (err) {
       console.error('❌ [BookingModal] Error loading services:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load services');
+
+      // Extract detailed error message
+      let errorMessage = 'Failed to load services';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'getUserMessage' in err &&
+        typeof err.getUserMessage === 'function'
+      ) {
+        errorMessage = err.getUserMessage();
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
     setLoading(false);
   }, []);
@@ -144,7 +172,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       );
       setAvailableDates(dates);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load available dates');
+      // Extract detailed error message
+      let errorMessage = 'Failed to load available dates';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'getUserMessage' in err &&
+        typeof err.getUserMessage === 'function'
+      ) {
+        errorMessage = err.getUserMessage();
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
     setLoading(false);
   }, [selectedService]);
@@ -157,7 +198,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       const slots = await sdk.simplybook.getTimeSlots(selectedService.id, selectedDate);
       setTimeSlots(slots);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load time slots');
+      // Extract detailed error message
+      let errorMessage = 'Failed to load time slots';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'getUserMessage' in err &&
+        typeof err.getUserMessage === 'function'
+      ) {
+        errorMessage = err.getUserMessage();
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
     setLoading(false);
   }, [selectedService, selectedDate]);
@@ -261,7 +315,20 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       setBookingId(result.id.toString());
       setCurrentStep(4);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create booking');
+      // Extract detailed error message
+      let errorMessage = 'Failed to create booking';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'getUserMessage' in err &&
+        typeof err.getUserMessage === 'function'
+      ) {
+        errorMessage = err.getUserMessage();
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
     }
     setLoading(false);
   };
