@@ -213,63 +213,83 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fadeIn"
       onClick={handleBackdropClick}
       role="presentation"
       style={{
-        background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(30, 30, 40, 0.9) 100%)',
-        backdropFilter: 'blur(8px)',
+        background:
+          'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%)',
+        backdropFilter: 'blur(12px)',
       }}
     >
       <div
         ref={modalRef}
-        className="rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative flex flex-col"
+        className="rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-hidden relative flex flex-col animate-slideUp"
         role="dialog"
         aria-modal="true"
         style={{
-          background:
-            'linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 25%, #d8dade 50%, #f5f5f5 75%, #e8e8e8 100%)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.8)',
-          border: '1px solid rgba(255,255,255,0.5)',
+          background: 'linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%)',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
         }}
       >
-        <div className="p-6 flex justify-between items-center relative z-10">
-          <h2 className="text-2xl font-bold text-gray-900">Book Your Session</h2>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-black/10">
-            <X className="w-6 h-6 text-gray-700" />
-          </button>
+        {/* Header with Gradient Bar */}
+        <div className="relative">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+          <div className="p-8 pb-6 flex justify-between items-start">
+            <div>
+              <h2 className="text-3xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">
+                Book Your Experience
+              </h2>
+              <p className="text-slate-500 text-sm font-medium">Let&apos;s get you scheduled</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2.5 rounded-xl hover:bg-slate-100 transition-all duration-200 group"
+              aria-label="Close modal"
+            >
+              <X className="w-5 h-5 text-slate-400 group-hover:text-slate-700 transition-colors" />
+            </button>
+          </div>
         </div>
 
         {/* Step Indicator */}
-        <div className="px-6 pb-4 relative z-10">
+        <div className="px-8 pb-6">
           <div className="flex items-center justify-between">
-            {[1, 2, 3, 4].map((step) => (
-              <React.Fragment key={step}>
-                <div className="flex flex-col items-center flex-1">
+            {[
+              { num: 1, label: 'Service' },
+              { num: 2, label: 'Schedule' },
+              { num: 3, label: 'Details' },
+              { num: 4, label: 'Confirm' },
+            ].map((step, index) => (
+              <React.Fragment key={step.num}>
+                <div className="flex flex-col items-center flex-1 group">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold transition-all duration-300 ${
-                      currentStep >= step
-                        ? 'bg-gradient-to-br from-gray-700 to-gray-900 text-white shadow-lg'
-                        : 'bg-gray-300 text-gray-600'
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                      currentStep >= step.num
+                        ? 'bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 scale-105'
+                        : 'bg-slate-100 text-slate-400 border-2 border-slate-200'
                     }`}
                   >
-                    {step}
+                    {currentStep > step.num ? <CheckCircle className="w-6 h-6" /> : step.num}
                   </div>
-                  <span className="text-xs mt-1 text-gray-600 font-medium">
-                    {step === 1 && 'Service'}
-                    {step === 2 && 'Date & Time'}
-                    {step === 3 && 'Details'}
-                    {step === 4 && 'Confirm'}
+                  <span
+                    className={`text-xs mt-2 font-semibold transition-colors ${
+                      currentStep >= step.num ? 'text-slate-700' : 'text-slate-400'
+                    }`}
+                  >
+                    {step.label}
                   </span>
                 </div>
-                {step < 4 && (
-                  <div
-                    className={`h-1 flex-1 mx-2 rounded transition-all duration-300 ${
-                      currentStep > step
-                        ? 'bg-gradient-to-r from-gray-700 to-gray-900'
-                        : 'bg-gray-300'
-                    }`}
-                  />
+                {index < 3 && (
+                  <div className="flex-1 mx-3 mt-[-16px]">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-500 ${
+                        currentStep > step.num
+                          ? 'bg-gradient-to-r from-indigo-600 to-purple-600'
+                          : 'bg-slate-200'
+                      }`}
+                    />
+                  </div>
                 )}
               </React.Fragment>
             ))}
@@ -278,146 +298,201 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
         {/* Error Display */}
         {error && (
-          <div className="mx-6 mb-4 p-4 bg-red-100 border border-red-300 rounded-lg flex items-start gap-3">
+          <div className="mx-8 mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl flex items-start gap-3 animate-slideDown">
             <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-red-800 text-sm">{error}</p>
+              <p className="text-red-800 text-sm font-medium">{error}</p>
             </div>
-            <button onClick={() => setError(null)} className="text-red-600 hover:text-red-800">
+            <button
+              onClick={() => setError(null)}
+              className="text-red-400 hover:text-red-600 transition-colors"
+            >
               <X className="w-4 h-4" />
             </button>
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto px-6 pb-6 relative z-10">
+        <div className="flex-1 overflow-y-auto px-8 pb-8">
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold mb-4">Select a Service</h3>
+            <div className="space-y-4 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Choose your service</h3>
+                <p className="text-slate-500 text-sm">Select the experience that fits your needs</p>
+              </div>
               {loading ? (
-                <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-gray-600" />
+                <div className="flex flex-col items-center justify-center py-16">
+                  <Loader2 className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
+                  <p className="text-slate-500 text-sm">Loading services...</p>
                 </div>
               ) : services.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">No services available at this time.</p>
+                <div className="text-center py-16 px-6 bg-slate-50 rounded-2xl">
+                  <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calendar className="w-8 h-8 text-slate-400" />
+                  </div>
+                  <p className="text-slate-600 font-medium">No services available at this time.</p>
+                  <p className="text-slate-400 text-sm mt-1">Please check back later.</p>
                 </div>
               ) : (
-                services.map((service) => (
-                  <button
-                    key={service.id}
-                    onClick={() => setSelectedService(service)}
-                    className={`w-full p-6 rounded-lg text-left transition-all duration-200 ${
-                      selectedService?.id === service.id
-                        ? 'ring-2 ring-gray-800 shadow-lg'
-                        : 'hover:shadow-md border border-gray-300'
-                    }`}
-                    style={{
-                      background:
+                <div className="space-y-3">
+                  {services.map((service) => (
+                    <button
+                      key={service.id}
+                      onClick={() => setSelectedService(service)}
+                      className={`w-full p-6 rounded-2xl text-left transition-all duration-300 border-2 group hover:scale-[1.02] ${
                         selectedService?.id === service.id
-                          ? 'linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%)'
-                          : 'white',
-                    }}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <h4 className="text-lg font-bold text-gray-900 mb-2">{service.name}</h4>
-                        {service.description && (
-                          <p className="text-sm text-gray-600 mb-3">{service.description}</p>
-                        )}
-                        <div className="flex items-center gap-4 text-sm text-gray-700">
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-4 h-4" />
-                            {service.duration} min
-                          </span>
-                          {service.price && (
-                            <span className="font-semibold text-lg">
-                              {service.currency || '$'}
-                              {service.price}
+                          ? 'border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-lg shadow-indigo-200/50'
+                          : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h4 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                            {service.name}
+                          </h4>
+                          {service.description && (
+                            <p className="text-sm text-slate-600 mb-4 line-clamp-2">
+                              {service.description}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-6 text-sm">
+                            <span className="flex items-center gap-2 text-slate-700 font-medium">
+                              <Clock className="w-4 h-4 text-slate-400" />
+                              {service.duration} min
                             </span>
+                            {service.price && (
+                              <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                                {service.currency || '$'}
+                                {service.price}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div
+                          className={`flex-shrink-0 ml-4 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                            selectedService?.id === service.id
+                              ? 'bg-indigo-600 scale-110'
+                              : 'bg-slate-100 group-hover:bg-slate-200'
+                          }`}
+                        >
+                          {selectedService?.id === service.id ? (
+                            <CheckCircle className="w-6 h-6 text-white" />
+                          ) : (
+                            <div className="w-4 h-4 rounded-full border-2 border-slate-400" />
                           )}
                         </div>
                       </div>
-                      {selectedService?.id === service.id && (
-                        <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
-                      )}
-                    </div>
-                  </button>
-                ))
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           )}
 
           {/* Step 2: Date & Time Selection */}
           {currentStep === 2 && (
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold">Choose Date & Time</h3>
+            <div className="space-y-8 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Pick your time</h3>
+                <p className="text-slate-500 text-sm">Find a time that works best for you</p>
+              </div>
 
               {/* Date Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  <Calendar className="w-4 h-4 inline mr-2" />
+                <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                  <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-4 h-4 text-indigo-600" />
+                  </div>
                   Select Date
                 </label>
                 {loading && !selectedDate ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-gray-600" />
+                  <div className="flex flex-col items-center justify-center py-12 bg-slate-50 rounded-2xl">
+                    <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-3" />
+                    <p className="text-slate-500 text-sm">Finding available dates...</p>
                   </div>
                 ) : availableDates.length === 0 ? (
-                  <p className="text-gray-600 text-sm">
-                    No dates available. Please try again later.
-                  </p>
+                  <div className="text-center py-12 px-6 bg-slate-50 rounded-2xl">
+                    <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Calendar className="w-8 h-8 text-slate-400" />
+                    </div>
+                    <p className="text-slate-600 font-medium">No dates available</p>
+                    <p className="text-slate-400 text-sm mt-1">Please try again later.</p>
+                  </div>
                 ) : (
-                  <div className="grid grid-cols-3 gap-2">
-                    {availableDates.slice(0, 21).map((date) => (
-                      <button
-                        key={date}
-                        onClick={() => {
-                          setSelectedDate(date);
-                          setSelectedTime(null);
-                          setTimeSlots([]);
-                        }}
-                        className={`p-3 rounded-lg text-sm font-medium transition-all ${
-                          selectedDate === date
-                            ? 'bg-gradient-to-br from-gray-700 to-gray-900 text-white shadow-md'
-                            : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-500'
-                        }`}
-                      >
-                        {new Date(date).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                        })}
-                      </button>
-                    ))}
+                  <div className="grid grid-cols-3 gap-3">
+                    {availableDates.slice(0, 21).map((date) => {
+                      const dateObj = new Date(date);
+                      const isSelected = selectedDate === date;
+                      return (
+                        <button
+                          key={date}
+                          onClick={() => {
+                            setSelectedDate(date);
+                            setSelectedTime(null);
+                            setTimeSlots([]);
+                          }}
+                          className={`p-4 rounded-xl text-center font-medium transition-all duration-200 border-2 hover:scale-105 ${
+                            isSelected
+                              ? 'border-indigo-600 bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30'
+                              : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300 hover:shadow-md'
+                          }`}
+                        >
+                          <div
+                            className={`text-xs mb-1 ${isSelected ? 'text-indigo-200' : 'text-slate-500'}`}
+                          >
+                            {dateObj.toLocaleDateString('en-US', { weekday: 'short' })}
+                          </div>
+                          <div
+                            className={`text-2xl font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}
+                          >
+                            {dateObj.getDate()}
+                          </div>
+                          <div
+                            className={`text-xs mt-1 ${isSelected ? 'text-indigo-200' : 'text-slate-500'}`}
+                          >
+                            {dateObj.toLocaleDateString('en-US', { month: 'short' })}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>
 
               {/* Time Slot Selection */}
               {selectedDate && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    <Clock className="w-4 h-4 inline mr-2" />
+                <div className="animate-fadeIn">
+                  <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-purple-600" />
+                    </div>
                     Select Time
                   </label>
                   {loading ? (
-                    <div className="flex items-center justify-center py-8">
-                      <Loader2 className="w-6 h-6 animate-spin text-gray-600" />
+                    <div className="flex flex-col items-center justify-center py-12 bg-slate-50 rounded-2xl">
+                      <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-3" />
+                      <p className="text-slate-500 text-sm">Loading time slots...</p>
                     </div>
                   ) : timeSlots.length === 0 ? (
-                    <p className="text-gray-600 text-sm">No time slots available for this date.</p>
+                    <div className="text-center py-12 px-6 bg-slate-50 rounded-2xl">
+                      <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Clock className="w-8 h-8 text-slate-400" />
+                      </div>
+                      <p className="text-slate-600 font-medium">No time slots available</p>
+                      <p className="text-slate-400 text-sm mt-1">Try selecting a different date.</p>
+                    </div>
                   ) : (
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-4 gap-3">
                       {timeSlots
                         .filter((slot) => slot.available)
                         .map((slot) => (
                           <button
                             key={slot.time}
                             onClick={() => setSelectedTime(slot.time)}
-                            className={`p-3 rounded-lg text-sm font-medium transition-all ${
+                            className={`p-4 rounded-xl text-center font-semibold transition-all duration-200 border-2 hover:scale-105 ${
                               selectedTime === slot.time
-                                ? 'bg-gradient-to-br from-gray-700 to-gray-900 text-white shadow-md'
-                                : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-500'
+                                ? 'border-purple-600 bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                                : 'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:shadow-md'
                             }`}
                           >
                             {slot.time}
@@ -432,106 +507,136 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
           {/* Step 3: Client Information */}
           {currentStep === 3 && (
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold mb-4">Your Information</h3>
+            <div className="space-y-6 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Your information</h3>
+                <p className="text-slate-500 text-sm">Tell us a bit about yourself</p>
+              </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <User className="w-4 h-4 inline mr-2" />
-                    First Name *
+                  <label className="flex text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
+                    <User className="w-4 h-4 text-indigo-600" />
+                    First Name
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={clientInfo.firstName}
                     onChange={(e) => setClientInfo({ ...clientInfo, firstName: e.target.value })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                    className="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-slate-900 placeholder:text-slate-400"
+                    placeholder="John"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Last Name *
+                  <label className="flex text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
+                    Last Name
+                    <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={clientInfo.lastName}
                     onChange={(e) => setClientInfo({ ...clientInfo, lastName: e.target.value })}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                    className="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-slate-900 placeholder:text-slate-400"
+                    placeholder="Doe"
                     required
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Mail className="w-4 h-4 inline mr-2" />
-                  Email Address *
+                <label className="flex text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
+                  <Mail className="w-4 h-4 text-indigo-600" />
+                  Email Address
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
                   value={clientInfo.email}
                   onChange={(e) => setClientInfo({ ...clientInfo, email: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                  className="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-slate-900 placeholder:text-slate-400"
+                  placeholder="john@example.com"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Phone className="w-4 h-4 inline mr-2" />
-                  Phone Number *
+                <label className="flex text-sm font-semibold text-slate-700 mb-2 items-center gap-2">
+                  <Phone className="w-4 h-4 text-indigo-600" />
+                  Phone Number
+                  <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="tel"
                   value={clientInfo.phone}
                   onChange={(e) => setClientInfo({ ...clientInfo, phone: e.target.value })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                  className="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-slate-900 placeholder:text-slate-400"
+                  placeholder="+1 (555) 000-0000"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Additional Comments (Optional)
+                <label className="flex text-sm font-semibold text-slate-700 mb-2">
+                  Additional Comments
+                  <span className="text-slate-400 ml-2 font-normal text-xs">(Optional)</span>
                 </label>
                 <textarea
                   value={clientInfo.comments}
                   onChange={(e) => setClientInfo({ ...clientInfo, comments: e.target.value })}
-                  rows={3}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-700 focus:border-transparent resize-none"
+                  rows={4}
+                  className="w-full p-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none text-slate-900 placeholder:text-slate-400"
                   placeholder="Any special requests or notes..."
                 />
               </div>
 
-              {/* Booking Summary */}
-              <div className="mt-6 p-4 bg-gray-100 rounded-lg">
-                <h4 className="font-semibold mb-2">Booking Summary</h4>
-                <div className="space-y-1 text-sm text-gray-700">
-                  <p>
-                    <strong>Service:</strong> {selectedService?.name}
-                  </p>
-                  <p>
-                    <strong>Date:</strong>{' '}
-                    {selectedDate &&
-                      new Date(selectedDate).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                  </p>
-                  <p>
-                    <strong>Time:</strong> {selectedTime}
-                  </p>
-                  <p>
-                    <strong>Duration:</strong> {selectedService?.duration} minutes
-                  </p>
+              {/* Booking Summary Card */}
+              <div className="mt-8 p-6 bg-gradient-to-br from-slate-50 to-indigo-50 border-2 border-indigo-100 rounded-2xl">
+                <h4 className="font-bold text-slate-900 mb-4 text-lg flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-indigo-600" />
+                  Booking Summary
+                </h4>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm text-slate-600 font-medium">Service</span>
+                    <span className="text-sm text-slate-900 font-semibold text-right">
+                      {selectedService?.name}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm text-slate-600 font-medium">Date</span>
+                    <span className="text-sm text-slate-900 font-semibold text-right">
+                      {selectedDate &&
+                        new Date(selectedDate).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm text-slate-600 font-medium">Time</span>
+                    <span className="text-sm text-slate-900 font-semibold">{selectedTime}</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm text-slate-600 font-medium">Duration</span>
+                    <span className="text-sm text-slate-900 font-semibold">
+                      {selectedService?.duration} minutes
+                    </span>
+                  </div>
                   {selectedService?.price && (
-                    <p className="text-lg font-semibold mt-2">
-                      <strong>Total:</strong> {selectedService.currency || '$'}
-                      {selectedService.price}
-                    </p>
+                    <>
+                      <div className="border-t border-indigo-200 pt-3 mt-3" />
+                      <div className="flex justify-between items-center">
+                        <span className="text-base text-slate-700 font-bold">Total</span>
+                        <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                          {selectedService.currency || '$'}
+                          {selectedService.price}
+                        </span>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -540,54 +645,86 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
           {/* Step 4: Confirmation */}
           {currentStep === 4 && (
-            <div className="text-center py-8">
-              <CheckCircle className="w-20 h-20 text-green-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h3>
-              <p className="text-gray-600 mb-4">Your booking has been successfully created.</p>
-              {bookingId && (
-                <p className="text-sm text-gray-500 mb-6">
-                  Booking ID: <span className="font-mono font-semibold">{bookingId}</span>
-                </p>
-              )}
-              <div className="bg-gray-100 rounded-lg p-6 text-left max-w-md mx-auto mb-6">
-                <h4 className="font-semibold mb-3">Booking Details</h4>
-                <div className="space-y-2 text-sm text-gray-700">
-                  <p>
-                    <strong>Service:</strong> {selectedService?.name}
-                  </p>
-                  <p>
-                    <strong>Date:</strong>{' '}
-                    {selectedDate &&
-                      new Date(selectedDate).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                  </p>
-                  <p>
-                    <strong>Time:</strong> {selectedTime}
-                  </p>
-                  <p>
-                    <strong>Name:</strong> {clientInfo.firstName} {clientInfo.lastName}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {clientInfo.email}
-                  </p>
-                  <p>
-                    <strong>Phone:</strong> {clientInfo.phone}
-                  </p>
+            <div className="text-center py-12 animate-fadeIn">
+              <div className="mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30 animate-bounce-in">
+                  <CheckCircle className="w-12 h-12 text-white" />
+                </div>
+                <h3 className="text-3xl font-bold text-slate-900 mb-3">You&apos;re all set!</h3>
+                <p className="text-slate-600 text-lg mb-2">Your booking has been confirmed</p>
+                {bookingId && (
+                  <p className="text-sm text-slate-400 font-mono">Confirmation #{bookingId}</p>
+                )}
+              </div>
+
+              <div className="max-w-md mx-auto mb-8">
+                <div className="bg-gradient-to-br from-slate-50 to-indigo-50 border-2 border-indigo-100 rounded-2xl p-6 text-left">
+                  <h4 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                    <Calendar className="w-5 h-5 text-indigo-600" />
+                    Booking Details
+                  </h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Service</span>
+                      <span className="text-sm text-slate-900 font-semibold text-right max-w-[60%]">
+                        {selectedService?.name}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Date</span>
+                      <span className="text-sm text-slate-900 font-semibold text-right">
+                        {selectedDate &&
+                          new Date(selectedDate).toLocaleDateString('en-US', {
+                            weekday: 'short',
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Time</span>
+                      <span className="text-sm text-slate-900 font-semibold">{selectedTime}</span>
+                    </div>
+                    <div className="border-t border-indigo-200 pt-3 mt-3" />
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Name</span>
+                      <span className="text-sm text-slate-900 font-semibold text-right">
+                        {clientInfo.firstName} {clientInfo.lastName}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Email</span>
+                      <span className="text-sm text-slate-900 font-semibold text-right break-all">
+                        {clientInfo.email}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm text-slate-600 font-medium">Phone</span>
+                      <span className="text-sm text-slate-900 font-semibold">
+                        {clientInfo.phone}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 mb-6">
-                A confirmation email has been sent to <strong>{clientInfo.email}</strong>
-              </p>
+
+              <div className="max-w-md mx-auto mb-8">
+                <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-xl text-left">
+                  <Mail className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-blue-900 font-medium">Confirmation email sent</p>
+                    <p className="text-xs text-blue-700 mt-1">
+                      Check your inbox at <span className="font-semibold">{clientInfo.email}</span>{' '}
+                      for all the details
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <button
                 onClick={onClose}
-                className="px-8 py-3 rounded-lg text-white font-semibold transition-all hover:shadow-lg"
-                style={{
-                  background: 'linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%)',
-                }}
+                className="px-8 py-4 rounded-xl text-white font-bold text-lg transition-all hover:scale-105 hover:shadow-2xl shadow-lg bg-gradient-to-r from-indigo-600 to-purple-600"
               >
                 Done
               </button>
@@ -597,16 +734,17 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
         {/* Footer Navigation */}
         {currentStep < 4 && (
-          <div className="p-6 border-t border-gray-300 flex justify-between items-center relative z-10">
+          <div className="p-8 border-t border-slate-200 flex justify-between items-center bg-white/50 backdrop-blur-sm">
             <button
               onClick={handleBack}
               disabled={currentStep === 1}
-              className={`px-6 py-2 rounded-lg font-medium transition-all ${
+              className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
                 currentStep === 1
-                  ? 'opacity-50 cursor-not-allowed bg-gray-300 text-gray-500'
-                  : 'bg-white border border-gray-300 text-gray-700 hover:border-gray-500'
+                  ? 'opacity-40 cursor-not-allowed bg-slate-100 text-slate-400'
+                  : 'bg-white border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:shadow-md hover:scale-105'
               }`}
             >
+              <span className="text-xl">←</span>
               Back
             </button>
             <button
@@ -616,24 +754,17 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 (currentStep === 1 && !selectedService) ||
                 (currentStep === 2 && (!selectedDate || !selectedTime))
               }
-              className={`px-6 py-2 rounded-lg font-medium text-white transition-all flex items-center gap-2 ${
+              className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 text-white ${
                 loading ||
                 (currentStep === 1 && !selectedService) ||
                 (currentStep === 2 && (!selectedDate || !selectedTime))
-                  ? 'opacity-50 cursor-not-allowed bg-gray-400'
-                  : 'hover:shadow-lg'
+                  ? 'opacity-50 cursor-not-allowed bg-slate-400'
+                  : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-xl hover:scale-105 shadow-lg shadow-indigo-500/30'
               }`}
-              style={{
-                background:
-                  loading ||
-                  (currentStep === 1 && !selectedService) ||
-                  (currentStep === 2 && (!selectedDate || !selectedTime))
-                    ? undefined
-                    : 'linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%)',
-              }}
             >
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {currentStep === 3 ? 'Confirm Booking' : 'Next'}
+              {loading && <Loader2 className="w-5 h-5 animate-spin" />}
+              {currentStep === 3 ? 'Confirm Booking' : 'Continue'}
+              {!loading && <span className="text-xl">→</span>}
             </button>
           </div>
         )}

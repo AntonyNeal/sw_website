@@ -1,7 +1,7 @@
 /**
  * Test SDK Integration
  * Tests the full flow: SDK -> Backend API -> SimplyBook
- * 
+ *
  * Run with: node test-sdk-integration.js
  * (Server must be running on port 3001)
  */
@@ -35,7 +35,7 @@ async function testSDKIntegration() {
     const response = await axios.get(`${API_BASE}/simplybook/services`);
     const services = Object.values(response.data);
     console.log(`✅ Success! Got ${services.length} services`);
-    
+
     if (services.length > 0) {
       console.log(`   Sample: ${services[0].name} (${services[0].duration} min)`);
     }
@@ -69,7 +69,7 @@ async function testSDKIntegration() {
   console.log(`✅ Passed: ${passedTests}`);
   console.log(`❌ Failed: ${failedTests}`);
   console.log(`📈 Success Rate: ${Math.round((passedTests / (passedTests + failedTests)) * 100)}%`);
-  
+
   if (failedTests === 0) {
     console.log('\n🎉 ALL TESTS PASSED!');
     console.log('SDK integration is working correctly!\n');

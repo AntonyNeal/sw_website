@@ -170,11 +170,12 @@ class SimplybookService {
 
     // book($eventId, $unitId, $date, $time, $clientData, $additional, $count, $batchId, $recurringData)
     const params = [
-      parseInt(bookingData.serviceId),    // $eventId - must be Integer
-      parseInt(bookingData.providerId),   // $unitId - must be Integer
-      date,                               // $date - Y-m-d format
-      time,                               // $time - H:i:s format
-      {                                   // $clientData - Object
+      parseInt(bookingData.serviceId), // $eventId - must be Integer
+      parseInt(bookingData.providerId), // $unitId - must be Integer
+      date, // $date - Y-m-d format
+      time, // $time - H:i:s format
+      {
+        // $clientData - Object
         name: bookingData.clientName,
         email: bookingData.clientEmail,
         phone: bookingData.clientPhone,
