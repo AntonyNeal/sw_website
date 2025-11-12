@@ -9,6 +9,7 @@ import {
   CheckCircle,
   Loader2,
   AlertCircle,
+  Plane,
 } from 'lucide-react';
 import type { BookingModalProps } from '../types/booking.types';
 import sdk from '../config/sdk.config';
@@ -434,52 +435,199 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   <p className="text-slate-400 text-sm mt-1">Please check back later.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {tours.map((tour) => (
+                <div className="space-y-4">
+                  {/* Fly Me to You - Special Card */}
+                  <div
+                    className={`rounded-2xl transition-all duration-300 border-2 bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg ${
+                      selectedTour?.id === 'fly-to-you'
+                        ? 'border-purple-600 shadow-purple-500/50 scale-[1.02]'
+                        : 'border-purple-400 hover:border-purple-500 hover:shadow-xl hover:scale-[1.01]'
+                    }`}
+                  >
                     <button
-                      key={tour.id}
-                      onClick={() => setSelectedTour(tour)}
-                      className={`p-6 rounded-2xl text-left transition-all duration-300 border-2 group hover:scale-[1.02] ${
-                        selectedTour?.id === tour.id
-                          ? 'border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-lg shadow-indigo-200/50'
-                          : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
-                      }`}
+                      onClick={() =>
+                        setSelectedTour(
+                          selectedTour?.id === 'fly-to-you'
+                            ? null
+                            : {
+                                id: 'fly-to-you',
+                                city: 'Your Location',
+                                stateProvince: '',
+                                country: 'Custom',
+                                availableFrom: new Date().toISOString().split('T')[0],
+                                availableUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+                                  .toISOString()
+                                  .split('T')[0],
+                                daysAvailable: 365,
+                              }
+                        )
+                      }
+                      className="w-full p-6 text-left group"
                     >
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex-1">
-                          <h4 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
-                            {tour.city}, {tour.stateProvince}
-                          </h4>
-                          <p className="text-sm text-slate-500">{tour.country}</p>
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex items-center gap-3 flex-1">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <Plane className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h4 className="text-xl font-bold text-white mb-1 group-hover:scale-105 transition-transform">
+                              Fly Me to You
+                            </h4>
+                            <p className="text-sm text-purple-100">
+                              I&apos;ll come to your location
+                            </p>
+                          </div>
                         </div>
                         <div
                           className={`flex-shrink-0 ml-4 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                            selectedTour?.id === tour.id
-                              ? 'bg-indigo-600 scale-110'
-                              : 'bg-slate-100 group-hover:bg-slate-200'
+                            selectedTour?.id === 'fly-to-you'
+                              ? 'bg-white scale-110'
+                              : 'bg-white/20 group-hover:bg-white/30'
                           }`}
                         >
-                          {selectedTour?.id === tour.id ? (
-                            <CheckCircle className="w-6 h-6 text-white" />
+                          {selectedTour?.id === 'fly-to-you' ? (
+                            <CheckCircle className="w-6 h-6 text-purple-600" />
                           ) : (
-                            <div className="w-4 h-4 rounded-full border-2 border-slate-400" />
+                            <div className="w-4 h-4 rounded-full border-2 border-white" />
                           )}
                         </div>
                       </div>
-                      <div className="space-y-2 text-sm">
-                        <div className="flex items-center gap-2 text-slate-700">
-                          <Calendar className="w-4 h-4 text-indigo-600" />
-                          <span>
-                            {new Date(tour.availableFrom).toLocaleDateString()} -{' '}
-                            {new Date(tour.availableUntil).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <div className="px-3 py-1.5 bg-slate-100 rounded-lg inline-block font-medium text-slate-700">
-                          {tour.daysAvailable} days available
-                        </div>
+                      <div className="text-sm text-purple-100">
+                        <p>Book a personalized session at your preferred location</p>
                       </div>
                     </button>
-                  ))}
+                  </div>
+
+                  {/* Regular Tour Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {tours.map((tour) => (
+                      <div
+                        key={tour.id}
+                        className={`rounded-2xl transition-all duration-300 border-2 ${
+                          selectedTour?.id === tour.id
+                            ? 'border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-lg shadow-indigo-200/50'
+                            : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                        }`}
+                      >
+                        <button
+                          onClick={() =>
+                            setSelectedTour(selectedTour?.id === tour.id ? null : tour)
+                          }
+                          className="w-full p-6 text-left group"
+                        >
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex-1">
+                              <h4 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                                {tour.city}, {tour.stateProvince}
+                              </h4>
+                              <p className="text-sm text-slate-500">{tour.country}</p>
+                            </div>
+                            <div
+                              className={`flex-shrink-0 ml-4 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                                selectedTour?.id === tour.id
+                                  ? 'bg-indigo-600 scale-110'
+                                  : 'bg-slate-100 group-hover:bg-slate-200'
+                              }`}
+                            >
+                              {selectedTour?.id === tour.id ? (
+                                <CheckCircle className="w-6 h-6 text-white" />
+                              ) : (
+                                <div className="w-4 h-4 rounded-full border-2 border-slate-400" />
+                              )}
+                            </div>
+                          </div>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center gap-2 text-slate-700">
+                              <Calendar className="w-4 h-4 text-indigo-600" />
+                              <span>
+                                {new Date(tour.availableFrom).toLocaleDateString()} -{' '}
+                                {new Date(tour.availableUntil).toLocaleDateString()}
+                              </span>
+                            </div>
+                            <div className="px-3 py-1.5 bg-slate-100 rounded-lg inline-block font-medium text-slate-700">
+                              {tour.daysAvailable} days available
+                            </div>
+                          </div>
+                        </button>
+
+                        {/* Expanded Date Selection - Shown when tour is selected */}
+                        {selectedTour?.id === tour.id && (
+                          <div className="px-6 pb-6 pt-2 border-t border-indigo-200 animate-fadeIn">
+                            <div className="mb-3">
+                              <h5 className="text-sm font-bold text-indigo-900 mb-1">
+                                Select a date
+                              </h5>
+                              <p className="text-xs text-slate-500">
+                                Choose when you&apos;d like to visit
+                              </p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                              {(() => {
+                                const dates = [];
+                                const start = new Date(tour.availableFrom);
+                                const end = new Date(tour.availableUntil);
+
+                                for (
+                                  let d = new Date(start);
+                                  d <= end;
+                                  d.setDate(d.getDate() + 1)
+                                ) {
+                                  dates.push(new Date(d));
+                                }
+
+                                return dates.map((date) => {
+                                  const dateStr = date.toISOString().split('T')[0];
+                                  const isSelected = selectedDate === dateStr;
+                                  const dayName = date.toLocaleDateString('en-US', {
+                                    weekday: 'short',
+                                  });
+                                  const monthDay = date.toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                  });
+
+                                  return (
+                                    <button
+                                      key={dateStr}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setSelectedDate(dateStr);
+                                        setSelectedTime(null);
+                                        setTimeSlots([]);
+                                      }}
+                                      className={`p-3 rounded-lg text-left transition-all duration-200 border ${
+                                        isSelected
+                                          ? 'border-indigo-600 bg-indigo-600 text-white shadow-md'
+                                          : 'border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50'
+                                      }`}
+                                    >
+                                      <div className="flex items-center justify-between">
+                                        <div>
+                                          <div
+                                            className={`text-xs font-semibold ${isSelected ? 'text-indigo-100' : 'text-slate-500'}`}
+                                          >
+                                            {dayName}
+                                          </div>
+                                          <div
+                                            className={`text-sm font-bold ${isSelected ? 'text-white' : 'text-slate-900'}`}
+                                          >
+                                            {monthDay}
+                                          </div>
+                                        </div>
+                                        {isSelected && (
+                                          <CheckCircle className="w-4 h-4 text-white flex-shrink-0" />
+                                        )}
+                                      </div>
+                                    </button>
+                                  );
+                                });
+                              })()}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -566,10 +714,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             <div className="space-y-8 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Pick your time</h3>
-                <p className="text-slate-500 text-sm">Find a time that works best for you</p>
+                <p className="text-slate-500 text-sm">
+                  Select a date for your tour in {selectedTour?.city}
+                </p>
               </div>
 
-              {/* Date Selection */}
+              {/* Date Selection - List of Available Dates */}
               <div>
                 <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                   <div className="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center">
@@ -577,19 +727,66 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   </div>
                   Select Date
                 </label>
-                <input
-                  type="date"
-                  min={new Date().toISOString().split('T')[0]}
-                  max={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
-                  value={selectedDate || ''}
-                  onChange={(e) => {
-                    setSelectedDate(e.target.value);
-                    setSelectedTime(null);
-                    setTimeSlots([]);
-                  }}
-                  className="w-full p-4 border-2 border-slate-200 rounded-xl focus:border-indigo-600 focus:ring-2 focus:ring-indigo-200 outline-none transition-all text-slate-900 font-medium"
-                />
-                <p className="text-slate-400 text-xs mt-2">Select a date within the next 90 days</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {selectedTour &&
+                    (() => {
+                      const dates = [];
+                      const start = new Date(selectedTour.availableFrom);
+                      const end = new Date(selectedTour.availableUntil);
+
+                      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                        dates.push(new Date(d));
+                      }
+
+                      return dates.map((date) => {
+                        const dateStr = date.toISOString().split('T')[0];
+                        const isSelected = selectedDate === dateStr;
+                        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+                        const monthDay = date.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                        });
+
+                        return (
+                          <button
+                            key={dateStr}
+                            onClick={() => {
+                              setSelectedDate(dateStr);
+                              setSelectedTime(null);
+                              setTimeSlots([]);
+                            }}
+                            className={`p-4 rounded-xl text-left transition-all duration-200 border-2 hover:scale-[1.02] ${
+                              isSelected
+                                ? 'border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-lg shadow-indigo-200/50'
+                                : 'border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div
+                                  className={`text-sm font-semibold ${isSelected ? 'text-indigo-600' : 'text-slate-500'}`}
+                                >
+                                  {dayName}
+                                </div>
+                                <div
+                                  className={`text-lg font-bold ${isSelected ? 'text-indigo-900' : 'text-slate-900'}`}
+                                >
+                                  {monthDay}
+                                </div>
+                              </div>
+                              <div
+                                className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                                  isSelected ? 'bg-indigo-600' : 'bg-slate-100'
+                                }`}
+                              >
+                                {isSelected && <Calendar className="w-4 h-4 text-white" />}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      });
+                    })()}
+                </div>
               </div>
 
               {/* Time Slot Selection */}

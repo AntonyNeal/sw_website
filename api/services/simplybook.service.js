@@ -149,17 +149,52 @@ class SimplybookService {
 
         // Parse tour dates from description
         const description = provider.description || '';
+        console.log(`📅 Processing ${city}:`, { name, description });
         const dateMatches = description.match(/(\w+\s+\d+\s*-\s*\d+,\s*\d{4})/g);
+        console.log(`   Date matches:`, dateMatches);
 
+        // Try to parse the first date range to get availableFrom and availableUntil
+        let availableFrom = null;
+        let availableUntil = null;
+        let daysAvailable = 0;
+
+        if (dateMatches && dateMatches.length > 0) {
+          try {
+            // Parse first date range (e.g., "November 12 - 18, 2025")
+            const firstRange = dateMatches[0];
+            console.log(`   Parsing range: "${firstRange}"`);
+            const rangeMatch = firstRange.match(/(\w+)\s+(\d+)\s*-\s*(\d+),\s*(\d{4})/);
+            if (rangeMatch) {
+              const [, month, startDay, endDay, year] = rangeMatch;
+              console.log(
+                `   Matched: month=${month}, startDay=${startDay}, endDay=${endDay}, year=${year}`
+              );
+              const monthNum = new Date(`${month} 1, ${year}`).getMonth();
+              const startDate = new Date(parseInt(year), monthNum, parseInt(startDay));
+              const endDate = new Date(parseInt(year), monthNum, parseInt(endDay));
+
+              if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+                availableFrom = startDate.toISOString().split('T')[0];
+                availableUntil = endDate.toISOString().split('T')[0];
+                daysAvailable = parseInt(endDay) - parseInt(startDay) + 1;
+                console.log(
+                  `   ✅ Parsed dates: ${availableFrom} to ${availableUntil} (${daysAvailable} days)`
+                );
+              }
+            }
+          } catch (error) {
+            console.error('Error parsing date range:', error);
+          }
+        }
         if (!locations[city]) {
           locations[city] = {
             id: provider.id,
             city: city,
             stateProvince: '', // Could parse from description
             country: 'Australia', // Default for Claire
-            availableFrom: null,
-            availableUntil: null,
-            daysAvailable: 0,
+            availableFrom: availableFrom,
+            availableUntil: availableUntil,
+            daysAvailable: daysAvailable,
             description: description,
             tourDates: dateMatches || [],
           };
