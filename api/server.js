@@ -17,6 +17,7 @@ app.use(
       // Define allowed patterns for your domains
       const allowedPatterns = [
         /^https?:\/\/([a-z0-9-]+\.)?clairehamilton\.com\.au$/, // *.clairehamilton.com.au
+        /^https?:\/\/([a-z0-9-]+\.)?clairehamilton\.net$/, // *.clairehamilton.net
         /^http:\/\/localhost(:\d+)?$/, // localhost:*
         /^http:\/\/127\.0\.0\.1(:\d+)?$/, // 127.0.0.1:*
         /^https:\/\/[\w-]+-[\w-]+-\w+\.ondigitalocean\.app$/, // DigitalOcean apps
@@ -70,9 +71,13 @@ const apiV1 = express.Router();
 
 // Import routes
 const webhookRoutes = require('./routes/webhook.routes');
+const simplebookRoutes = require('./routes/simplybook.routes');
 
 // Mount webhook routes
 apiV1.use('/webhooks', webhookRoutes);
+
+// Mount SimplyBook routes
+apiV1.use('/simplybook', simplebookRoutes);
 
 // Tenant management endpoints
 apiV1.get('/tenant/:tenantId', async (req, res) => {

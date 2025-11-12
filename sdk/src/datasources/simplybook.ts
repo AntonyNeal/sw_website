@@ -95,13 +95,15 @@ export const SimplybookDataSource = {
    * Get all services from SimplyBook
    */
   async getServices(this: { client: EnhancedApiClient }): Promise<SimplybookService[]> {
-    const response = await this.client.get<Record<string, SimplybookService> | SimplybookService[]>('/simplybook/services');
-    
+    const response = await this.client.get<Record<string, SimplybookService> | SimplybookService[]>(
+      '/simplybook/services'
+    );
+
     // Convert object to array if needed
     if (typeof response === 'object' && response !== null && !Array.isArray(response)) {
       return Object.values(response) as SimplybookService[];
     }
-    
+
     return response as SimplybookService[];
   },
 
@@ -135,11 +137,11 @@ export const SimplybookDataSource = {
       service_id: serviceId,
       date,
     };
-    
+
     if (providerId) {
       params.provider_id = providerId;
     }
-    
+
     return this.client.get('/simplybook/timeslots', params);
   },
 
@@ -147,13 +149,15 @@ export const SimplybookDataSource = {
    * Get list of providers/staff
    */
   async getProviders(this: { client: EnhancedApiClient }): Promise<SimplybookProvider[]> {
-    const response = await this.client.get<Record<string, SimplybookProvider> | SimplybookProvider[]>('/simplybook/providers');
-    
+    const response = await this.client.get<
+      Record<string, SimplybookProvider> | SimplybookProvider[]
+    >('/simplybook/providers');
+
     // Convert object to array if needed
     if (typeof response === 'object' && response !== null && !Array.isArray(response)) {
       return Object.values(response) as SimplybookProvider[];
     }
-    
+
     return response as SimplybookProvider[];
   },
 
@@ -232,11 +236,11 @@ export const SimplybookDataSource = {
       from: startDate,
       to: endDate,
     };
-    
+
     if (providerId) {
       params.provider_id = providerId;
     }
-    
+
     return this.client.get('/simplybook/available-dates', params);
   },
 
@@ -253,11 +257,11 @@ export const SimplybookDataSource = {
       service_id: serviceId,
       datetime,
     };
-    
+
     if (providerId) {
       params.provider_id = providerId;
     }
-    
+
     return this.client.get('/simplybook/check-availability', params);
   },
 
@@ -283,7 +287,7 @@ export const SimplybookDataSource = {
       from: startDate,
       to: endDate,
     };
-    
+
     return this.client.get('/simplybook/bookings', params);
   },
 };

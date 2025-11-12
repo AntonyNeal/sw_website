@@ -11,12 +11,12 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import type { BookingModalProps } from '../types/booking.types';
-import {
-  simplybookService,
-  type Service,
-  type TimeSlot,
-  type BookingData,
-} from '../services/simplybook.service';
+import sdk from '../config/sdk.config';
+import type {
+  SimplybookService,
+  SimplybookTimeSlot,
+  SimplybookBookingData,
+} from '../../sdk/src/index';
 
 interface ClientInfo {
   firstName: string;
@@ -30,11 +30,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [services, setServices] = useState<Service[]>([]);
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [services, setServices] = useState<SimplybookService[]>([]);
+  const [selectedService, setSelectedService] = useState<SimplybookService | null>(null);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [timeSlots, setTimeSlots] = useState<SimplybookTimeSlot[]>([]);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [clientInfo, setClientInfo] = useState<ClientInfo>({
     firstName: '',
@@ -50,11 +50,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const loadServices = useCallback(async () => {
     setLoading(true);
     setError(null);
-    const result = await simplybookService.getServices();
-    if (result.success && result.data) {
-      setServices(result.data);
-    } else {
-      setError(result.error || 'Failed to load services');
+    try {
+      const services = await sdk.simplybook.getServices();
+      setServices(services);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load services');
     }
     setLoading(false);
   }, []);
@@ -63,11 +63,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     if (!selectedService) return;
     setLoading(true);
     setError(null);
-    const result = await simplybookService.getAvailableDates(selectedService.id);
-    if (result.success && result.data) {
-      setAvailableDates(result.data);
-    } else {
-      setError(result.error || 'Failed to load available dates');
+    try {
+      const today = new Date();
+      const endDate = new Date(today);
+      endDate.setDate(endDate.getDate() + 90); // 90 days ahead
+
+      const dates = await sdk.simplybook.getAvailableDates(
+        selectedService.id,
+        today.toISOString().split('T')[0],
+        endDate.toISOString().split('T')[0]
+      );
+      setAvailableDates(dates);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load available dates');
     }
     setLoading(false);
   }, [selectedService]);
@@ -76,11 +84,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     if (!selectedService || !selectedDate) return;
     setLoading(true);
     setError(null);
-    const result = await simplybookService.getAvailableTimeSlots(selectedService.id, selectedDate);
-    if (result.success && result.data) {
-      setTimeSlots(result.data);
-    } else {
-      setError(result.error || 'Failed to load time slots');
+    try {
+      const slots = await sdk.simplybook.getTimeSlots(selectedService.id, selectedDate);
+      setTimeSlots(slots);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load time slots');
     }
     setLoading(false);
   }, [selectedService, selectedDate]);
@@ -150,25 +158,25 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setLoading(true);
     setError(null);
 
-    const bookingData: BookingData = {
-      service_id: selectedService.id,
-      provider_id: '1', // Default provider - will need to be selected if multiple providers
-      date: selectedDate,
-      time: selectedTime,
-      client: {
-        name: `${clientInfo.firstName} ${clientInfo.lastName}`,
-        email: clientInfo.email,
-        phone: clientInfo.phone,
-      },
-      additional_fields: clientInfo.comments ? { comments: clientInfo.comments } : undefined,
-    };
+    try {
+      const bookingData: SimplybookBookingData = {
+        event_id: selectedService.id,
+        unit_id: '1', // Default provider - will need to be selected if multiple providers
+        date: selectedDate,
+        time: selectedTime,
+        client: {
+          name: `${clientInfo.firstName} ${clientInfo.lastName}`,
+          email: clientInfo.email,
+          phone: clientInfo.phone,
+        },
+        fields: clientInfo.comments ? { comments: clientInfo.comments } : undefined,
+      };
 
-    const result = await simplybookService.createBooking(bookingData);
-    if (result.success && result.data) {
-      setBookingId(result.data.id);
+      const result = await sdk.simplybook.createBooking(bookingData);
+      setBookingId(result.id.toString());
       setCurrentStep(4);
-    } else {
-      setError(result.error || 'Failed to create booking');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to create booking');
     }
     setLoading(false);
   };
@@ -401,7 +409,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   ) : (
                     <div className="grid grid-cols-4 gap-2">
                       {timeSlots
-                        .filter((slot) => slot.is_available)
+                        .filter((slot) => slot.available)
                         .map((slot) => (
                           <button
                             key={slot.time}

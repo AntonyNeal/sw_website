@@ -427,7 +427,12 @@ class SimplybookDataSourceInstance {
   }
 
   async getTimeSlots(serviceId: string | number, date: string, providerId?: string | number) {
-    return SimplybookDataSource.getTimeSlots.call({ client: this.client }, serviceId, date, providerId);
+    return SimplybookDataSource.getTimeSlots.call(
+      { client: this.client },
+      serviceId,
+      date,
+      providerId
+    );
   }
 
   async getProviders() {
@@ -458,12 +463,32 @@ class SimplybookDataSourceInstance {
     return SimplybookDataSource.getIntakeFormFields.call({ client: this.client }, serviceId);
   }
 
-  async getAvailableDates(serviceId: string | number, startDate: string, endDate: string, providerId?: string | number) {
-    return SimplybookDataSource.getAvailableDates.call({ client: this.client }, serviceId, startDate, endDate, providerId);
+  async getAvailableDates(
+    serviceId: string | number,
+    startDate: string,
+    endDate: string,
+    providerId?: string | number
+  ) {
+    return SimplybookDataSource.getAvailableDates.call(
+      { client: this.client },
+      serviceId,
+      startDate,
+      endDate,
+      providerId
+    );
   }
 
-  async checkTimeAvailability(serviceId: string | number, datetime: string, providerId?: string | number) {
-    return SimplybookDataSource.checkTimeAvailability.call({ client: this.client }, serviceId, datetime, providerId);
+  async checkTimeAvailability(
+    serviceId: string | number,
+    datetime: string,
+    providerId?: string | number
+  ) {
+    return SimplybookDataSource.checkTimeAvailability.call(
+      { client: this.client },
+      serviceId,
+      datetime,
+      providerId
+    );
   }
 
   async getCompanyParam(param: string) {

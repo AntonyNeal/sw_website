@@ -13,10 +13,10 @@ async function testService() {
     const services = await service.getServices();
     console.log(`✅ Retrieved services:`, typeof services);
     console.log('   Data:', JSON.stringify(services, null, 2).substring(0, 500));
-    
+
     if (Array.isArray(services)) {
       console.log(`   Found ${services.length} services`);
-      services.forEach(s => {
+      services.forEach((s) => {
         console.log(`   • ${s.name} (${s.duration} min)`);
       });
     } else if (typeof services === 'object' && services !== null) {
@@ -41,10 +41,10 @@ async function testService() {
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
     const dateStr = tomorrow.toISOString().split('T')[0];
-    
+
     const firstServiceId = Array.isArray(services) ? services[0].id : Object.keys(services)[0];
     console.log(`   Testing with service ID ${firstServiceId} on ${dateStr}`);
-    
+
     try {
       const slots = await service.getAvailableTimeSlots(firstServiceId, dateStr);
       console.log(`✅ Found ${slots.length} available time slots`);
@@ -53,7 +53,7 @@ async function testService() {
       }
     } catch (err) {
       console.log(`⚠️  Time slots test: ${err.message}`);
-    }    // Test 4: Get Intake Form Fields
+    } // Test 4: Get Intake Form Fields
     console.log('\n📝 Test 4: Getting intake form fields...');
     try {
       const fields = await service.getIntakeFormFields(firstServiceId);
