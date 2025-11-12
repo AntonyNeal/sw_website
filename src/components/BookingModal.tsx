@@ -61,34 +61,55 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   // API Functions
   const loadTours = useCallback(async () => {
+    console.log('🎯 [BookingModal] Loading tours...');
     setLoading(true);
     setError(null);
     try {
+      console.log('📡 [BookingModal] Calling sdk.simplybook.getLocations()');
       const locations = await sdk.simplybook.getLocations();
+      console.log('✅ [BookingModal] Received locations:', locations);
+      console.log('📊 [BookingModal] Locations count:', locations?.length || 0);
+
       // Transform SimplyBook locations to our Tour format
-      const toursData = locations.map((loc: any) => ({
-        id: loc.id?.toString() || String(Math.random()),
-        city: loc.name || loc.city || 'Unknown',
-        stateProvince: loc.state || loc.region || '',
-        country: loc.country || 'Australia',
-        availableFrom: loc.available_from || new Date().toISOString().split('T')[0],
-        availableUntil: loc.available_until || new Date().toISOString().split('T')[0],
-        daysAvailable: loc.days_available || 7,
-      }));
+      const toursData = locations.map((loc: any) => {
+        console.log('🔄 [BookingModal] Transforming location:', loc);
+        return {
+          id: loc.id?.toString() || String(Math.random()),
+          city: loc.name || loc.city || 'Unknown',
+          stateProvince: loc.state || loc.region || '',
+          country: loc.country || 'Australia',
+          availableFrom: loc.available_from || new Date().toISOString().split('T')[0],
+          availableUntil: loc.available_until || new Date().toISOString().split('T')[0],
+          daysAvailable: loc.days_available || 7,
+        };
+      });
+      console.log('✨ [BookingModal] Transformed tours:', toursData);
       setTours(toursData);
+      console.log('💾 [BookingModal] Tours state updated');
     } catch (err) {
+      console.error('❌ [BookingModal] Error loading tours:', err);
+      console.error('📄 [BookingModal] Error details:', {
+        message: err instanceof Error ? err.message : 'Unknown error',
+        stack: err instanceof Error ? err.stack : undefined,
+        error: err,
+      });
       setError(err instanceof Error ? err.message : 'Failed to load tour locations');
     }
     setLoading(false);
+    console.log('🏁 [BookingModal] Tour loading complete');
   }, []);
 
   const loadServices = useCallback(async () => {
+    console.log('🎯 [BookingModal] Loading services...');
     setLoading(true);
     setError(null);
     try {
+      console.log('📡 [BookingModal] Calling sdk.simplybook.getServices()');
       const services = await sdk.simplybook.getServices();
+      console.log('✅ [BookingModal] Received services:', services);
       setServices(services);
     } catch (err) {
+      console.error('❌ [BookingModal] Error loading services:', err);
       setError(err instanceof Error ? err.message : 'Failed to load services');
     }
     setLoading(false);
@@ -149,7 +170,14 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   // Load tours when modal opens
   useEffect(() => {
+    console.log('🔍 [useEffect] Tour loading check:', {
+      isOpen,
+      currentStep,
+      toursLength: tours.length,
+      shouldLoad: isOpen && currentStep === 1 && tours.length === 0,
+    });
     if (isOpen && currentStep === 1 && tours.length === 0) {
+      console.log('✨ [useEffect] Triggering tour load!');
       loadTours();
     }
   }, [isOpen, currentStep, tours.length, loadTours]);
