@@ -160,21 +160,26 @@ class SimplybookService {
    * @param {string} bookingData.clientEmail - Client email
    * @param {string} bookingData.clientPhone - Client phone
    * @param {string} bookingData.comment - Optional booking comment
+   * @param {Object} bookingData.additionalFields - Optional additional/intake form fields
    */
   async createBooking(bookingData) {
     console.log('📝 Creating new booking...');
 
+    // Split datetime into date and time as required by SimplyBook API
+    const [date, time] = bookingData.datetime.split(' ');
+
+    // book($eventId, $unitId, $date, $time, $clientData, $additional, $count, $batchId, $recurringData)
     const params = [
-      bookingData.serviceId,
-      bookingData.providerId,
-      bookingData.datetime,
-      {
+      parseInt(bookingData.serviceId),    // $eventId - must be Integer
+      parseInt(bookingData.providerId),   // $unitId - must be Integer
+      date,                               // $date - Y-m-d format
+      time,                               // $time - H:i:s format
+      {                                   // $clientData - Object
         name: bookingData.clientName,
         email: bookingData.clientEmail,
         phone: bookingData.clientPhone,
       },
-      null, // additional fields
-      bookingData.comment || '',
+      bookingData.additionalFields || {}, // $additional - additional params and intake form fields
     ];
 
     const result = await this.callApi('book', params);
