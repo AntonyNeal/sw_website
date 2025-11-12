@@ -23,6 +23,21 @@ router.get('/services', async (req, res) => {
 });
 
 /**
+ * GET /api/simplybook/locations
+ * Get all locations (tours)
+ */
+router.get('/locations', async (req, res) => {
+  try {
+    console.log('📍 Getting locations from SimplyBook');
+    const locations = await simplebookService.getLocations();
+    res.json(locations);
+  } catch (error) {
+    console.error('Error getting locations:', error);
+    res.status(500).json({ error: error.message || 'Failed to get locations' });
+  }
+});
+
+/**
  * GET /api/simplybook/services/:id
  * Get service details by ID
  */

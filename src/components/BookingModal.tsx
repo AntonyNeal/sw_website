@@ -18,6 +18,16 @@ import type {
   SimplybookBookingData,
 } from '../../sdk/src/index';
 
+interface Tour {
+  id: string;
+  city: string;
+  stateProvince: string;
+  country: string;
+  availableFrom: string;
+  availableUntil: string;
+  daysAvailable: number;
+}
+
 interface ClientInfo {
   firstName: string;
   lastName: string;
@@ -30,8 +40,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tours, setTours] = useState<Tour[]>([]);
+  const [selectedTour, setSelectedTour] = useState<Tour | null>(null);
   const [services, setServices] = useState<SimplybookService[]>([]);
   const [selectedService, setSelectedService] = useState<SimplybookService | null>(null);
+  const [selectedExtras, setSelectedExtras] = useState<SimplybookService[]>([]);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [timeSlots, setTimeSlots] = useState<SimplybookTimeSlot[]>([]);
@@ -112,19 +125,27 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     }
   }, [isOpen]);
 
-  // Load services when modal opens
+  // Load tours when modal opens
   useEffect(() => {
-    if (isOpen && currentStep === 1 && services.length === 0) {
+    if (isOpen && currentStep === 1 && tours.length === 0) {
+      // TODO: Load tours from API
+      // For now, set empty array - need to implement tour loading
+    }
+  }, [isOpen, currentStep, tours.length]);
+
+  // Load services when tour is selected (step 2)
+  useEffect(() => {
+    if (isOpen && currentStep === 2 && selectedTour && services.length === 0) {
       loadServices();
     }
-  }, [isOpen, currentStep, services.length, loadServices]);
+  }, [isOpen, currentStep, selectedTour, services.length, loadServices]);
 
-  // Load dates when service is selected
+  // Load dates when service is selected (step 3)
   useEffect(() => {
-    if (selectedService && currentStep === 2 && availableDates.length === 0) {
+    if (selectedService && selectedTour && currentStep === 3 && availableDates.length === 0) {
       loadAvailableDates();
     }
-  }, [selectedService, currentStep, availableDates.length, loadAvailableDates]);
+  }, [selectedService, selectedTour, currentStep, availableDates.length, loadAvailableDates]);
 
   // Load time slots when date is selected
   useEffect(() => {
@@ -256,10 +277,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         <div className="px-8 pb-6">
           <div className="flex items-center justify-between">
             {[
-              { num: 1, label: 'Service' },
-              { num: 2, label: 'Schedule' },
-              { num: 3, label: 'Details' },
-              { num: 4, label: 'Confirm' },
+              { num: 1, label: 'Tour' },
+              { num: 2, label: 'Service' },
+              { num: 3, label: 'Schedule' },
+              { num: 4, label: 'Extras' },
+              { num: 5, label: 'Confirm' },
             ].map((step, index) => (
               <React.Fragment key={step.num}>
                 <div className="flex flex-col items-center flex-1 group">
@@ -280,7 +302,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     {step.label}
                   </span>
                 </div>
-                {index < 3 && (
+                {index < 4 && (
                   <div className="flex-1 mx-3 mt-[-16px]">
                     <div
                       className={`h-2 rounded-full transition-all duration-500 ${
@@ -313,8 +335,79 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
         )}
 
         <div className="flex-1 overflow-y-auto px-8 pb-8">
-          {/* Step 1: Service Selection */}
+          {/* Step 1: Tour Selection */}
           {currentStep === 1 && (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Choose your tour location</h3>
+                <p className="text-slate-500 text-sm">Select where you'd like to book your experience</p>
+              </div>
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-16">
+                  <Loader2 className="w-10 h-10 animate-spin text-indigo-600 mb-4" />
+                  <p className="text-slate-500 text-sm">Loading tour locations...</p>
+                </div>
+              ) : tours.length === 0 ? (
+                <div className="text-center py-16 px-6 bg-slate-50 rounded-2xl">
+                  <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Calendar className="w-8 h-8 text-slate-400" />
+                  </div>
+                  <p className="text-slate-600 font-medium">No tour locations available at this time.</p>
+                  <p className="text-slate-400 text-sm mt-1">Please check back later.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {tours.map((tour) => (
+                    <button
+                      key={tour.id}
+                      onClick={() => setSelectedTour(tour)}
+                      className={`p-6 rounded-2xl text-left transition-all duration-300 border-2 group hover:scale-[1.02] ${
+                        selectedTour?.id === tour.id
+                          ? 'border-indigo-600 bg-gradient-to-br from-indigo-50 to-purple-50 shadow-lg shadow-indigo-200/50'
+                          : 'border-slate-200 bg-white hover:border-slate-300 hover:shadow-md'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div className="flex-1">
+                          <h4 className="text-xl font-bold text-slate-900 mb-1 group-hover:text-indigo-600 transition-colors">
+                            {tour.city}, {tour.stateProvince}
+                          </h4>
+                          <p className="text-sm text-slate-500">{tour.country}</p>
+                        </div>
+                        <div
+                          className={`flex-shrink-0 ml-4 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                            selectedTour?.id === tour.id
+                              ? 'bg-indigo-600 scale-110'
+                              : 'bg-slate-100 group-hover:bg-slate-200'
+                          }`}
+                        >
+                          {selectedTour?.id === tour.id ? (
+                            <CheckCircle className="w-6 h-6 text-white" />
+                          ) : (
+                            <div className="w-4 h-4 rounded-full border-2 border-slate-400" />
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <Calendar className="w-4 h-4 text-indigo-600" />
+                          <span>
+                            {new Date(tour.availableFrom).toLocaleDateString()} - {new Date(tour.availableUntil).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <div className="px-3 py-1.5 bg-slate-100 rounded-lg inline-block font-medium text-slate-700">
+                          {tour.daysAvailable} days available
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Step 2: Service Selection */}
+          {currentStep === 2 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Choose your service</h3>
@@ -389,8 +482,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 2: Date & Time Selection */}
-          {currentStep === 2 && (
+          {/* Step 3: Date & Time Selection */}
+          {currentStep === 3 && (
             <div className="space-y-8 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Pick your time</h3>
@@ -505,8 +598,24 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 3: Client Information */}
-          {currentStep === 3 && (
+          {/* Step 4: Extras Selection */}
+          {currentStep === 4 && (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Add extras</h3>
+                <p className="text-slate-500 text-sm">
+                  Enhance your experience with additional services
+                </p>
+              </div>
+              <div className="text-center py-16 px-6 bg-slate-50 rounded-2xl">
+                <p className="text-slate-600 font-medium">No extras available</p>
+                <p className="text-slate-400 text-sm mt-1">Continue to complete your booking</p>
+              </div>
+            </div>
+          )}
+
+          {/* Step 5: Client Information & Confirmation */}
+          {currentStep === 5 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Your information</h3>
@@ -643,8 +752,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 4: Confirmation */}
-          {currentStep === 4 && (
+          {/* Step 6: Success/Confirmation Screen */}
+          {currentStep === 6 && (
             <div className="text-center py-12 animate-fadeIn">
               <div className="mb-8">
                 <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30 animate-bounce-in">

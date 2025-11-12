@@ -126,6 +126,14 @@ class SimplybookService {
   }
 
   /**
+   * Get all locations (tours)
+   */
+  async getLocations() {
+    console.log('📍 Fetching locations from SimplyBook.me...');
+    return await this.callApi('getLocationList');
+  }
+
+  /**
    * Get available time slots for a service
    * @param {string} serviceId - Service ID
    * @param {string} date - Date in YYYY-MM-DD format
@@ -161,7 +169,7 @@ class SimplybookService {
 
     // Calculate total days and limit to prevent excessive API calls
     const totalDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-    const maxDaysToCheck = Math.min(totalDays, 30); // Limit to 30 days for performance
+    const maxDaysToCheck = Math.min(totalDays, 7); // Limit to 7 days for performance
 
     console.log(`📊 Checking ${maxDaysToCheck} days (requested ${totalDays})`);
 
@@ -193,11 +201,6 @@ class SimplybookService {
       } catch (error) {
         console.warn(`⚠️ Could not check availability for ${dateStr}:`, error.message);
         // Continue checking other dates
-      }
-
-      // Add small delay to avoid rate limiting (50ms between requests)
-      if (daysChecked < maxDaysToCheck) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
       }
     }
 
