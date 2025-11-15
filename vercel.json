@@ -1,6 +1,9 @@
 {
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/:path*" },
+    {
+      "source": "/api/:path*",
+      "destination": "https://clairehamilton.net/api/:path*"
+    },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
@@ -9,7 +12,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://clairehamilton.net"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
