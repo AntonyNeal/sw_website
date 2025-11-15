@@ -8,8 +8,6 @@
  * 3. Pass to booking form submission
  */
 
-import crypto from 'crypto';
-
 interface UTMParams {
   utm_source?: string;
   utm_medium?: string;

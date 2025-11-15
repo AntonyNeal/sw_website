@@ -1,7 +1,7 @@
 {
-  "name": "digitalocean-mcp-server",
+  "name": "webapp-builder-mcp-server",
   "version": "1.0.0",
-  "description": "Model Context Protocol server for DigitalOcean integration",
+  "description": "Model Context Protocol server for web app development assistance",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "axios": "^1.11.0",
     "dotenv": "^16.4.5"
   },
   "engines": {

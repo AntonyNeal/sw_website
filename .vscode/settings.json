@@ -15,12 +15,15 @@
   ],
   "github.copilot.chat.mcp.enabled": true,
   "github.copilot.chat.mcp.servers": {
-    "digitalocean": {
+    "webapp-builder": {
       "command": "node",
-      "args": ["C:\\Users\\Julian\\sw-web\\mcp-server\\index.js"],
-      "env": {
-        "DO_API_TOKEN": "${env:DO_API_TOKEN}"
-      }
+      "args": ["C:\\Users\\Julian\\sw-web\\mcp-server\\index.js"]
     }
+  },
+  "files.exclude": {
+    "**/mcp-server/node_modules": true
+  },
+  "search.exclude": {
+    "**/mcp-server/node_modules": true
   }
 }

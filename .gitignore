@@ -49,3 +49,4 @@ terraform.tfvars
 
 # Build artifacts
 *.tsbuildinfo
+.vercel

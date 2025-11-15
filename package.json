@@ -1,15 +1,15 @@
 {
-  "name": "service-booking-platform",
+  "name": "buildhub-website",
   "private": true,
   "version": "1.0.0",
-  "description": "Multi-tenant service booking platform with SDK integration - Template for service-based businesses",
+  "description": "BuildHub - Professional project management and business consulting services by Claire Hamilton",
   "keywords": [
-    "booking",
-    "sdk",
-    "multi-tenant",
-    "services",
-    "scheduling",
-    "template"
+    "project-management",
+    "business-consulting",
+    "strategic-planning",
+    "buildhub",
+    "claire-hamilton",
+    "professional-services"
   ],
   "engines": {
     "node": ">=20.0.0"
