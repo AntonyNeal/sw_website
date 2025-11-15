@@ -23,6 +23,19 @@ services:
         scope: RUN_AND_BUILD_TIME
         value: 'https://sw-website-6htf.vercel.app,https://sw-website-6htf-git-main-clair-hamilton.vercel.app,https://sw-website-6htf-j1hpexdop-clair-hamilton.vercel.app,https://clairehamilton.net,https://www.clairehamilton.net'
 
+      # SimplyBook.me API credentials
+      - key: SIMPLYBOOK_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        value: 'f3c86908989b8625161c7f55aea014d78f8c690a276903b20531015cdfb8c8'
+
+      - key: SIMPLYBOOK_SECRET_KEY
+        scope: RUN_AND_BUILD_TIME
+        value: '58dabce655975aea2e0d90e57812c79136875a3a48fe906ec7cceede9597a'
+
+      - key: SIMPLYBOOK_COMPANY
+        scope: RUN_AND_BUILD_TIME
+        value: 'clairehamilton'
+
     github:
       branch: main
       deploy_on_push: true
