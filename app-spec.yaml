@@ -26,11 +26,11 @@ services:
       # SimplyBook.me API credentials
       - key: SIMPLYBOOK_API_KEY
         scope: RUN_AND_BUILD_TIME
-        value: 'f3c86908989b8625161c7f55aea014d78f8c690a276903b20531015cdfb8c8'
+        value: '052ca42b114bcbdb04051f925a7a29bc3e0471c36057fe58589ec43ab83cd8c7'
 
       - key: SIMPLYBOOK_SECRET_KEY
         scope: RUN_AND_BUILD_TIME
-        value: '58dabce655975aea2e0d90e57812c79136875a3a48fe906ec7cceede9597a'
+        value: 'df14274ac3bb3ed4e116321321f60339e2b8c91e24abb8a90011bc60d0b98fe9'
 
       - key: SIMPLYBOOK_COMPANY
         scope: RUN_AND_BUILD_TIME
