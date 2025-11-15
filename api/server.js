@@ -21,6 +21,7 @@ app.use(
         /^http:\/\/localhost(:\d+)?$/, // localhost:*
         /^http:\/\/127\.0\.0\.1(:\d+)?$/, // 127.0.0.1:*
         /^https:\/\/[\w-]+-[\w-]+-\w+\.ondigitalocean\.app$/, // DigitalOcean apps
+        /^https:\/\/sw-website-6htf.*\.vercel\.app$/, // Vercel deployments
       ];
 
       // Check if origin matches any allowed pattern
