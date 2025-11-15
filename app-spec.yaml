@@ -18,10 +18,10 @@ services:
         scope: RUN_AND_BUILD_TIME
         value: '8080'
 
-      # CORS Configuration - allow any origin for now
-      - key: ALLOWED_ORIGIN
+      # CORS Configuration - allow Vercel and custom domains
+      - key: ALLOWED_ORIGINS
         scope: RUN_AND_BUILD_TIME
-        value: '*'
+        value: 'https://sw-website-6htf.vercel.app,https://sw-website-6htf-j1hpexdop-clair-hamilton.vercel.app,https://clairehamilton.net,https://www.clairehamilton.net'
 
     github:
       branch: main
