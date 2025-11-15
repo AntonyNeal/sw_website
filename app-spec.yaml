@@ -5,15 +5,9 @@
 name: octopus-app
 region: syd1 # Sydney region
 
-domains:
-  - domain: clairehamilton.net
-    type: PRIMARY
-    wildcard: false
-    zone: clairehamilton.net
-
 services:
-  # Backend API Service
-  - build_command: cd api && npm install
+  # Backend API Service - Standalone with its own URL
+  - build_command: npm install
     envs:
       # Environment
       - key: NODE_ENV
@@ -24,10 +18,10 @@ services:
         scope: RUN_AND_BUILD_TIME
         value: '8080'
 
-      # CORS Configuration - allow Vercel frontend
+      # CORS Configuration - allow any origin for now
       - key: ALLOWED_ORIGIN
         scope: RUN_AND_BUILD_TIME
-        value: https://clairehamilton.net
+        value: '*'
 
     github:
       branch: main
@@ -38,8 +32,6 @@ services:
     instance_count: 1
     instance_size_slug: basic-xxs
     name: api
-    routes:
-      - path: /api
     run_command: node server.js
     source_dir: /api
 # Optional: Managed Database (uncomment to use DigitalOcean managed database)
