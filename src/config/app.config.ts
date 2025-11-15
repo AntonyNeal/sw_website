@@ -1,5 +1,5 @@
 const config = {
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api',
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api',
   functionsUrl: import.meta.env.VITE_FUNCTIONS_URL || '',
   gaTrackingId: import.meta.env.VITE_GA_MEASUREMENT_ID || '',
   googleAdsId: import.meta.env.VITE_GOOGLE_ADS_ID || '',

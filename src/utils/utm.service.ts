@@ -48,19 +48,24 @@ export function generateUserId(): string {
     navigator.language,
     new Date().getTimezoneOffset(),
     screen.width + 'x' + screen.height,
+    Date.now(),
   ].join('|');
 
-  // Generate deterministic hash (same device = same ID)
-  const hash = crypto
-    .createHash('sha256')
-    .update(fingerprint + Date.now())
-    .digest('hex')
-    .substring(0, 32);
+  // Generate simple hash for browser (no crypto needed)
+  let hash = 0;
+  for (let i = 0; i < fingerprint.length; i++) {
+    const char = fingerprint.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+
+  // Convert to hex and pad to 32 characters
+  const userId = Math.abs(hash).toString(16).padStart(32, '0').substring(0, 32);
 
   // Store for persistence
-  localStorage.setItem(USER_ID_STORAGE_KEY, hash);
+  localStorage.setItem(USER_ID_STORAGE_KEY, userId);
 
-  return hash;
+  return userId;
 }
 
 /**
@@ -111,9 +116,12 @@ export function initializeSession(): SessionData {
   const userId = generateUserId();
   const utmParams = extractUTMParams();
 
+  // Generate session ID (browser-compatible)
+  const sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+
   const sessionData: SessionData = {
     userId,
-    sessionId: crypto.randomUUID ? crypto.randomUUID() : 'session_' + Date.now(),
+    sessionId,
     utmParams,
     referrer: document.referrer,
     deviceType: getDeviceType(),
@@ -174,7 +182,7 @@ export async function registerSession(apiBaseUrl: string): Promise<{ sessionId: 
   }
 
   try {
-    const response = await fetch(`${apiBaseUrl}/api/sessions/register`, {
+    const response = await fetch(`${apiBaseUrl}/sessions/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -220,7 +228,7 @@ export async function trackConversion(
   // Try to send to backend, but don't fail if it doesn't work
   if (apiBaseUrl && session) {
     try {
-      await fetch(`${apiBaseUrl}/api/conversions/track`, {
+      await fetch(`${apiBaseUrl}/conversions/track`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

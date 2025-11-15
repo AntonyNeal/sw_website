@@ -24,12 +24,15 @@ function App() {
         const session = initializeSession();
         console.debug('Session initialized:', session.userId);
 
-        // Register session with backend (async, non-blocking)
-        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
-        await registerSession(apiBaseUrl);
+        // Skip backend tracking in development if domain not accessible
+        if (import.meta.env.PROD) {
+          // Register session with backend (async, non-blocking)
+          const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+          await registerSession(apiBaseUrl);
 
-        // Track page view
-        await trackConversion('page_view', { page: 'home' }, apiBaseUrl);
+          // Track page view
+          await trackConversion('page_view', { page: 'home' }, apiBaseUrl);
+        }
       } catch (error) {
         console.debug('Error initializing tracking:', error);
         // Don't fail the app if tracking fails
@@ -42,8 +45,11 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>Claire Hamilton</title>
-        <meta name="description" content="Claire Hamilton - Melbourne Companion" />
+        <title>BuildHub - Professional Project Management & Business Consulting</title>
+        <meta
+          name="description"
+          content="BuildHub by Claire Hamilton - Expert project management, strategic planning, and business consulting services in Melbourne"
+        />
       </Helmet>
 
       <div className="min-h-screen" style={{ backgroundColor: '#d0d0d0' }}>
