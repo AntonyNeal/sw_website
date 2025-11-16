@@ -635,8 +635,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                             <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
                               {(() => {
                                 const dates = [];
-                                const start = new Date(tour.availableFrom);
-                                const end = new Date(tour.availableUntil);
+                                // Always show next 30 days from today
+                                const start = new Date();
+                                const end = new Date();
+                                end.setDate(end.getDate() + 30);
 
                                 for (
                                   let d = new Date(start);
