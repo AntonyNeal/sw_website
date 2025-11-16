@@ -750,7 +750,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                             {service.price && (
                               <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                                 {service.currency || '$'}
-                                {service.price}
+                                {Math.round(Number(service.price))}
                               </span>
                             )}
                           </div>
