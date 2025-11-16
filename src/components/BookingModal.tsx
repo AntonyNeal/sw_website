@@ -798,8 +798,10 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   {selectedTour &&
                     (() => {
                       const dates = [];
-                      const start = new Date(selectedTour.availableFrom);
-                      const end = new Date(selectedTour.availableUntil);
+                      // Always show next 30 days from today, regardless of tour dates
+                      const start = new Date();
+                      const end = new Date();
+                      end.setDate(end.getDate() + 30);
 
                       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
                         dates.push(new Date(d));
