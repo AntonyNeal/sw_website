@@ -5,8 +5,31 @@
 name: octopus-app
 region: syd1 # Sydney region
 
+static_sites:
+  # Frontend Static Site
+  - name: frontend
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: AntonyNeal/sw_website
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: '/api'
+      - key: VITE_FUNCTIONS_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ''
+      - key: VITE_ASSESSMENT_ENABLED
+        scope: RUN_AND_BUILD_TIME
+        value: 'false'
+    routes:
+      - path: /api
+        preserve_path_prefix: true
+
 services:
-  # Backend API Service - Standalone with its own URL
+  # Backend API Service
   - build_command: npm install
     envs:
       # Environment
@@ -18,10 +41,10 @@ services:
         scope: RUN_AND_BUILD_TIME
         value: '8080'
 
-      # CORS Configuration - allow Vercel and custom domains
+      # CORS Configuration - allow same domain
       - key: ALLOWED_ORIGINS
         scope: RUN_AND_BUILD_TIME
-        value: 'https://sw-website-6htf.vercel.app,https://sw-website-6htf-git-main-clair-hamilton.vercel.app,https://sw-website-6htf-j1hpexdop-clair-hamilton.vercel.app,https://clairehamilton.net,https://www.clairehamilton.net'
+        value: 'https://octopus-app-tw5wu.ondigitalocean.app,https://clairehamilton.net,https://www.clairehamilton.net'
 
       # SimplyBook.me API credentials
       - key: SIMPLYBOOK_API_KEY
