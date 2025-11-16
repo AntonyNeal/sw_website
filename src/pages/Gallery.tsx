@@ -1,142 +1,82 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FloatingCTA from '../components/FloatingCTA';
+import BookingModal from '../components/BookingModal';
 
 const galleryImages = [
   {
     id: 1,
-    src: '/Shoot 3/IMG_1061-1.jpeg',
+    src: '/IMG_1069-3.jpeg',
     alt: 'Claire Hamilton - Photo 1',
   },
   {
     id: 2,
-    src: '/Shoot 3/IMG_1063-2.jpeg',
+    src: '/IMG_1070-4.jpeg',
     alt: 'Claire Hamilton - Photo 2',
   },
   {
     id: 3,
-    src: '/Shoot 3/IMG_1069-3.jpeg',
+    src: '/IMG_1079-6.jpeg',
     alt: 'Claire Hamilton - Photo 3',
   },
   {
     id: 4,
-    src: '/Shoot 3/IMG_1070-4.jpeg',
+    src: '/IMG_1109-14.jpeg',
     alt: 'Claire Hamilton - Photo 4',
   },
   {
     id: 5,
-    src: '/Shoot 3/IMG_1074-5.jpeg',
+    src: '/IMG_1111-15.jpeg',
     alt: 'Claire Hamilton - Photo 5',
   },
   {
     id: 6,
-    src: '/Shoot 3/IMG_1079-6.jpeg',
+    src: '/IMG_1114-16.jpeg',
     alt: 'Claire Hamilton - Photo 6',
   },
   {
     id: 7,
-    src: '/Shoot 3/IMG_1081-7.jpeg',
+    src: '/IMG_1117-17.jpeg',
     alt: 'Claire Hamilton - Photo 7',
   },
   {
     id: 8,
-    src: '/Shoot 3/IMG_1082-8.jpeg',
+    src: '/IMG_1144-21.jpeg',
     alt: 'Claire Hamilton - Photo 8',
   },
   {
     id: 9,
-    src: '/Shoot 3/IMG_1086-9.jpeg',
+    src: '/IMG_1147-22.jpeg',
     alt: 'Claire Hamilton - Photo 9',
   },
   {
     id: 10,
-    src: '/Shoot 3/IMG_1089-10.jpeg',
+    src: '/IMG_1148-23.jpeg',
     alt: 'Claire Hamilton - Photo 10',
   },
   {
     id: 11,
-    src: '/Shoot 3/IMG_1094-11.jpeg',
+    src: '/IMG_1182-25.jpeg',
     alt: 'Claire Hamilton - Photo 11',
   },
   {
     id: 12,
-    src: '/Shoot 3/IMG_1097-12.jpeg',
+    src: '/IMG_1188-26.jpeg',
     alt: 'Claire Hamilton - Photo 12',
-  },
-  {
-    id: 13,
-    src: '/Shoot 3/IMG_1103-13.jpeg',
-    alt: 'Claire Hamilton - Photo 13',
-  },
-  {
-    id: 14,
-    src: '/Shoot 3/IMG_1109-14.jpeg',
-    alt: 'Claire Hamilton - Photo 14',
-  },
-  {
-    id: 15,
-    src: '/Shoot 3/IMG_1111-15.jpeg',
-    alt: 'Claire Hamilton - Photo 15',
-  },
-  {
-    id: 16,
-    src: '/Shoot 3/IMG_1114-16.jpeg',
-    alt: 'Claire Hamilton - Photo 16',
-  },
-  {
-    id: 17,
-    src: '/Shoot 3/IMG_1117-17.jpeg',
-    alt: 'Claire Hamilton - Photo 17',
-  },
-  {
-    id: 18,
-    src: '/Shoot 3/IMG_1128-18.jpeg',
-    alt: 'Claire Hamilton - Photo 18',
-  },
-  {
-    id: 19,
-    src: '/Shoot 3/IMG_1132-19.jpeg',
-    alt: 'Claire Hamilton - Photo 19',
-  },
-  {
-    id: 20,
-    src: '/Shoot 3/IMG_1141-20.jpeg',
-    alt: 'Claire Hamilton - Photo 20',
-  },
-  {
-    id: 21,
-    src: '/Shoot 3/IMG_1144-21.jpeg',
-    alt: 'Claire Hamilton - Photo 21',
-  },
-  {
-    id: 22,
-    src: '/Shoot 3/IMG_1147-22.jpeg',
-    alt: 'Claire Hamilton - Photo 22',
-  },
-  {
-    id: 23,
-    src: '/Shoot 3/IMG_1148-23.jpeg',
-    alt: 'Claire Hamilton - Photo 23',
-  },
-  {
-    id: 24,
-    src: '/Shoot 3/IMG_1159-24.jpeg',
-    alt: 'Claire Hamilton - Photo 24',
-  },
-  {
-    id: 25,
-    src: '/Shoot 3/IMG_1182-25.jpeg',
-    alt: 'Claire Hamilton - Photo 25',
-  },
-  {
-    id: 26,
-    src: '/Shoot 3/IMG_1188-26.jpeg',
-    alt: 'Claire Hamilton - Photo 26',
   },
 ];
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenBooking = () => setIsBookingOpen(true);
+    window.addEventListener('openBookingModal', handleOpenBooking);
+    return () => {
+      window.removeEventListener('openBookingModal', handleOpenBooking);
+    };
+  }, []);
 
   const openLightbox = (index: number) => {
     setSelectedImage(index);
@@ -310,6 +250,7 @@ export default function Gallery() {
           window.dispatchEvent(new CustomEvent('openBookingModal'));
         }}
       />
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </>
   );
 }
