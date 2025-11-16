@@ -312,26 +312,6 @@ export default function Home() {
 
           {/* Content Overlay - Conversion-Optimized Layout */}
           <div className="relative z-30 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">
-            <h1
-              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light mb-6 sm:mb-8 drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] leading-none tracking-tight"
-              style={{
-                textShadow: '2px 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
-                fontFamily: '"Playfair Display", serif',
-                animation: 'gentle-pulse 4s ease-in-out infinite',
-              }}
-            >
-              Claire Hamilton
-            </h1>
-            <p
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl italic drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] mb-10 sm:mb-14 max-w-5xl mx-auto leading-relaxed font-light"
-              style={{
-                textShadow: '1px 1px 6px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5)',
-                fontFamily: '"Crimson Text", serif',
-              }}
-            >
-              Exclusive Premium Companion
-            </p>
-
             {/* CTAs - View Gallery (left) and Book Now (right) */}
             <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 justify-center items-center mb-8 sm:mb-12">
               {/* Secondary CTA - View Gallery as Intent Driver */}

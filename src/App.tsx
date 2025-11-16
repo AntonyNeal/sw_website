@@ -123,18 +123,31 @@ function App() {
                       }, 500);
                     }
                   }}
-                  className="text-xl sm:text-2xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
-                  style={{
-                    color: '#2d3748',
-                    textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
-                  }}
+                  className="cursor-pointer select-none"
                   title={
                     location.pathname === '/admin'
                       ? 'Click to return home'
                       : 'Triple-click for surprise!'
                   }
                 >
-                  Claire Hamilton
+                  <div
+                    className="text-xl sm:text-2xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap"
+                    style={{
+                      color: '#2d3748',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    Claire Hamilton
+                  </div>
+                  <div
+                    className="text-[10px] sm:text-xs italic font-light"
+                    style={{
+                      color: '#718096',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
+                  >
+                    Exclusive Premium Companion
+                  </div>
                 </div>
                 <div className="flex items-center space-x-3">
                   <button
@@ -228,18 +241,31 @@ function App() {
                       }, 500);
                     }
                   }}
-                  className="text-3xl xl:text-4xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap cursor-pointer select-none"
-                  style={{
-                    color: '#2d3748',
-                    textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
-                  }}
+                  className="cursor-pointer select-none"
                   title={
                     location.pathname === '/admin'
                       ? 'Click to return home'
                       : 'Triple-click for surprise!'
                   }
                 >
-                  Claire Hamilton
+                  <div
+                    className="text-3xl xl:text-4xl font-light tracking-tight hover:text-rose-600 transition-colors whitespace-nowrap"
+                    style={{
+                      color: '#2d3748',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    Claire Hamilton
+                  </div>
+                  <div
+                    className="text-xs xl:text-sm italic font-light"
+                    style={{
+                      color: '#718096',
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
+                  >
+                    Exclusive Premium Companion
+                  </div>
                 </div>
 
                 {/* Desktop Navigation */}
@@ -285,6 +311,20 @@ function App() {
                     aria-label="Services page"
                   >
                     Services
+                  </Link>
+                  <Link
+                    to="/gallery"
+                    className={`font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/gallery'
+                        ? 'text-rose-600'
+                        : 'text-gray-800 hover:text-rose-600'
+                    }`}
+                    style={{
+                      textShadow: '0 1px 0 rgba(255,255,255,0.5)',
+                    }}
+                    aria-label="Gallery page"
+                  >
+                    Gallery
                   </Link>
                   <button
                     onClick={() => {
@@ -341,6 +381,18 @@ function App() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Services
+                  </Link>
+                  <Link
+                    to="/gallery"
+                    className={`block font-medium transition-colors duration-300 focus:outline-none focus:text-rose-600 ${
+                      location.pathname === '/gallery'
+                        ? 'text-rose-600'
+                        : 'text-gray-900 hover:text-rose-600'
+                    }`}
+                    aria-label="Gallery page"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Gallery
                   </Link>
                 </div>
               </div>
