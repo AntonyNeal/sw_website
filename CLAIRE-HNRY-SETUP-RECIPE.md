@@ -1,144 +1,47 @@
-# Stripe + HNRY Setup Recipe for Claire 💳✨
+# HNRY Setup Recipe for Claire 💳✨
 
-## Why You Need BOTH Stripe AND HNRY 🤔
+## The Simple Solution 🎯
 
-### The Perfect Combination 🎯
+**Good news!** You only need **ONE service** - HNRY handles EVERYTHING:
 
-Your booking system needs **TWO separate services** that work together:
+### What HNRY Does ✨
 
-#### **Stripe = Payment Gateway** 💳
+- ✅ **Accepts credit/debit card payments** (Visa, Mastercard) - at no extra cost!
+- ✅ **Automatically calculates and pays your taxes** (income tax, GST, ACC)
+- ✅ **Provides invoicing** - send professional invoices to clients
+- ✅ **Tracks expenses** - claim deductions easily
+- ✅ **Acts as your accountant** - files tax returns for you
+- ✅ **Financial reporting** - see how your business is doing
 
-**What it does:** Collects money from customers
+### Why This is Perfect 🎉
 
-- ✅ Accepts credit/debit cards on your website
-- ✅ Instant online payments when customers book
-- ✅ Has an API so Julian can integrate it with your booking system
-- ✅ Secure and trusted by customers worldwide
-- ❌ Does NOT handle your taxes or accounting
-
-#### **HNRY = Tax & Accounting** 📊
-
-**What it does:** Manages your business finances
-
-- ✅ Automatically calculates and pays your income tax
-- ✅ Handles GST returns and ACC levies
-- ✅ Tracks expenses and provides financial reports
-- ✅ Acts as your accountant
-- ❌ Does NOT have an API for accepting customer payments
-
-### How They Work Together 🔄
-
-```
-Customer books → Stripe processes payment → Money goes to bank → HNRY deducts taxes → You get the rest
-    (Website)         ($500 payment)         (2-3 days)        (auto tax calc)      (net income)
-```
-
-**Simple explanation:** Stripe gets the money IN, HNRY sorts the money OUT (taxes, etc.)
+- One account instead of managing multiple services
+- No extra payment processing fees (unlike Stripe's 1.75% + $0.30)
+- Julian will be added as admin to help with integration
+- Everything in one place - payments, taxes, accounting
 
 ---
 
-## Part 1: Set Up Stripe (Payment Collection) 💳
-
-### Prerequisites 📝
-
-- ABN (Australia) - optional but recommended 🇦🇺
-- Bank account details 🏦
-- Government-issued ID (Driver's license or passport) 🪪
-- Business email address 📧
-
-### Step 1: Create Stripe Account 🚀
-
-1. Go to https://stripe.com/au 🌐
-2. Click **"Sign up"** 👆
-3. Enter your email address and create a password 🔐
-4. Verify your email by clicking the link Stripe sends you ✉️
-
-### Step 2: Complete Stripe Business Profile 👤
-
-1. Once logged in, complete your account setup 📊
-2. Select **"Individual"** (sole trader) or **"Company"** 💼
-3. Fill in your business details:
-   - Business name (e.g., "CH Consulting Services" if you want discretion) 🤫
-   - Industry: Select appropriate category ✍️
-   - Business description 📂
-   - Website URL (your booking site once live) 🌍
-
-### Step 3: Provide Personal Information to Stripe 🆔
-
-1. Enter your personal details:
-   - Full legal name 👤
-   - Date of birth 🎂
-   - Residential address 🏠
-   - Phone number 📱
-2. Upload ID verification:
-   - Photo of driver's license or passport 📸
-   - Stripe needs this for payment processing compliance ✅
-
-### Step 4: Add Banking Details to Stripe 🏦
-
-1. Go to **Settings** → **Bank accounts and scheduling** ⚙️
-2. Click **"Add bank account"** ➕
-3. Enter your Australian bank details:
-   - BSB number 🔢
-   - Account number 💳
-   - Account holder name 📝
-4. Stripe will verify your bank account ⏱️
-
-### Step 5: Enable Stripe Payment Methods 💰
-
-1. Go to **Settings** → **Payment methods** ⚙️
-2. Enable these:
-   - ✅ Cards (Visa, Mastercard, Amex) 💳
-   - ✅ Digital wallets (Apple Pay, Google Pay) 📱
-   - Consider: Bank transfers (BECS Direct Debit) 🏦
-
-### Step 6: Get Stripe API Keys for Julian 🔑
-
-Julian needs these to connect Stripe to your booking system: 🛠️
-
-1. Click **Developers** in the left sidebar 👨‍💻
-2. Click **API keys** 🗝️
-
-**Test Keys** (for development): 🧪
-
-- Publishable key: `pk_test_...`
-- Secret key: `sk_test_...`
-
-**Live Keys** (for real payments): 🎯
-
-- Toggle to **Live mode**
-- Publishable key: `pk_live_...`
-- Secret key: `sk_live_...` ⚠️ Keep secret!
-
-### Step 7: Add Julian as Stripe Team Member 👥
-
-**RECOMMENDED** - Safer than sharing API keys:
-
-1. Go to **Settings** → **Team and security** ⚙️
-2. Click **Invite team member** ✉️
-3. Enter Julian's email 📧
-4. Set role: **Developer** or **Administrator** 👨‍💻
-5. Click **Send invite** 📨
-
----
-
-## Part 2: Set Up HNRY (Tax & Accounting) 📊
+## Setup Steps 🚀
 
 ### Prerequisites 📝
 
 - IRD number (NZ) or ABN (Australia) 🇳🇿🇦🇺
 - Bank account details 🏦
-- Government-issued ID 🪪
+- Government-issued ID (Driver's license or passport) 🪪
 - Business email address 📧
 
-### Step 8: Create HNRY Account 🚀
+- Government-issued ID (Driver's license or passport) 🪪
+- Business email address 📧
+
+### Step 1: Create HNRY Account 🚀
 
 1. Go to https://hnry.co.nz (NZ) or https://hnry.com.au (Australia) 🌐
 2. Click **"Get started"** 👆
 3. Enter your email address and create a password 🔐
 4. Verify your email ✉️
 
-### Step 9: Complete HNRY Business Profile 👤
+### Step 2: Complete HNRY Business Profile 👤
 
 1. Select **"Sole trader"** (self-employed) 💼
 2. Fill in your business details:
@@ -147,7 +50,7 @@ Julian needs these to connect Stripe to your booking system: 🛠️
    - Services provided 📂
    - Expected annual income 💰
 
-### Step 10: Provide Personal Information to HNRY 🆔
+### Step 3: Provide Personal Information 🆔
 
 1. Enter your details:
    - Full legal name 👤
@@ -158,7 +61,7 @@ Julian needs these to connect Stripe to your booking system: 🛠️
 2. Upload ID verification:
    - Photo of license or passport 📸
 
-### Step 11: Add Banking Details to HNRY 🏦
+### Step 4: Add Banking Details 🏦
 
 1. Go to **Settings** → **Bank accounts** ⚙️
 2. Add your bank account:
@@ -166,147 +69,138 @@ Julian needs these to connect Stripe to your booking system: 🛠️
    - Account number 💳
    - BSB (if in Australia) 🔢
 
-### Step 12: Add Julian as HNRY Team Member 👥
+### Step 5: Enable Payment Collection 💳
+
+HNRY can accept credit/debit card payments at **no extra cost**:
+
+1. Go to **Settings** → **Payments** or **Invoicing** ⚙️
+2. Enable card payments (Visa, Mastercard)
+3. HNRY provides you with a payment link or invoicing system
+4. Julian will need access to integrate this with your booking system
+
+### Step 6: Add Julian as Admin 👥
+
+**IMPORTANT** - Julian needs admin access to integrate payments:
 
 1. Go to **Settings** → **Team** ⚙️
 2. Click **Invite team member** ✉️
 3. Enter Julian's email 📧
-4. Set permissions: **Admin** access 👨‍💻
+4. Set role: **Admin** 👨‍💻
 5. Click **Send invite** 📨
 
 ---
 
-## Part 3: Connect Stripe → Bank → HNRY 🔗
+## Part 2: Integration with Booking System 🔗
 
-### The Money Flow 💸
+### What Julian Will Do 🛠️
 
-Set up automatic flow from Stripe payments to HNRY tax handling:
+Once Julian has admin access to HNRY:
 
-**Option A: Stripe → Your Bank → HNRY** (Simpler)
+1. **Research HNRY API** - Check if HNRY has payment API for booking integration
+2. **Alternative: HNRY Invoicing** - If no API, Julian can set up automatic invoice generation
+3. **Test Payments** - Make sure card payments work smoothly
+4. **Connect to Booking System** - Integrate payment flow with your website
 
-1. Stripe pays out to your regular bank account
-2. You manually transfer income to HNRY account
-3. HNRY deducts taxes and pays you the rest
+### Payment Flow Options 💸
 
-**Option B: Stripe → HNRY Account** (More Automated - Recommended) ⭐
+**Option A: Direct HNRY Integration** (If API available) 🎯
 
-1. Get your HNRY account number
-2. Set Stripe payouts to go directly to HNRY account
-3. HNRY automatically handles everything:
-   - Deducts income tax
-   - Deducts GST
-   - Pays ACC levies
-   - Transfers net income to your personal bank
+```
+Customer books → HNRY processes payment → HNRY deducts taxes → You get net income
+   (Website)         (Card payment)         (automatic)         (to your bank)
+```
 
-### How to Set Up Option B 🎯
+**Option B: HNRY Invoicing** (If no API) 📧
 
-**In Stripe:**
+```
+Customer books → System sends HNRY invoice → Customer pays via HNRY link → You get net income
+   (Website)        (automated email)           (Card payment)            (to your bank)
+```
 
-1. Go to **Settings** → **Bank accounts and scheduling**
-2. Update bank account to your **HNRY account number**
-3. Stripe will now pay directly to HNRY
-
-**In HNRY:**
-
-1. Go to **Settings** → **Allocations**
-2. Set where net income (after taxes) should go:
-   - Your personal bank account
-   - Savings
-   - KiwiSaver (NZ)
-   - Etc.
+Julian will determine the best approach once he has access.
 
 ---
 
-## Part 4: Testing Everything 🧪
+## Part 3: Testing Everything 🧪
 
-### Test Stripe Payment 💳
+### Test Payment Flow 💳
 
-1. Julian will add Stripe to your booking system
-2. Make a test booking
-3. Use Stripe test card: `4242 4242 4242 4242`
-4. Expiry: any future date (e.g., 12/34)
-5. CVC: any 3 digits (e.g., 123)
-6. Verify payment appears in Stripe Dashboard
+1. Julian will set up test payment
+2. Make a test booking or invoice
+3. Use your real card (small amount like $5)
+4. Verify payment appears in HNRY dashboard
+5. Check that tax is calculated correctly
 
-### Test HNRY Tax Calculation 📊
+### Verify Tax Calculation 📊
 
-1. Create a test invoice in HNRY or wait for Stripe payout
-2. Verify HNRY calculates taxes correctly
-3. Check that net income goes to your bank account
-4. Review tax breakdown in HNRY dashboard
+1. Review the payment in HNRY
+2. Check tax breakdown:
+   - Income tax deducted
+   - GST handled
+   - ACC levies calculated
+3. Verify net income goes to your bank
 
 ---
 
-## Part 5: Going Live 🚀
+## Part 4: Going Live 🚀
 
 ### Final Checklist ✅
 
-**Stripe:**
-
-- ✅ Account fully verified
-- ✅ Bank account verified
-- ✅ Julian has Live API keys or team access
-- ✅ Payment methods enabled
-
-**HNRY:**
-
-- ✅ Account fully verified
-- ✅ Bank account set up
-- ✅ Allocations configured
-- ✅ Julian has team access
-
-**Connection:**
-
-- ✅ Stripe payouts going to HNRY account (or your bank)
+- ✅ HNRY account fully verified
+- ✅ Bank account set up and verified
+- ✅ Card payments enabled
+- ✅ Julian added as admin
+- ✅ Booking system integration complete
 - ✅ Test payment successful
 - ✅ Tax calculations verified
 
-### Make First Real Payment 💰
+### Make First Real Booking 💰
 
-1. Switch booking system to Stripe Live mode
-2. Make a small real test booking ($5-10)
+1. Go live with booking system
+2. Make a small test booking
 3. Verify:
-   - Payment appears in Stripe
-   - Money reaches HNRY (or your bank)
-   - HNRY deducts taxes correctly
+   - Payment appears in HNRY
+   - Tax deducted correctly
    - Net income arrives in your account
 
 ---
 
 ## Understanding the Costs 💵
 
-### Stripe Fees 💳
-
-- **1.75% + $0.30 AUD** per transaction
-- Example: $500 booking = $9.05 fee
-- You receive: $490.95
-
 ### HNRY Fees 📊
 
 - **1% + GST** of your income (capped at $1,500+GST/year)
-- Example: $10,000 income = $100 + GST HNRY fee
-- Includes ALL tax, accounting, and reporting
+- Example: $500 booking = $5 + GST HNRY fee
+- **Includes:**
+  - ✅ Payment processing (no extra card fees!)
+  - ✅ Tax calculations and payments
+  - ✅ Accounting and reporting
+  - ✅ GST returns
+  - ✅ ACC levies
 
-### Total Example 🧮
+### Example Breakdown 🧮
 
 Customer pays $500 for booking:
 
-- Stripe fee: -$9.05
-- Goes to HNRY: $490.95
-- HNRY fee (1%): -$4.91
-- Income tax (≈30%): -$147.28
+- HNRY fee (1%): -$5.50 (includes GST)
+- Income tax (≈30%): -$148.35
 - GST: handled by HNRY
-- **You receive: ≈$328.76** (net income after all fees and taxes)
+- **You receive: ≈$346.15** (net income after fees and taxes)
+
+### Compare to Stripe + HNRY 💡
+
+If you used Stripe + HNRY:
+
+- Stripe fee: -$9.05
+- HNRY fee: -$4.91
+- Income tax: -$147.28
+- **You'd receive: ≈$328.76**
+
+**HNRY-only saves you ~$17 per booking!** 🎉
 
 ---
 
 ## Support & Contacts 🆘
-
-### Stripe 💳
-
-- Email: support@stripe.com
-- Live chat in dashboard
-- Phone: Available for account issues
 
 ### HNRY 📊
 
@@ -320,87 +214,79 @@ Customer pays $500 for booking:
 - For booking system integration
 - For testing payments
 - For troubleshooting
+- Admin access to help manage HNRY
 
 ---
 
 ## Troubleshooting Common Issues 🔧
 
-### "Stripe payment failed" 💳❌
+### "Payment failed" 💳❌
 
-- Check Stripe account is fully verified
-- Ensure payment methods are enabled
-- Verify test/live mode matches booking system
-- Check customer entered valid card details
-
-### "HNRY not receiving Stripe money" 🚫
-
-- Verify Stripe payout account matches HNRY account
-- Check Stripe payout schedule (usually 2-3 days)
-- Confirm HNRY account is verified
-- Contact HNRY support to verify account number
+- Check HNRY account is fully verified
+- Ensure card payments are enabled
+- Verify customer entered valid card details
+- Contact HNRY support
 
 ### "Tax calculations look wrong" 🤔
 
 - HNRY calculates based on NZ/AU tax brackets
 - Remember: includes income tax + GST + ACC
-- Check your income year-to-date affects tax rate
+- Your year-to-date income affects tax rate
 - Contact HNRY accounting team for breakdown
 
-### "Stripe wants more documentation" 📄
+### "HNRY wants more documentation" 📄
 
-- Common for certain industries
-- Provide: ABN, business license, additional ID
+- Provide: IRD/ABN, business info, additional ID
 - Be honest about business type
-- Stripe may restrict adult service accounts (check their policies)
+- HNRY is discreet and professional
+
+### "Can't integrate with booking system" 🔧
+
+- Julian will check HNRY API availability
+- May use HNRY invoicing as alternative
+- Julian has admin access to explore options
+- Contact HNRY support for integration help
 
 ---
 
 ## What Julian Needs From You 📋
 
-### For Stripe 💳
+### For HNRY Setup ✅
 
-- ✅ Team member invitation accepted, **OR**
-- ✅ Test API keys: `pk_test_...` and `sk_test_...`
-- ✅ Live API keys: `pk_live_...` and `sk_live_...` (when ready)
+- ✅ Complete HNRY account setup
+- ✅ Verify your account
+- ✅ Enable card payments
+- ✅ Send Julian admin invitation
 
-### For HNRY 📊
+### Once Julian Has Access 🛠️
 
-- ✅ Team member invitation accepted
-- ✅ Your HNRY account number (if using Option B)
-- ✅ Confirmation that account is verified
-
-### For Testing 🧪
-
-- ✅ Availability to test bookings together
-- ✅ Confirmation when first real payment comes through
+- ✅ Julian will explore integration options
+- ✅ Julian will set up payment flow
+- ✅ You'll test together
+- ✅ Julian will help troubleshoot issues
 
 ---
 
-## Summary: Why This Setup Works Perfectly 🎯
+## Summary: Why HNRY-Only Works Perfectly 🎯
 
-**Stripe** handles what it's good at:
+**HNRY handles everything:**
 
-- ✅ Collecting payments from customers online
-- ✅ Integrating with booking systems via API
-- ✅ Trusted payment processing
+- ✅ Payment processing (card payments at no extra cost)
+- ✅ Tax calculations and payments (income tax, GST, ACC)
+- ✅ Accounting and reporting
+- ✅ Professional invoicing
+- ✅ Expense tracking
 
-**HNRY** handles what it's good at:
+**Benefits:**
 
-- ✅ Calculating and paying your taxes
-- ✅ Managing ACC and GST
-- ✅ Acting as your accountant
-- ✅ Tracking expenses and income
-
-**Together they give you:**
-
-- 🚀 Professional online booking and payments
-- 💰 Automatic tax management
-- 📊 Full financial reporting
-- 😌 Peace of mind - everything is handled properly
+- 🚀 One service instead of two
+- 💰 Lower fees (saves ~$17 per $500 booking vs Stripe+HNRY)
+- 📊 Everything in one place
+- 😌 Julian as admin to help manage
 - ⏰ More time to focus on your business
 
 ---
 
-Good luck! 🍀 This combination of Stripe + HNRY gives you a professional payment system with automatic tax handling - the best of both worlds! 💳✨📊
+Good luck! 🍀 HNRY gives you professional payment processing AND automatic tax handling - the perfect all-in-one solution! 💳✨📊
 
 - Julian 👨‍💻
