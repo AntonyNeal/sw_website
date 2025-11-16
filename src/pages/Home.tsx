@@ -251,7 +251,13 @@ export default function Home() {
         </style>
       </Helmet>
 
-      <div className="home-page mercury-background mercury-liquid-edge min-h-screen overflow-hidden">
+      <div
+        className="home-page min-h-screen overflow-hidden"
+        style={{
+          background:
+            'linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 25%, #d0d0d0 50%, #f5f5f5 75%, #e8e8e8 100%)',
+        }}
+      >
         {/* Full-Screen Hero Section with Photo Carousel */}
         <section className="fixed inset-0 w-full h-full overflow-hidden flex items-center justify-center">
           {/* Carousel Container with Swipe Support */}
@@ -299,7 +305,7 @@ export default function Home() {
                   key={index}
                   src={image}
                   alt="Claire Hamilton"
-                  className={`absolute inset-0 w-full h-full object-contain transition-transform duration-1000 ease-in-out ${transformClass}`}
+                  className={`absolute inset-0 w-full h-full object-cover object-center transition-transform duration-1000 ease-in-out ${transformClass}`}
                   style={style}
                   draggable={false}
                 />
@@ -314,20 +320,13 @@ export default function Home() {
           <div className="relative z-30 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">
             {/* CTAs - View Gallery (left) and Book Now (right) */}
             <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 justify-center items-center mb-8 sm:mb-12">
-              {/* Secondary CTA - View Gallery as Intent Driver */}
+              {/* Compact Gallery Icon */}
               <Link
                 to="/gallery"
-                className="group inline-flex items-center gap-3 px-8 sm:px-10 md:px-12 py-4 sm:py-5 border-3 border-rose-200/80 text-rose-50 rounded-xl text-lg sm:text-xl md:text-2xl font-semibold tracking-wide hover:bg-rose-100/30 hover:border-rose-100 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-rose-300 focus:ring-offset-2 backdrop-blur-md shadow-lg"
-                style={{
-                  boxShadow: '0 8px 32px rgba(244, 114, 182, 0.3)',
-                }}
+                className="group p-4 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/50 shadow-lg flex items-center justify-center"
                 aria-label="View photo gallery"
               >
-                <span className="text-2xl sm:text-3xl">📸</span>
-                View Gallery
-                <span className="inline-block group-hover:translate-x-1 transition-transform text-xl sm:text-2xl">
-                  →
-                </span>
+                <span className="text-3xl">📸</span>
               </Link>
 
               {/* Primary CTA - Prominent Book Now */}
@@ -376,7 +375,7 @@ export default function Home() {
             }}
             aria-label="Pause carousel"
           >
-            ⏸️ Pause
+            ⏸️
           </button>
           <button
             onClick={() => setCarouselSpeed('slow')}
@@ -391,7 +390,7 @@ export default function Home() {
             }}
             aria-label="Slow carousel speed"
           >
-            � Slow
+            �
           </button>
           <button
             onClick={() => setCarouselSpeed('medium')}
@@ -406,7 +405,7 @@ export default function Home() {
             }}
             aria-label="Medium carousel speed"
           >
-            🚶 Medium
+            🚶
           </button>
           <button
             onClick={() => setCarouselSpeed('fast')}
@@ -421,7 +420,7 @@ export default function Home() {
             }}
             aria-label="Fast carousel speed"
           >
-            🏃 Fast
+            🏃
           </button>
         </div>
 
