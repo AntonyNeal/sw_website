@@ -125,13 +125,21 @@ export default function Home() {
     setIsDragging(true);
     setDragStart({ x: touch.clientX, y: touch.clientY });
     setDragOffset(0);
+    // Pause autoplay when user starts swiping
+    setCarouselSpeed('pause');
   };
 
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
     if (!isDragging) return;
     const touch = e.touches[0];
     const deltaX = touch.clientX - dragStart.x;
-    setDragOffset(deltaX);
+    const deltaY = Math.abs(touch.clientY - dragStart.y);
+
+    // Only handle horizontal swipes, let vertical pass through for page scroll
+    if (Math.abs(deltaX) > deltaY) {
+      e.preventDefault();
+      setDragOffset(deltaX);
+    }
   };
 
   const handleTouchEnd = () => {
@@ -148,6 +156,8 @@ export default function Home() {
 
     setIsDragging(false);
     setDragOffset(0);
+    // Resume autoplay after swipe
+    setTimeout(() => setCarouselSpeed('fast'), 500);
   };
 
   return (
@@ -262,7 +272,7 @@ export default function Home() {
         <section className="fixed inset-0 w-full h-full overflow-hidden flex items-center justify-center">
           {/* Carousel Container with Swipe Support */}
           <div
-            className="absolute inset-0 w-full h-full overflow-hidden z-0 cursor-grab active:cursor-grabbing"
+            className="absolute inset-0 w-full h-full overflow-hidden z-0 cursor-grab active:cursor-grabbing select-none"
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
@@ -270,7 +280,7 @@ export default function Home() {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            style={{ touchAction: 'pan-y' }}
+            style={{ touchAction: 'pan-y', WebkitUserSelect: 'none' }}
           >
             {heroImages.map((image, index) => {
               let transformClass = '';
@@ -313,35 +323,33 @@ export default function Home() {
             })}
           </div>
 
-          {/* Dark Overlay - Subtle for photo impact */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/15 to-black/25 z-20" />
+          {/* Dark Overlay - Minimal for photo impact */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/15 z-20" />
 
           {/* Content Overlay - Conversion-Optimized Layout */}
           <div className="relative z-30 text-center text-white px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center h-full max-w-7xl mx-auto">
             {/* CTAs - View Gallery (left) and Book Now (right) */}
-            <div className="flex flex-wrap gap-4 sm:gap-6 md:gap-8 justify-center items-center mb-8 sm:mb-12">
+            <div className="flex flex-wrap gap-3 sm:gap-4 justify-center items-center mb-6">
               {/* Compact Gallery Icon */}
               <Link
                 to="/gallery"
-                className="group p-4 bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/50 shadow-lg flex items-center justify-center"
+                className="group p-3 bg-white/15 hover:bg-white/25 backdrop-blur-sm rounded-full transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40 shadow-md flex items-center justify-center"
                 aria-label="View photo gallery"
               >
-                <span className="text-3xl">📸</span>
+                <span className="text-2xl">📸</span>
               </Link>
 
-              {/* Primary CTA - Prominent Book Now */}
+              {/* Primary CTA - Elegant Book Now */}
               <button
                 onClick={() => setIsBookingOpen(true)}
-                className="group relative px-12 sm:px-16 md:px-20 lg:px-24 py-5 sm:py-6 md:py-7 bg-gradient-to-r from-rose-600/90 to-red-700/90 text-white rounded-2xl text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide hover:shadow-2xl hover:from-rose-600 hover:to-red-700 transition-all duration-500 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-rose-500 focus:ring-offset-4 backdrop-blur-md border-2 border-rose-400/50"
+                className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-rose-600/80 to-red-700/80 text-white rounded-xl text-base sm:text-lg md:text-xl font-semibold tracking-wide hover:shadow-xl hover:from-rose-600 hover:to-red-700 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-rose-500/50 backdrop-blur-sm border border-rose-400/40"
                 style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                  boxShadow:
-                    '0 12px 48px rgba(225, 29, 72, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.2)',
+                  boxShadow: '0 8px 24px rgba(225, 29, 72, 0.3)',
                 }}
                 aria-label="Book an appointment now"
               >
                 Book Now
-                <span className="ml-3 inline-block group-hover:translate-x-2 transition-transform duration-300 text-2xl sm:text-3xl md:text-4xl">
+                <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform duration-300 text-lg sm:text-xl">
                   →
                 </span>
               </button>
@@ -349,9 +357,9 @@ export default function Home() {
 
             {/* Value Prop Hint */}
             <p
-              className="text-sm sm:text-base md:text-lg text-rose-100/80 italic max-w-2xl mx-auto"
+              className="text-xs sm:text-sm text-rose-100/70 italic max-w-xl mx-auto"
               style={{
-                textShadow: '1px 1px 4px rgba(0,0,0,0.8)',
+                textShadow: '1px 1px 3px rgba(0,0,0,0.6)',
                 fontFamily: '"Crimson Text", serif',
               }}
             >
@@ -361,17 +369,17 @@ export default function Home() {
         </section>
 
         {/* Carousel Speed Controls */}
-        <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 sm:gap-3 justify-center select-none pointer-events-auto">
+        <div className="fixed bottom-16 left-1/2 transform -translate-x-1/2 z-50 flex gap-1.5 justify-center select-none pointer-events-auto">
           <button
             onClick={() => setCarouselSpeed('pause')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+            className={`px-2 py-1 rounded-md text-xs transition-all duration-300 ${
               carouselSpeed === 'pause'
-                ? 'bg-white/90 text-gray-800 shadow-lg'
-                : 'bg-white/30 text-white hover:bg-white/50'
+                ? 'bg-white/80 text-gray-800 shadow-md'
+                : 'bg-white/20 text-white hover:bg-white/40'
             }`}
             style={{
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(8px)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(4px)',
             }}
             aria-label="Pause carousel"
           >
@@ -379,14 +387,14 @@ export default function Home() {
           </button>
           <button
             onClick={() => setCarouselSpeed('slow')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+            className={`px-2 py-1 rounded-md text-xs transition-all duration-300 ${
               carouselSpeed === 'slow'
-                ? 'bg-white/90 text-gray-800 shadow-lg'
-                : 'bg-white/30 text-white hover:bg-white/50'
+                ? 'bg-white/80 text-gray-800 shadow-md'
+                : 'bg-white/20 text-white hover:bg-white/40'
             }`}
             style={{
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(8px)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(4px)',
             }}
             aria-label="Slow carousel speed"
           >
@@ -394,14 +402,14 @@ export default function Home() {
           </button>
           <button
             onClick={() => setCarouselSpeed('medium')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+            className={`px-2 py-1 rounded-md text-xs transition-all duration-300 ${
               carouselSpeed === 'medium'
-                ? 'bg-white/90 text-gray-800 shadow-lg'
-                : 'bg-white/30 text-white hover:bg-white/50'
+                ? 'bg-white/80 text-gray-800 shadow-md'
+                : 'bg-white/20 text-white hover:bg-white/40'
             }`}
             style={{
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(8px)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(4px)',
             }}
             aria-label="Medium carousel speed"
           >
@@ -409,14 +417,14 @@ export default function Home() {
           </button>
           <button
             onClick={() => setCarouselSpeed('fast')}
-            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 ${
+            className={`px-2 py-1 rounded-md text-xs transition-all duration-300 ${
               carouselSpeed === 'fast'
-                ? 'bg-white/90 text-gray-800 shadow-lg'
-                : 'bg-white/30 text-white hover:bg-white/50'
+                ? 'bg-white/80 text-gray-800 shadow-md'
+                : 'bg-white/20 text-white hover:bg-white/40'
             }`}
             style={{
-              boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-              backdropFilter: 'blur(8px)',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(4px)',
             }}
             aria-label="Fast carousel speed"
           >
@@ -424,19 +432,19 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Carousel Indicators - Subtle and refined */}
-        <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3 sm:gap-3 justify-center select-none pointer-events-auto">
+        {/* Carousel Indicators - Minimal and discreet */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex gap-2 justify-center select-none pointer-events-auto">
           {heroImages.map((_, index) => (
             <button
               key={index}
               onClick={() => goToImage(index)}
               className={`rounded-full transition-all duration-300 cursor-pointer focus:outline-none flex-shrink-0 ${
                 index === currentImageIndex
-                  ? 'bg-white/80 w-2.5 h-2.5'
-                  : 'bg-white/40 w-2 h-2 hover:bg-white/60'
+                  ? 'bg-white/70 w-2 h-2'
+                  : 'bg-white/30 w-1.5 h-1.5 hover:bg-white/50'
               }`}
               style={{
-                boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
               }}
               aria-label={`Go to image ${index + 1}`}
             />
