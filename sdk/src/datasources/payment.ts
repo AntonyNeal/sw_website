@@ -56,7 +56,7 @@ export class PaymentDataSource {
     const response = await this.client.post<ApiResponse<Payment>>('/payments', {
       ...payment,
       currency: payment.currency || 'AUD',
-      processor: payment.processor || 'stripe',
+      processor: payment.processor || 'hnry',
     });
     return response.data;
   }

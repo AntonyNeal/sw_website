@@ -392,7 +392,7 @@
  * [ ] Implement request caching strategy
  *
  * Payment Processing:
- * [ ] Integrate real payment processor (Stripe, CCBill, etc.)
+ * [ ] Integrate real payment processor (HNRY, etc.)
  * [ ] Implement PCI compliance
  * [ ] Add payment verification
  * [ ] Implement refund logic
