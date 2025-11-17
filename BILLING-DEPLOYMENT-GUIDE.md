@@ -325,7 +325,7 @@ class BillingService {
         periodEnd,
         bookingCount,
         totalBookingValue,
-        feePercentage,  // Use tenant's configured fee percentage
+        feePercentage, // Use tenant's configured fee percentage
         platformFeeTotal,
         platformFeeTotal,
         'draft',
@@ -531,10 +531,10 @@ app.put('/api/tenants/:tenantId/fee', async (req, res) => {
     [percentage, tenantId]
   );
 
-  res.json({ 
-    success: true, 
+  res.json({
+    success: true,
     message: `Platform fee updated to ${percentage}%`,
-    note: 'Only affects new bookings'
+    note: 'Only affects new bookings',
   });
 });
 ```

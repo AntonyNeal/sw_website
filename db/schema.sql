@@ -420,10 +420,6 @@ CREATE TABLE IF NOT EXISTS tenants (
   primary_domain VARCHAR(255) UNIQUE,
   custom_domains TEXT[],  -- Array of additional domains
   
-  -- Billing Configuration
-  billing_method VARCHAR(50) DEFAULT 'manual',  -- manual, bank_transfer, etc.
-  CONSTRAINT valid_billing_method CHECK (billing_method IN ('manual', 'bank_transfer', 'direct_debit')),,
-  
   -- SimplyBook.me Integration
   simplybook_company VARCHAR(255),
   simplybook_api_key TEXT,  -- Encrypted in production
@@ -435,7 +431,10 @@ CREATE TABLE IF NOT EXISTS tenants (
   settings JSONB DEFAULT '{}',  -- Custom settings per tenant
   
   -- Billing Configuration
-  platform_fee_percentage DECIMAL(5,2) DEFAULT 20.00,  -- Default 20%
+  billing_method VARCHAR(50) DEFAULT 'manual',  -- manual, bank_transfer, direct_debit
+  CONSTRAINT valid_billing_method CHECK (billing_method IN ('manual', 'bank_transfer', 'direct_debit')),
+  platform_fee_percentage DECIMAL(5,2) DEFAULT 20.00,  -- Default 20% (configurable per tenant)
+  CONSTRAINT valid_fee_percentage CHECK (platform_fee_percentage >= 0 AND platform_fee_percentage <= 100),
   billing_email VARCHAR(255),  -- Override for billing notifications
   
   -- Timestamps
