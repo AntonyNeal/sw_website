@@ -313,7 +313,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
       const result = await sdk.simplybook.createBooking(bookingData);
       setBookingId(result.id.toString());
-      setCurrentStep(7);
+      setCurrentStep(6);
     } catch (err) {
       // Extract detailed error message
       let errorMessage = 'Failed to create booking';
@@ -339,18 +339,15 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       // Move from Tour to Service
       setCurrentStep(2);
     } else if (currentStep === 2 && selectedService) {
-      // Move from Service to Date
+      // Move from Service to Date & Time
       setCurrentStep(3);
-    } else if (currentStep === 3 && selectedDate) {
-      // Move from Date to Time
+    } else if (currentStep === 3 && selectedDate && selectedTime) {
+      // Move from Date & Time to Extras
       setCurrentStep(4);
-    } else if (currentStep === 4 && selectedTime) {
-      // Move from Time to Extras
+    } else if (currentStep === 4) {
+      // Move from Extras to Confirm
       setCurrentStep(5);
     } else if (currentStep === 5) {
-      // Move from Extras to Confirm
-      setCurrentStep(6);
-    } else if (currentStep === 6) {
       // Final confirmation - create booking
       if (!clientInfo.firstName || !clientInfo.lastName || !clientInfo.email || !clientInfo.phone) {
         setError('Please fill in all required fields');
@@ -422,10 +419,9 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             {[
               { num: 1, label: 'Tour' },
               { num: 2, label: 'Service' },
-              { num: 3, label: 'Date' },
-              { num: 4, label: 'Time' },
-              { num: 5, label: 'Extras' },
-              { num: 6, label: 'Confirm' },
+              { num: 3, label: 'Date & Time' },
+              { num: 4, label: 'Extras' },
+              { num: 5, label: 'Confirm' },
             ].map((step, index) => (
               <React.Fragment key={step.num}>
                 <div className="flex flex-col items-center flex-1 group">
@@ -446,7 +442,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     {step.label}
                   </span>
                 </div>
-                {index < 5 && (
+                {index < 4 && (
                   <div className="flex-1 mx-3 mt-[-16px]">
                     <div
                       className={`h-2 rounded-full transition-all duration-500 ${
@@ -704,11 +700,11 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 3: Date Selection */}
+          {/* Step 3: Date & Time Selection */}
           {currentStep === 3 && (
             <div className="space-y-8 animate-fadeIn">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Select a date</h3>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Select date & time</h3>
                 <p className="text-slate-500 text-sm">Choose when you&apos;d like to visit</p>
               </div>
 
@@ -783,72 +779,60 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     })()}
                 </div>
               </div>
-            </div>
-          )}
 
-          {/* Step 4: Time Selection */}
-          {currentStep === 4 && (
-            <div className="space-y-8 animate-fadeIn">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-slate-900 mb-2">Pick your time</h3>
-                <p className="text-slate-500 text-sm">
-                  Select a time for{' '}
-                  {selectedDate
-                    ? new Date(selectedDate).toLocaleDateString('en-US', {
-                        weekday: 'long',
-                        month: 'long',
-                        day: 'numeric',
-                      })
-                    : 'your visit'}
-                </p>
-              </div>
-
-              {/* Time Slot Selection */}
-              <div>
-                <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <Clock className="w-4 h-4 text-purple-600" />
-                  </div>
-                  Available Times
-                </label>
-                {loading ? (
-                  <div className="flex flex-col items-center justify-center py-12 bg-slate-50 rounded-2xl">
-                    <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-3" />
-                    <p className="text-slate-500 text-sm">Loading time slots...</p>
-                  </div>
-                ) : timeSlots.length === 0 ? (
-                  <div className="text-center py-12 px-6 bg-slate-50 rounded-2xl">
-                    <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock className="w-8 h-8 text-slate-400" />
+              {/* Time Selection - Shows when date is selected */}
+              {selectedDate && (
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-purple-600" />
                     </div>
-                    <p className="text-slate-600 font-medium">No time slots available</p>
-                    <p className="text-slate-400 text-sm mt-1">Try selecting a different date.</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-4 gap-3">
-                    {timeSlots
-                      .filter((slot) => slot.available)
-                      .map((slot) => (
-                        <button
-                          key={slot.time}
-                          onClick={() => setSelectedTime(slot.time)}
-                          className={`p-4 rounded-xl text-center font-semibold transition-all duration-200 border-2 hover:scale-105 ${
-                            selectedTime === slot.time
-                              ? 'border-purple-600 bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
-                              : 'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:shadow-md'
-                          }`}
-                        >
-                          {slot.time}
-                        </button>
-                      ))}
-                  </div>
-                )}
-              </div>
+                    Available Times for{' '}
+                    {new Date(selectedDate).toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </label>
+                  {loading ? (
+                    <div className="flex flex-col items-center justify-center py-12 bg-slate-50 rounded-2xl">
+                      <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-3" />
+                      <p className="text-slate-500 text-sm">Loading time slots...</p>
+                    </div>
+                  ) : timeSlots.length === 0 ? (
+                    <div className="text-center py-12 px-6 bg-slate-50 rounded-2xl">
+                      <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Clock className="w-8 h-8 text-slate-400" />
+                      </div>
+                      <p className="text-slate-600 font-medium">No time slots available</p>
+                      <p className="text-slate-400 text-sm mt-1">Try selecting a different date.</p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-4 gap-3">
+                      {timeSlots
+                        .filter((slot) => slot.available)
+                        .map((slot) => (
+                          <button
+                            key={slot.time}
+                            onClick={() => setSelectedTime(slot.time)}
+                            className={`p-4 rounded-xl text-center font-semibold transition-all duration-200 border-2 hover:scale-105 ${
+                              selectedTime === slot.time
+                                ? 'border-purple-600 bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                                : 'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:shadow-md'
+                            }`}
+                          >
+                            {slot.time}
+                          </button>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
 
-          {/* Step 5: Extras Selection */}
-          {currentStep === 5 && (
+          {/* Step 4: Extras Selection */}
+          {currentStep === 4 && (
             <div className="space-y-4 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Add extras</h3>
@@ -863,8 +847,25 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 6: Client Information & Confirmation */}
-          {currentStep === 6 && (
+          {/* Step 5: Client Information & Confirmation */}
+          {/* Step 4: Extras Selection */}
+          {currentStep === 4 && (
+            <div className="space-y-4 animate-fadeIn">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Add extras</h3>
+                <p className="text-slate-500 text-sm">
+                  Enhance your experience with additional services
+                </p>
+              </div>
+              <div className="text-center py-16 px-6 bg-slate-50 rounded-2xl">
+                <p className="text-slate-600 font-medium">No extras available</p>
+                <p className="text-slate-400 text-sm mt-1">Continue to complete your booking</p>
+              </div>
+            </div>
+          )}
+
+          {/* Step 5: Client Information & Confirmation */}
+          {currentStep === 5 && (
             <div className="space-y-6 animate-fadeIn">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold text-slate-900 mb-2">Your information</h3>
@@ -1001,8 +1002,8 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
             </div>
           )}
 
-          {/* Step 7: Success/Confirmation Screen */}
-          {currentStep === 7 && (
+          {/* Step 6: Success/Confirmation Screen */}
+          {currentStep === 6 && (
             <div className="text-center py-12 animate-fadeIn">
               <div className="mb-8">
                 <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30 animate-bounce-in">
@@ -1111,8 +1112,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 loading ||
                 (currentStep === 1 && !selectedTour) ||
                 (currentStep === 2 && !selectedService) ||
-                (currentStep === 3 && !selectedDate) ||
-                (currentStep === 4 && !selectedTime)
+                (currentStep === 3 && (!selectedDate || !selectedTime))
               }
               className={`px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 text-white ${
                 loading ||
