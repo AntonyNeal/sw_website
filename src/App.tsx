@@ -24,8 +24,11 @@ function App() {
         const session = initializeSession();
         console.debug('Session initialized:', session.userId);
 
-        // Skip backend tracking in development if domain not accessible
-        if (import.meta.env.PROD) {
+        // TODO: Enable when backend analytics endpoints are implemented
+        // Skip backend tracking until /api/sessions/register and /api/conversions/track exist
+        const ENABLE_BACKEND_TRACKING = false;
+
+        if (import.meta.env.PROD && ENABLE_BACKEND_TRACKING) {
           // Register session with backend (async, non-blocking)
           const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
           await registerSession(apiBaseUrl);
