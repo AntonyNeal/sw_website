@@ -192,10 +192,12 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
   const loadTimeSlots = useCallback(async () => {
     if (!selectedService || !selectedDate) return;
+    console.log('🕐 Loading time slots for:', selectedDate, 'service:', selectedService.id);
     setLoading(true);
     setError(null);
     try {
       const slots = await sdk.simplybook.getTimeSlots(selectedService.id, selectedDate);
+      console.log('✅ Time slots loaded:', slots);
       setTimeSlots(Array.isArray(slots) ? slots : []);
     } catch (err) {
       // Extract detailed error message
@@ -783,7 +785,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
               {/* Time Selection - Shows when date is selected */}
               {selectedDate && (
-                <div>
+                <div className="animate-fadeIn">
                   <label className="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                     <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                       <Clock className="w-4 h-4 text-purple-600" />
