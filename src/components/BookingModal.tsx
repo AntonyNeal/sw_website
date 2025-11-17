@@ -196,7 +196,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     setError(null);
     try {
       const slots = await sdk.simplybook.getTimeSlots(selectedService.id, selectedDate);
-      setTimeSlots(slots);
+      setTimeSlots(Array.isArray(slots) ? slots : []);
     } catch (err) {
       // Extract detailed error message
       let errorMessage = 'Failed to load time slots';
@@ -212,6 +212,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       }
 
       setError(errorMessage);
+      setTimeSlots([]);
     }
     setLoading(false);
   }, [selectedService, selectedDate]);
@@ -809,21 +810,22 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                     </div>
                   ) : (
                     <div className="grid grid-cols-4 gap-3">
-                      {timeSlots
-                        .filter((slot) => slot.available)
-                        .map((slot) => (
-                          <button
-                            key={slot.time}
-                            onClick={() => setSelectedTime(slot.time)}
-                            className={`p-4 rounded-xl text-center font-semibold transition-all duration-200 border-2 hover:scale-105 ${
-                              selectedTime === slot.time
-                                ? 'border-purple-600 bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
-                                : 'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:shadow-md'
-                            }`}
-                          >
-                            {slot.time}
-                          </button>
-                        ))}
+                      {Array.isArray(timeSlots) &&
+                        timeSlots
+                          .filter((slot) => slot.available)
+                          .map((slot) => (
+                            <button
+                              key={slot.time}
+                              onClick={() => setSelectedTime(slot.time)}
+                              className={`p-4 rounded-xl text-center font-semibold transition-all duration-200 border-2 hover:scale-105 ${
+                                selectedTime === slot.time
+                                  ? 'border-purple-600 bg-gradient-to-br from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                                  : 'border-slate-200 bg-white text-slate-700 hover:border-purple-300 hover:shadow-md'
+                              }`}
+                            >
+                              {slot.time}
+                            </button>
+                          ))}
                     </div>
                   )}
                 </div>
