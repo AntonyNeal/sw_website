@@ -50,14 +50,18 @@ export class PaymentDataSource {
   private static client = new ApiClient();
 
   /**
-   * Create a new payment
+   * Create a new payment record
+   * Note: For Claire's business, payments are:
+   * - 20% deposit via HNRY PayID (bank transfer)
+   * - 80% cash at session
+   * This creates a payment record for tracking/invoicing purposes only
    */
   static async create(payment: CreatePaymentRequest): Promise<Payment> {
     const response = await this.client.post<ApiResponse<Payment>>('/payments', {
       ...payment,
       currency: payment.currency || 'AUD',
-      // Default to HNRY payment processor
-    processor: payment.processor || 'hnry',
+      // Default to 'manual' - no online payment processor
+      processor: payment.processor || 'manual',
     });
     return response.data;
   }
