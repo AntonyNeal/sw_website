@@ -1023,6 +1023,29 @@ INSERT INTO tenants (
   'active'
 ) ON CONFLICT (id) DO NOTHING;
 
+-- Insert sample tenant for Miss Dylan (staging)
+INSERT INTO tenants (
+  id,
+  business_name,
+  display_name,
+  email,
+  phone,
+  primary_domain,
+  simplybook_company,
+  platform_fee_percentage,
+  status
+) VALUES (
+  'miss-dylan',
+  'Miss Dylan (Placeholder)',
+  'Miss Dylan',
+  'bookings@partner-domain.com',
+  NULL,
+  'miss-dylan.example.com',
+  'miss-dylan',
+  20.00,
+  'staging'
+) ON CONFLICT (id) DO NOTHING;
+
 -- ============================================================================
 -- END OF SCHEMA
 -- ============================================================================

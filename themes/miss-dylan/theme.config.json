@@ -1,0 +1,17 @@
+{
+  "name": "Miss Dylan (placeholder)",
+  "colors": {
+    "primary": "#8C2E3F",
+    "accent": "#C89E4D",
+    "base": "#F7EFE6",
+    "text": "#222222"
+  },
+  "fontFamily": {
+    "heading": "Georgia, serif",
+    "body": "Inter, system-ui, sans-serif"
+  },
+  "hero": {
+    "title": "Experience a Boutique Booking Experience",
+    "subtitle": "Personalised, respectful, and discrete. Coming soon."
+  }
+}

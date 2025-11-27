@@ -1396,6 +1396,19 @@ VALUES (
 );
 */
 
+-- Insert initial tenant (Miss Dylan placeholder) - Commented out
+/*
+INSERT INTO tenants (subdomain, name, email, theme_config, content_config, status)
+VALUES (
+  'miss-dylan',
+  'Miss Dylan',
+  'bookings@partner-domain.com',
+  '{"colors": {"primary": "#8C2E3F", "secondary": "#C89E4D"}, "fonts": {"heading": "Georgia", "body": "Inter"}}'::jsonb,
+  '{"name": "Miss Dylan", "tagline": "Boutique booking experience"}'::jsonb,
+  'staging'
+);
+*/
+
 -- ============================================================================
 -- COMMENTS FOR DOCUMENTATION
 -- ============================================================================
