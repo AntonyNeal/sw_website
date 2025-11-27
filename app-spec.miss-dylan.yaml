@@ -1,0 +1,66 @@
+# DigitalOcean App Platform Configuration for Miss Dylan (Placeholder)
+# Use as partner-specific app spec. Replace placeholder values with partner info.
+
+name: octopus-app-miss-dylan
+region: syd1 # Sydney region
+
+static_sites:
+  - name: frontend
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: AntonyNeal/sw_website
+    build_command: npm install && npm run build
+    output_dir: dist
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: RUN_AND_BUILD_TIME
+        value: '/api'
+      - key: VITE_FUNCTIONS_URL
+        scope: RUN_AND_BUILD_TIME
+        value: ''
+      - key: VITE_ASSESSMENT_ENABLED
+        scope: RUN_AND_BUILD_TIME
+        value: 'false'
+    routes:
+      - path: /api
+        preserve_path_prefix: true
+
+services:
+  - build_command: npm install
+    envs:
+      - key: NODE_ENV
+        scope: RUN_AND_BUILD_TIME
+        value: production
+
+      - key: PORT
+        scope: RUN_AND_BUILD_TIME
+        value: '8080'
+
+      - key: ALLOWED_ORIGINS
+        scope: RUN_AND_BUILD_TIME
+        value: 'https://octopus-app-tw5wu.ondigitalocean.app,https://miss-dylan.example.com,https://www.miss-dylan.example.com'
+
+      - key: SIMPLYBOOK_API_KEY
+        scope: RUN_AND_BUILD_TIME
+        value: ''
+
+      - key: SIMPLYBOOK_SECRET_KEY
+        scope: RUN_AND_BUILD_TIME
+        value: ''
+
+      - key: SIMPLYBOOK_COMPANY
+        scope: RUN_AND_BUILD_TIME
+        value: 'miss-dylan'
+
+    github:
+      branch: main
+      deploy_on_push: true
+      repo: AntonyNeal/sw_website
+
+    http_port: 8080
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    name: api
+    run_command: node server.js
+    source_dir: /api
