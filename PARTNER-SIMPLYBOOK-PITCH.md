@@ -7,6 +7,7 @@ This document is a neutral, partner-agnostic pitch for using SimplyBook.me as a 
 SimplyBook.me is a reliable, mobile-first booking platform with strong privacy and support features. It's suitable for professional service providers who need a simple booking experience with robust options.
 
 ### Key Benefits
+
 - Mobile apps (iOS/Android) for on-the-go management
 - Live support and help center
 - Private booking pages and configurable privacy settings
@@ -14,6 +15,7 @@ SimplyBook.me is a reliable, mobile-first booking platform with strong privacy a
 - Customizable branding and booking page themes
 
 ### Setup Summary
+
 1. Sign up for a trial
 2. Connect calendar sync (optional)
 3. Create services and availability
@@ -22,11 +24,13 @@ SimplyBook.me is a reliable, mobile-first booking platform with strong privacy a
 6. Integrate booking link/button on the partner's site
 
 ### Important Considerations
+
 - Check SimplyBook.me Terms of Service to ensure partner's use case is allowed
 - Configure privacy and data retention settings
 - Confirm any payment or tax implications for the partner
 
 ### Next Steps
+
 - Create a trial account
 - Link to the website's booking CTA
 - Test an end-to-end booking
