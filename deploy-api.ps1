@@ -27,7 +27,9 @@ doctl apps update $appId --spec app-spec.yaml
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "App updated successfully!" -ForegroundColor Green
-    Write-Host "Your API will be available at: https://clairehamilton.net/api" -ForegroundColor Cyan
+        $domain = $env:CUSTOM_DOMAIN
+        if (-not $domain -or $domain -eq "") { $domain = "partner-domain.com" }
+        Write-Host "Your API will be available at: https://$domain/api" -ForegroundColor Cyan
 } else {
     Write-Host "Deployment failed" -ForegroundColor Red
     exit 1
